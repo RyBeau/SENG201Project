@@ -1,3 +1,4 @@
+package Main;
 
 public class CrewMember {
 	private String memberName;

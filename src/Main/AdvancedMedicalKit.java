@@ -1,5 +1,6 @@
+package Main;
 
-public class AdvancedMedicalKit implements Purchasable{
+public class AdvancedMedicalKit extends MedicalItem{
 	private int price = 100;
 	private int healAmount = 100;
 	

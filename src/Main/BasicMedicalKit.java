@@ -1,5 +1,6 @@
+package Main;
 
-public class BasicMedicalKit implements Purchasable{
+public class BasicMedicalKit extends MedicalItem{
 	private int price = 30;
 	private int healAmount = 25;
 	
