@@ -1,5 +1,10 @@
 package Main;
-
+/**
+ * This class extends MedicalItem.<br>
+ * BasicMedicalKit is an item used to heal crew members within the game.<br>
+ * @author Ryan Beaumont
+ *
+ */
 public class BasicMedicalKit extends MedicalItem{
 	private int price = 30;
 	private int healAmount = 25;

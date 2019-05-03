@@ -1,14 +1,29 @@
 package Main;
-
+/**
+ * This class extends MedicalItem.<br>
+ * AdvancedMedicalKit is an item used to heal crew members within the game.<br>
+ * @author Ryan Beaumont
+ *
+ */
 public class AdvancedMedicalKit extends MedicalItem{
+	/**
+	 * Price of the AdvancedMedicalKit
+	 */
 	private int price = 100;
+	/**
+	 * The amount the AdvancedMedicalKit heals.
+	 */
 	private int healAmount = 100;
 	
-	
+	/**
+	 * @return The int variable healAmount.
+	 */
 	public int getHealAmount() {
 		return healAmount;
 	}
-	
+	/**
+	 * @return The int variable price.
+	 */
 	public int getPrice() {
 		return price;
 	}
