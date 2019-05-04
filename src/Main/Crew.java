@@ -97,6 +97,13 @@ public class Crew {
 		crewFoodItems.remove(food);
 	}
 	/**
+	 * This method removes a given crew member from the crew.
+	 * @param member The member to be removed from the crew.
+	 */
+	public void removeCrewMember(CrewMember member) {
+		crewList.remove(member);
+	}
+	/**
 	 * @return The int crewMoney variable;
 	 */
 	public int getMoney() {

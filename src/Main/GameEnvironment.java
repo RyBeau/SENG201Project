@@ -49,7 +49,19 @@ public class GameEnvironment {
 		for(int x = 0; x < numCrew; x++) {
 			System.out.println("Name: ");
 			String memberName = reader.next();
-			members.add(new CrewMember(memberName));
+			System.out.println("1. Mechanic\n 2. Medic\n3. Scavenger");
+			int i = reader.nextInt();
+			switch(i) {
+			case 1:
+				members.add(new Mechanic(memberName));
+			break;
+			case 2:
+				members.add(new Medic(memberName));
+			break;
+			case 3:
+				members.add(new Scavenger(memberName));
+			break;
+			}
 		}
 		System.out.println("Enter Crew Name: ");
 		String name = reader.next();
@@ -58,12 +70,12 @@ public class GameEnvironment {
 		for(CrewMember i: members) {
 			System.out.println(i);
 			System.out.println();
+		}
 		reader.close();
 		
 		PlagueCure cure = new PlagueCure();
 		cure.purchase();
 		System.out.println(gameCrew);
-		}
 		
 	}
 }

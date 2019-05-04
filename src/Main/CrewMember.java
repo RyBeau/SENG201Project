@@ -14,6 +14,14 @@ public class CrewMember {
 	 */
 	private int memberHealth = 100;
 	/**
+	 * The maximum health that the CrewMember can have. This depends on the CrewMember.
+	 */
+	private int memberMaxHealth = 100;
+	/**
+	 * The type of crew member.
+	 */
+	private String memberType;
+	/**
 	 * The hunger level of a crew member.
 	 */
 	private int memberHunger = 100;
@@ -30,11 +38,65 @@ public class CrewMember {
 	 */
 	private int memberActions = 2;
 	/**
+	 * This is the amount that a crew members energy lower each day.
+	 */
+	private int dailyEnergyUse = 40;
+	/**
+	 * This is the amount that a crew members hunger lowers each day.
+	 */
+	private int dailyHungerUse = 40;
+	
+	/**
 	 * The default builder for the class.
 	 * @param name Name of the crew member given by player.
+	 * @param type The type of crew member selected by the player.
 	 */
-	public CrewMember(String name){
+	public CrewMember(String name, String type){
 		memberName = name;
+		memberType = type;
+	}
+	/**
+	 * This is the constructor for the CrewMember types that have a different maximum health amount.<br>
+	 * E.g. Tank.
+	 * @param name Name of the crew member inputed by player.
+	 * @param type The type of crew member selected by the player.
+	 * @param maxHealth The maximum health level that the crew member can have.
+	 */
+	public CrewMember(String name, String type, int maxHealth) {
+		memberName = name;
+		memberType = type;
+		memberHealth = maxHealth;
+		memberMaxHealth = maxHealth;
+	}
+	/**
+	 * This is the constructor for the CrewMember types that have a different dailyHungerUse amounts.<br>
+	 * E.g. Marathon.
+	 * @param name Name of the crew member inputed by player.
+	 * @param hungerUse The dailyHungerUse of the crew member type.
+	 * @param type The type of crew member selected by the player.
+	 */
+	public CrewMember(String name, int hungerUse ,String type) {
+		memberName = name;
+		memberType = type;
+		dailyHungerUse = hungerUse;
+	}
+	/**
+	 * This is the constructor for the CrewMember types that have a different dailyEnergyUse amounts.<br>
+	 * E.g. To be named.
+	 * @param energyUse The dailyEnergyUse of the crew member type.
+	 * @param name Name of the crew member inputed by player.
+	 * @param type The type of crew member selected by the player.
+	 */
+	public CrewMember(int energyUse, String name, String type) {
+		memberName = name;
+		memberType = type;
+		dailyEnergyUse = energyUse;
+	}
+	/**
+	 * @return The int variable memberHealth.
+	 */
+	public int getHealth() {
+		return memberHealth;
 	}
 	/**
 	 * Sets the memberHealth variable to a given amount.
@@ -85,11 +147,17 @@ public class CrewMember {
 		memberActions = actions;
 	}
 	/**
-	 * Outputs a string that shows the status of a crew member.<br>
-	 * Includes memberName, memberHealth, memberHunger, memberEnergy variables.<br>
+	 * @return The String variable memberType.
 	 */
-	public String toString() {
-		return "Status of Crew Member " + memberName + ":\nHealth Level: " + memberHealth + "\nHunger Level: " + memberHunger + "\nTiredness Level: " + memberEnergy;
+	public String getType() {
+		return memberType;
+	}
+	/**
+	 * Outputs a string that shows the status of a crew member.<br>
+	 * Includes memberName, memberType, memberHealth, memberHunger, memberEnergy variables.<br>
+	 */
+	public String viewStatus() {
+		return "Status of Crew Member " + memberName + ":\nType: " + memberType + "\nHealth Level: " + memberHealth + "\nHunger Level: " + memberHunger + "\nTiredness Level: " + memberEnergy;
 	}
 	/**
 	 * This method is for checking that the CrewMember has actions left to use.
@@ -123,7 +191,7 @@ public class CrewMember {
 	public void heal(MedicalItem item) {
 		if (hasActions()) {
 			int health = memberHealth;
-			memberHealth = (health + item.getHealAmount()) % 100;
+			memberHealth = (health + item.getHealAmount()) % memberMaxHealth;
 			if(item.getCure()) {
 				hasPlague = false;
 			}
@@ -179,6 +247,25 @@ public class CrewMember {
 			secondPilot.setActions(secondPilot.getActions() - 1);
 		}else {
 			System.out.println("Not enough actoins!");
+		}
+	}
+	/**
+	 * This method is called at the start of each new day.<br>
+	 * It decreases the crew members energy and hunger level.<br>
+	 * If either memberHunger or memberEnergy are 0 then memberHealth will be decreased.<br>
+	 * It then checks if the crew members health is greater than 0, if it is not the crew member is removed from the crew as they have died.
+	 */
+	public void newDay() {
+		memberHunger = (memberHunger - dailyHungerUse) % 100;//Decrease CrewMember Hunger Level
+		memberEnergy = (memberEnergy - dailyEnergyUse) % 100;//Decrease CrewMember Energy Level
+		if(memberHunger == 0) {
+			memberHealth -= 30; //Decrease CrewMember health
+		}else if(memberEnergy == 0) {
+			memberHealth -= 30; //Decrease CrewMember health
+		}
+		if(memberHealth <= 0) {//Checking if the player still has health
+			Crew crew = GameEnvironment.getGameCrew(); //Getting crew
+			crew.removeCrewMember(this); //Removing the CrewMember from the crew.
 		}
 	}
 	

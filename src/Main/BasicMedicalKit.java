@@ -25,9 +25,4 @@ public class BasicMedicalKit extends MedicalItem{
 		super.purchase(new BasicMedicalKit());
 	}
 
-public static void main(String[] args) {
-	BasicMedicalKit test = new BasicMedicalKit();
-	System.out.println(test);
-	test.purchase();
-}
 }
