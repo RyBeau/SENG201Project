@@ -6,27 +6,28 @@ package Main;
  *
  */
 public class BasicMedicalKit extends MedicalItem{
-	private int price = 30;
-	private int healAmount = 25;
-	
-	public int getHealAmount() {
-		return healAmount;
+	/**
+	 * This is the constructor for BasicMedicalKit item.<br>
+	 * It passes the set healing amount of the item and the price of the item.<br>
+	 * The BasicMedicalKit does not cure the plague.
+	 */
+	public BasicMedicalKit(){
+		super(35, false, 100);
 	}
-	
-	public int getPrice() {
-		return price;
-	}
-	
-	public void purchase() {
-		
-	}
-	
+	/**
+	 * @return A string detailing the item, its price, heal amount and its function.
+	 */
 	public String toString() {
-		return "The Basic Medical Kit restores 25 health.";
+		return "The Basic Medical Kit restores" + super.getHealAmount() + " health. It costs $" + super.getPrice() + " from the outpost.";
 		}
-	
+
+	public void purchase() {
+		super.purchase(new BasicMedicalKit());
+	}
+
 public static void main(String[] args) {
 	BasicMedicalKit test = new BasicMedicalKit();
 	System.out.println(test);
+	test.purchase();
 }
 }

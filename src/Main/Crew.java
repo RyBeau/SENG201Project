@@ -72,7 +72,41 @@ public class Crew {
 	 * This method adds a given medical item to the crewMedicalItems ArrayList.
 	 * @param item A MedicalItem
 	 */
-	public void addToInventory(MedicalItem item) {
+	public void addToMedicalItems(MedicalItem item) {
 		crewMedicalItems.add(item);
+	}
+	/**
+	 * This method removes a given MedicalItem from the crewMedicalItems ArrayList.
+	 * @param item The MedicalItem to be removed.
+	 */
+	public void removeFromMedicalItems(MedicalItem item) {
+		crewMedicalItems.remove(item);
+	}
+	/**
+	 * This method adds a given food item to the crewFoodItems ArrayList.
+	 * @param food The FoodItem to be added.
+	 */
+	public void addToFoodItems(FoodItem food) {
+		crewFoodItems.add(food);
+	}
+	/**
+	 * This method removes a given food item from the crewFoodItems ArrayList.
+	 * @param food The FoodItem to be removed.
+	 */
+	public void removeFromFoodItems(FoodItem food) {
+		crewFoodItems.remove(food);
+	}
+	/**
+	 * @return The int crewMoney variable;
+	 */
+	public int getMoney() {
+		return crewMoney;
+	}
+	/**
+	 * This method sets the crewMoney variable to the given integer amount.
+	 * @param money The integer amount for money to be set to.
+	 */
+	public void setMoney(int money) {
+		crewMoney = money;
 	}
 }

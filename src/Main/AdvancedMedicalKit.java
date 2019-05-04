@@ -7,38 +7,23 @@ package Main;
  */
 public class AdvancedMedicalKit extends MedicalItem{
 	/**
-	 * Price of the AdvancedMedicalKit
+	 * This is the constructor for AdvancedMedicalKit item.<br>
+	 * It passes the set healing amount of the item, if the item cure the plague and the price of the item.<br>
+	 * The AdvancedMedicalKit does not cure the plague.
 	 */
-	private int price = 100;
-	/**
-	 * The amount the AdvancedMedicalKit heals.
-	 */
-	private int healAmount = 100;
-	
-	/**
-	 * @return The int variable healAmount.
-	 */
-	public int getHealAmount() {
-		return healAmount;
+	public AdvancedMedicalKit() {
+		super(100, false, 500);
 	}
 	/**
-	 * @return The int variable price.
+	 * @return A string detailing the item, its price, heal amount and its function.
 	 */
-	public int getPrice() {
-		return price;
-	}
-
-	public void purchase() {
-		
-	}
-	
 	public String toString() {
-		return "The Advanced Medical Kit restores 100 health.";
+		return "The Advanced Medical Kit restores" + super.getHealAmount() + " health. It costs $" + super.getPrice() + " from the outpost.";
+	}
+	
+	public void purchase() {
+		super.purchase(new AdvancedMedicalKit());
 	}
 
-	
-	public static void main(String[] args) {
-		AdvancedMedicalKit test = new AdvancedMedicalKit();
-		System.out.println(test);
-	}
+
 }

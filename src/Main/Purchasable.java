@@ -11,7 +11,8 @@ public interface Purchasable {
 	 * The crewMoney variable should be checked if it is greater than the price of the item.<br>
 	 * crewMoney should then be decreased by the price and then the item added to its respective list in Crew.
 	 */
-	void purchase();
+	void purchase(MedicalItem item);
+	void purchase(FoodItem item);
 	/**
 	 * @return General Information about the item, price, healAmount etc.
 	 */
