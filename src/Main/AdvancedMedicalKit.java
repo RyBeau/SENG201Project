@@ -24,6 +24,4 @@ public class AdvancedMedicalKit extends MedicalItem{
 	public void purchase() {
 		super.purchase(new AdvancedMedicalKit());
 	}
-
-
 }
