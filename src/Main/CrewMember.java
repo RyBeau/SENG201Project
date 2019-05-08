@@ -24,7 +24,7 @@ public class CrewMember {
 	/**
 	 * The hunger level of a crew member.
 	 */
-	private int memberHunger = 100;
+	private int memberHunger = 0;
 	/**
 	 * The energy of a crew member.
 	 */
@@ -255,10 +255,10 @@ public class CrewMember {
 	 * If either memberHunger or memberEnergy are 0 then memberHealth will be decreased.<br>
 	 * It then checks if the crew members health is greater than 0, if it is not the crew member is removed from the crew as they have died.
 	 */
-	public void newDay() {
-		memberHunger = (memberHunger - dailyHungerUse) % 100;//Decrease CrewMember Hunger Level
+	public void nextDay() {
+		memberHunger = (memberHunger + dailyHungerUse) % 100;//Decrease CrewMember Hunger Level
 		memberEnergy = (memberEnergy - dailyEnergyUse) % 100;//Decrease CrewMember Energy Level
-		if(memberHunger == 0) {
+		if(memberHunger == 100) {
 			memberHealth -= 30; //Decrease CrewMember health
 		}else if(memberEnergy == 0) {
 			memberHealth -= 30; //Decrease CrewMember health
