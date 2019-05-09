@@ -174,7 +174,7 @@ public class CrewMember {
 	public void feed(FoodItem food) {
 		if(hasActions()) {
 			int hunger = memberHunger;
-			memberHunger = (hunger + food.getHungerAmount()) % 100;
+			memberHunger = (hunger + food.getFillUpAmount()) % 100;
 			memberActions -= 1;
 		//Add the remove from crew food items.
 		}else {

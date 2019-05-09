@@ -1,23 +1,23 @@
 package Main;
 /**
  * This class extends FoodItem.<br>
- * A Banana is an item used to decrease a crew members hunger within the game.
+ * SpaceSoup is an item used to decrease a crew members hunger within the game.
  * @author Daniel Porter
  * 
  */
-public class Banana extends FoodItem{
+public class SpaceSoup extends FoodItem{
 	/**
-	 * This is a constructor for a Banana item.<br>
+	 * This is a constructor for SpaceSoup item.<br>
 	 * It passes the amount of hunger that gets decreased and the cost of the item respectively.
 	 */
-	public Banana() {
-		super(25, 50);
+	public SpaceSoup() {
+		super(50, 100);
 	}
 	/**
 	 * @return A string detailing the items hunger depletion amount and cost.
 	 */
 	public String toString() {
-		return "A Banana lowers hunger by "+super.getFillUpAmount()
+		return "Space Soup lowers hunger by "+super.getFillUpAmount()
 		+". It costs $"+super.getItemPrice()+" from the outpost.";
 	}
 	public void purchase() {
