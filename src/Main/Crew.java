@@ -97,6 +97,13 @@ public class Crew {
 		crewFoodItems.remove(food);
 	}
 	/**
+	 * 
+	 * @return The list of the crew's food items (FoodItem Objects)
+	 */
+	public ArrayList<FoodItem> getFoodItems(){
+		return crewFoodItems;
+	}
+	/**
 	 * This method removes a given crew member from the crew.
 	 * @param member The member to be removed from the crew.
 	 */
