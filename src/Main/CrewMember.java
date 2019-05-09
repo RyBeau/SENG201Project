@@ -157,7 +157,7 @@ public class CrewMember {
 	 * Includes memberName, memberType, memberHealth, memberHunger, memberEnergy variables.<br>
 	 */
 	public String viewStatus() {
-		return "Status of Crew Member " + memberName + ":\nType: " + memberType + "\nHealth Level: " + memberHealth + "\nHunger Level: " + memberHunger + "\nTiredness Level: " + memberEnergy;
+		return "Status of Crew Member " + memberName + ":\nType: " + memberType + "\nHealth Level: " + memberHealth + "\nHunger Level: " + memberHunger + "\nEnergy Level: " + memberEnergy;
 	}
 	/**
 	 * This method is for checking that the CrewMember has actions left to use.

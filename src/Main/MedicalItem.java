@@ -15,7 +15,9 @@ public class MedicalItem extends PurchasableAdaptor{
 	 * The amount the MedicalItem heals.
 	 */
 	private int healAmount;
-	
+	/**
+	 * Whether the item cures the space plague.
+	 */
 	private boolean curesPlague = false;
 	/**
 	 * Constructor for the MedicalItem class.<br>
