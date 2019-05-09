@@ -38,6 +38,70 @@ public class GameEnvironment {
 	public static Crew getGameCrew() {
 		return gameCrew;
 	}
+	/**
+	 * Visits the outpost, and displays the items purchasable at the outpost.
+	 */
+	public void visitOutpost() {
+		
+	}
+	/**
+	 * This method calls the feed() method of the given CrewMember with the given FoodItem.
+	 * @param member The CrewMember that will be consuming the food.
+	 * @param food The FoodItem to be consumed.
+	 */
+	public void feed(CrewMember member, FoodItem food) {
+		member.feed(food);
+	}
+	/**
+	 * This method calls the heal() method of the given CrewMember with the given MedicalItem.
+	 * @param member The CrewMember that will be healing.
+	 * @param item The MedicalItem that will be consumed.
+	 */
+	public void heal(CrewMember member, MedicalItem item) {
+		member.heal(item);
+	}
+	/**
+	 * This method calls the sleep() method of the given CrewMember.<br>
+	 * This will increase their energy.
+	 * @param member The CrewMember that will be sleeping.
+	 */
+	public void sleep(CrewMember member) {
+		member.sleep();
+	}
+	/**
+	 * This method call the repairShip() method of the given CrewMember.<br>
+	 * This will increase the ship's shield level.
+	 * @param member The CrewMember that will be repairing the ship.
+	 */
+	public void repairShip(CrewMember member) {
+		member.repairShip(gameCrew.getCrewShip());
+	}
+	/**
+	 * This method calls the searchPlanet() method of the given CrewMember.
+	 * @param member The CrewMember that will be searching the planet.
+	 */
+	public void searchPlanet(CrewMember member) {
+		member.searchPlanet();
+	}
+	/**
+	 * This method calls the pilotShip() method of the primaryPilot.<br>
+	 * Both primaryPilot and secondaryPilot will have their actions decreased by this method.
+	 * @param primaryPilot The first CrewMember selected to pilot the ship. Their pilotShip() method is the one that is called.
+	 * @param secondaryPilot The second CrewMember selected to pilot the ship.
+	 */
+	public void pilotShip(CrewMember primaryPilot, CrewMember secondaryPilot) {
+		primaryPilot.pilotShip(secondaryPilot);
+	}
+	/**
+	 * The nextDay method moves the game onto the next day.<br>
+	 * It calls all the required nextDay methods of the CrewMembers to decrease their energy and hungerLevel.
+	 */
+	public void nextDay() {
+		ArrayList<CrewMember> crewList = gameCrew.getCrewList();
+		for(CrewMember member: crewList) {
+			member.nextDay();
+		}
+	}
 	
 	public static void main(String[] args) {
 		Scanner reader = new Scanner(System.in);

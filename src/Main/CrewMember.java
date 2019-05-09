@@ -24,7 +24,7 @@ public class CrewMember {
 	/**
 	 * The hunger level of a crew member.
 	 */
-	private int memberHunger = 100;
+	private int memberHunger = 0;
 	/**
 	 * The energy of a crew member.
 	 */
@@ -157,7 +157,7 @@ public class CrewMember {
 	 * Includes memberName, memberType, memberHealth, memberHunger, memberEnergy variables.<br>
 	 */
 	public String viewStatus() {
-		return "Status of Crew Member " + memberName + ":\nType: " + memberType + "\nHealth Level: " + memberHealth + "\nHunger Level: " + memberHunger + "\nTiredness Level: " + memberEnergy;
+		return "Status of Crew Member " + memberName + ":\nType: " + memberType + "\nHealth Level: " + memberHealth + "\nHunger Level: " + memberHunger + "\nEnergy Level: " + memberEnergy;
 	}
 	/**
 	 * This method is for checking that the CrewMember has actions left to use.
@@ -174,7 +174,7 @@ public class CrewMember {
 	public void feed(FoodItem food) {
 		if(hasActions()) {
 			int hunger = memberHunger;
-			memberHunger = (hunger + food.getHungerAmount()) % 100;
+			memberHunger = (hunger + food.getFillUpAmount()) % 100;
 			memberActions -= 1;
 		//Add the remove from crew food items.
 		}else {
@@ -255,10 +255,10 @@ public class CrewMember {
 	 * If either memberHunger or memberEnergy are 0 then memberHealth will be decreased.<br>
 	 * It then checks if the crew members health is greater than 0, if it is not the crew member is removed from the crew as they have died.
 	 */
-	public void newDay() {
-		memberHunger = (memberHunger - dailyHungerUse) % 100;//Decrease CrewMember Hunger Level
+	public void nextDay() {
+		memberHunger = (memberHunger + dailyHungerUse) % 100;//Decrease CrewMember Hunger Level
 		memberEnergy = (memberEnergy - dailyEnergyUse) % 100;//Decrease CrewMember Energy Level
-		if(memberHunger == 0) {
+		if(memberHunger == 100) {
 			memberHealth -= 30; //Decrease CrewMember health
 		}else if(memberEnergy == 0) {
 			memberHealth -= 30; //Decrease CrewMember health

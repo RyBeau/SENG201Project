@@ -10,11 +10,22 @@ public class Outpost {
 	
 	private ArrayList<FoodItem> foodItemList;
 	
-	private ArrayList<MedicalItem> medItemList;
+	private ArrayList<MedicalItem> medicalItemList;
 	
 	public Outpost() {
-		foodItemList = new ArrayList<FoodItem>(new Apple(), new Banana(), new HighCalorieBar(), new SpaceSoup(), new BeefSteak(), new MRE());
-		medItemList = new ArrayList<MedicalItem>(new BasicMedicalKit(), new AdvancedMedicalKit(), new PlagueCure());
+		//Initialising foodItemList with one of each MedicalItem.
+		foodItemList = new ArrayList<FoodItem>();
+		foodItemList.add(new Apple());
+		foodItemList.add(new Banana());
+		foodItemList.add(new HighCalorieBar());
+		foodItemList.add(new SpaceSoup());
+		foodItemList.add(new BeefSteak());
+		foodItemList.add(new MRE());
 		
+		//Intialising medicalItemList with one of each MedicalItem.
+		medicalItemList = new ArrayList<MedicalItem>();
+		medicalItemList.add(new BasicMedicalKit());
+		medicalItemList.add(new AdvancedMedicalKit());
+		medicalItemList.add(new PlagueCure());
 	}
 }
