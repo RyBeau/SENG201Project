@@ -1,4 +1,5 @@
 package Main;
+import GUI.Alert;
 /**
  * This is the parent class for each of the different types of crew members within the game.<br>
  * Each of type of crew member extends this class.<br>
@@ -178,7 +179,7 @@ public class CrewMember {
 			memberActions -= 1;
 		//Add the remove from crew food items.
 		}else {
-			System.out.println("No actions left for this crew member!");
+			sendAlert("No actions left for this crew member!");
 		}
 	}
 	/**
@@ -198,7 +199,7 @@ public class CrewMember {
 			memberActions -= 1;
 			//add remove from medicalitems
 		}else {
-			System.out.println("No actions left for this crew member!");
+			sendAlert("No actions left for this crew member!");
 		}
 	}
 	/**
@@ -211,7 +212,7 @@ public class CrewMember {
 			memberEnergy = (energy + 25) % 100;
 			memberActions -= 1;
 		}else {
-			System.out.println("No actions left for this crew member!");
+			sendAlert("No actions left for this crew member!");
 		}
 	}
 	/**
@@ -223,7 +224,7 @@ public class CrewMember {
 			//Daniel implement first.
 			memberActions -= 1;
 		}else {
-			System.out.println("No actions left for this crew member!");
+			sendAlert("No actions left for this crew member!");
 		}
 	}
 	/**
@@ -233,7 +234,7 @@ public class CrewMember {
 		if(hasActions()) {
 			//to be done
 		}else {
-			System.out.println("No actions left for this crew member!");
+			sendAlert("No actions left for this crew member!");
 		}
 	}
 	/**
@@ -246,7 +247,7 @@ public class CrewMember {
 			memberActions -= 1;
 			secondPilot.setActions(secondPilot.getActions() - 1);
 		}else {
-			System.out.println("Not enough actoins!");
+			sendAlert("Not enough actoins!");
 		}
 	}
 	/**
@@ -267,6 +268,14 @@ public class CrewMember {
 			Crew crew = GameEnvironment.getGameCrew(); //Getting crew
 			crew.removeCrewMember(this); //Removing the CrewMember from the crew.
 		}
+	}
+	
+	/**
+	 * Sends an alert to the player with the give alert text.
+	 * @param text The alert text to be displayed.
+	 */
+	public void sendAlert(String text) {
+		Alert alert = new Alert(text);
 	}
 	
 }

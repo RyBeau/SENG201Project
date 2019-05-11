@@ -34,7 +34,7 @@ public class Medic extends CrewMember{
 				super.setPlague(false);
 			}
 		}else {
-			System.out.println("No actions left for this crew member!");
+			super.sendAlert("No actions left for this crew member!");
 		}
 	}
 	/**
