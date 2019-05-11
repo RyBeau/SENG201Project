@@ -1,12 +1,10 @@
 package GUI;
 
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JSlider;
 import javax.swing.JLabel;
 import java.awt.Font;
-import java.awt.Dialog.ModalityType;
 
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -15,7 +13,6 @@ import javax.swing.border.EtchedBorder;
 import Main.GameEnvironment;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 
 public class GameSetup {

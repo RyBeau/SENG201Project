@@ -1,7 +1,5 @@
 package GUI;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -62,11 +60,12 @@ public class StartWindow {
 		btnExit.setBounds(155, 307, 120, 40);
 		startScreen.getContentPane().add(btnExit);
 		
-		JLabel image= new JLabel("");
-		image.setHorizontalAlignment(SwingConstants.CENTER);
-		image.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/images/RocketShip.png")).getImage().getScaledInstance(150, 150, 150)));
-		image.setBounds(114, 0, 220, 220);
-		startScreen.getContentPane().add(image);
+		//Causing NullPointerException
+		//JLabel image= new JLabel("");
+		//image.setHorizontalAlignment(SwingConstants.CENTER);
+		//image.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/images/RocketShip.png")).getImage().getScaledInstance(150, 150, 150)));
+		//image.setBounds(114, 0, 220, 220);
+		//startScreen.getContentPane().add(image);
 	}
 	/**
 	 * Closes startScreen.
