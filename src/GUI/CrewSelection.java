@@ -61,7 +61,7 @@ public class CrewSelection {
 		lblCrewName.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		lblCrewName.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCrewName.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblCrewName.setBounds(10, 11, 394, 29);
+		lblCrewName.setBounds(18, 12, 394, 29);
 		selectionWindow.getContentPane().add(lblCrewName);
 		setupCrewSelection();
 	}
@@ -69,14 +69,14 @@ public class CrewSelection {
 	public void setupCrewSelection() {
 		JPanel autoPanel = new JPanel();
 		autoPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		autoPanel.setBounds(10, 51, 394, numCrew * 50);
+		autoPanel.setBounds(18, 51, 394, numCrew * 50);
 		selectionWindow.getContentPane().add(autoPanel);
 		autoPanel.setLayout(new GridLayout(numCrew, 3, 20, 20));
 		
 		btnStartGame = new JButton("Start Game");
 		btnStartGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(textFieldList.stream().allMatch(x -> !x.getText().isBlank())) {
+				if(textFieldList.stream().allMatch(x -> x.getText().trim().length() > 0)) {
 					crewSelected();
 				}else {
 					Alert alert = new Alert("All Crew Members require a name!");

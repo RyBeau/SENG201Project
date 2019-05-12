@@ -2,10 +2,14 @@ package GUI;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.UIManager;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 public class Alert extends JDialog implements ActionListener{
 	/**
@@ -20,11 +24,16 @@ public class Alert extends JDialog implements ActionListener{
 		
 		getContentPane().setLayout(null);
 		{
-			JLabel lblAlertText = new JLabel(text);
-			lblAlertText.setVerticalAlignment(SwingConstants.TOP);
-			lblAlertText.setHorizontalAlignment(SwingConstants.CENTER);
-			lblAlertText.setBounds(45, 11, 228, 108);
-			getContentPane().add(lblAlertText);
+			JTextPane tpAlertText = new JTextPane();
+			tpAlertText.setEditable(false);
+			tpAlertText.setText(text);
+			tpAlertText.setBackground(UIManager.getColor("InternalFrame.borderColor"));			
+			StyledDocument doc = tpAlertText.getStyledDocument();
+			SimpleAttributeSet center = new SimpleAttributeSet();
+			StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+			doc.setParagraphAttributes(0, doc.getLength(), center, false);
+			tpAlertText.setBounds(45, 11, 228, 108);
+			getContentPane().add(tpAlertText);
 		}
 		
 		JButton btnOK = new JButton("OK");

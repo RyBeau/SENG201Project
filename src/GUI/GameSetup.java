@@ -118,7 +118,7 @@ public class GameSetup {
 		JButton btnNext = new JButton("Next");
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(crewName.getText().isBlank()) { //Checking that a name for the crew has been entered.
+				if(crewName.getText().trim().length() <= 0) { //Checking that a name for the crew has been entered.
 					Alert alert = new Alert("Crew Needs a Name!");//Sending alert to inform player of the problem.
 				}else {
 					continueSetup();
