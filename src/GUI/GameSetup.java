@@ -1,6 +1,4 @@
 package GUI;
-
-
 import javax.swing.JFrame;
 import javax.swing.JSlider;
 import javax.swing.JLabel;
@@ -14,17 +12,33 @@ import Main.GameEnvironment;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
+/**
+ * This is the first setup screen that appears after start game is selected from StartWindow.<br>
+ * This screen is used to received the number of days, number of Crew Members and name of the Crew from the player<br>
+ * @author Ryan Beaumont
+ */
 public class GameSetup {
-
+	/**
+	 * The JFrame containing all the GUI elements
+	 */
 	private JFrame setupScreen;
+	/**
+	 * The JSlider for selecting the number of crew members.
+	 */
 	private JSlider numCrew;
+	/**
+	 * The JSlider for selecting the number of days for the game to last.
+	 */
 	private JSlider numDays;
+	/**
+	 * The JTextField for entering name of the crew.
+	 */
 	private JTextField crewName;
 	private GameEnvironment environment;
 
 	/**
 	 * Create the application.
+	 * @param IncomingEnvironment This is the game environment that has called GameSetup(). Used to pass control back the GameEnvironment.
 	 */
 	public GameSetup(GameEnvironment IncomingEnvironment) {
 		environment = IncomingEnvironment;
@@ -46,19 +60,19 @@ public class GameSetup {
 		
 		JPanel titleBorder = new JPanel();
 		titleBorder.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		titleBorder.setBounds(10, 11, 574, 55);
+		titleBorder.setBounds(10, 11, 561, 55);
 		setupScreen.getContentPane().add(titleBorder);
 		titleBorder.setLayout(null);
 		
 		JLabel lblGameSetup = new JLabel("Game Setup");
-		lblGameSetup.setBounds(0, 0, 574, 55);
+		lblGameSetup.setBounds(0, 0, 572, 55);
 		titleBorder.add(lblGameSetup);
 		lblGameSetup.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGameSetup.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		mainPanel.setBounds(10, 73, 574, 232);
+		mainPanel.setBounds(10, 78, 561, 232);
 		setupScreen.getContentPane().add(mainPanel);
 		mainPanel.setLayout(null);
 		

@@ -13,7 +13,7 @@ public class GameEnvironment {
 	/**
 	 * This is the Crew of the game session.
 	 */
-	private static Crew gameCrew;
+	private Crew gameCrew;
 	/**
 	 * This is the number of days for the game to last.
 	 */
@@ -23,10 +23,12 @@ public class GameEnvironment {
 	 */
 	private Planet gamePlanet = new Planet();
 	/**
+	 * This the number of transporter parts that the player needs to collect.
+	 */
+	private int partsToCollect;
+	/**
 	 * This is the constructor for this class.<br>
-	 * Its sets the intial values of the variables for the class.
-	 * @param crew The crew created by the player.
-	 * @param days The number of days the player has selected for the game to last.
+	 * Its sets the initial values of the variables for the class.
 	 */
 	public GameEnvironment() {
 		
@@ -34,7 +36,7 @@ public class GameEnvironment {
 	/**
 	 * @return The games Crew. (Object)
 	 */
-	public static Crew getGameCrew() {
+	public Crew getGameCrew() {
 		return gameCrew;
 	}
 	/**
@@ -49,7 +51,7 @@ public class GameEnvironment {
 	 * @param food The FoodItem to be consumed.
 	 */
 	public void feed(CrewMember member, FoodItem food) {
-		member.feed(food);
+		member.feed(food, gameCrew);
 	}
 	/**
 	 * This method calls the heal() method of the given CrewMember with the given MedicalItem.
@@ -57,7 +59,7 @@ public class GameEnvironment {
 	 * @param item The MedicalItem that will be consumed.
 	 */
 	public void heal(CrewMember member, MedicalItem item) {
-		member.heal(item);
+		member.heal(item, gameCrew);
 	}
 	/**
 	 * This method calls the sleep() method of the given CrewMember.<br>
@@ -89,7 +91,7 @@ public class GameEnvironment {
 	 * @param secondaryPilot The second CrewMember selected to pilot the ship.
 	 */
 	public void pilotShip(CrewMember primaryPilot, CrewMember secondaryPilot) {
-		primaryPilot.pilotShip(secondaryPilot);
+		primaryPilot.pilotShip(secondaryPilot, gamePlanet);
 	}
 	/**
 	 * The nextDay method moves the game onto the next day.<br>
@@ -98,7 +100,7 @@ public class GameEnvironment {
 	public void nextDay() {
 		ArrayList<CrewMember> crewList = gameCrew.getCrewList();
 		for(CrewMember member: crewList) {
-			member.nextDay();
+			member.nextDay(this);
 		}
 	}
 	/**
@@ -167,13 +169,22 @@ public class GameEnvironment {
 		launchSetupScreen();
 	}
 	
+	/**
+	 * This method is called by the CrewSelection class after the names and CrewMember types have been selected by the player.<br>
+	 * It loops through the lists as the name and type are in the same index in each list.<br>
+	 * The switch statement is used to call the correct CrewMember type constructor.
+	 * @param selectionScreen The CrewSelection Object that needs to be closed.
+	 * @param crewName The name of the Crew given by the player.
+	 * @param nameList The list of names for each Crew Member.
+	 * @param typeList The list of Crew Member types for each crew member.
+	 */
 	public void createCrew(CrewSelection selectionScreen, String crewName,ArrayList<String> nameList, ArrayList<String> typeList) {
-		selectionScreen.closeWindow();
-		ArrayList<CrewMember> crewList = new ArrayList<CrewMember>();
-		CrewMember member = null;
-		for(int i = 0; i < nameList.size(); i++) {
+		selectionScreen.closeWindow(); //Closing the CrewSelection object.
+		ArrayList<CrewMember> crewList = new ArrayList<CrewMember>(); //Initialising the list of CrewMembers.
+		CrewMember member = null; //Temp variable initialised to null to prevent error.
+		for(int i = 0; i < nameList.size(); i++) { //Loops through length of lists
 			String type = typeList.get(i);
-			switch(type){
+			switch(type){//Uses switch statement to create each CrewMember using the selected type and name.
 			case "Medic":
 				member = new Medic(nameList.get(i)); break;
 			case "Mechanic":
@@ -189,12 +200,22 @@ public class GameEnvironment {
 			}
 			crewList.add(member);
 		}
-		gameCrew = new Crew(crewName, crewList);
-		setupGame();
+		gameCrew = new Crew(crewName, crewList); //Creates the gameCrew.
+		setupGame(); //Calls final setup method.
 	}
-	
+	/**
+	 * Sets the number of parts to be collected.<br>
+	 * The calls the main game loop.<br>
+	 */
 	public void setupGame() {
-		System.out.println(gameCrew);
+		partsToCollect = (gameDays * 2) / 3;
+		System.out.println(partsToCollect);
+	}
+	/**
+	 * The main loop for the game.
+	 */
+	public void gameLoop() {
+		
 	}
 	
 	public static void main(String[] args) {

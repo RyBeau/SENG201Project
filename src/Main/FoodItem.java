@@ -1,4 +1,7 @@
 package Main;
+
+import GUI.Alert;
+
 /**
  * This is the parent class for all food item types.<br>
  * A type of food item in game extends this class.<br>
@@ -41,11 +44,12 @@ public class FoodItem extends PurchasableAdaptor{
 	 * checked to ensure the crew has enough money to buy the item.<br>
 	 * @param item This is a new instance of the FoodItem.
 	 */
-	public void purchase(FoodItem item) {
-		Crew crew = GameEnvironment.getGameCrew();
+	public void purchase(FoodItem item, Crew crew) {
 		if(crew.getMoney() > itemPrice) {
 			crew.addToFoodItems(item);
 			crew.setMoney(crew.getMoney() - itemPrice);
+		}else {
+			new Alert("Not Enough Money!");
 		}
 	}
 }

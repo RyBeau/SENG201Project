@@ -1,5 +1,4 @@
 package GUI;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -9,7 +8,11 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
-
+/**
+ * This is the initial start screen. The player sees this to begin and is returned to it at the end of their game.
+ * @author Ryan Beaumont
+ *
+ */
 public class StartWindow {
 
 	private JFrame startScreen;
