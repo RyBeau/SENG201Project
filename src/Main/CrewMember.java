@@ -1,5 +1,6 @@
 package Main;
 import GUI.Alert;
+import java.util.Random;
 /**
  * This is the parent class for each of the different types of crew members within the game.<br>
  * Each of type of crew member extends this class.<br>
@@ -46,6 +47,10 @@ public class CrewMember {
 	 * This is the amount that a crew members hunger lowers each day.
 	 */
 	private int dailyHungerUse = 40;
+	/**
+	 * This is the random number generator used when searchPlanet() is called.
+	 */
+	private Random RNG = new Random();
 	
 	/**
 	 * The default builder for the class.
@@ -92,6 +97,13 @@ public class CrewMember {
 		memberName = name;
 		memberType = type;
 		dailyEnergyUse = energyUse;
+	}
+	/**
+	 * The getter for memberName.
+	 * @return The memberName String.
+	 */
+	public String getName() {
+		return memberName;
 	}
 	/**
 	 * @return The int variable memberHealth.
@@ -228,15 +240,88 @@ public class CrewMember {
 		}
 	}
 	/**
-	 * 
+	 * This is the searchPlanet method for CrewMember.<br>
+	 * It uses Random to pick a random integer between 0-100<br>
+	 * 0-35: Transporter Part if there is one on the planet still.<br>
+	 * 36-75: A random MedicalItem or FoodItem. foundItem() called.<br>
+	 * 76-100: A random amount of money between 1-500 is found. 
 	 */
-	public void searchPlanet() {
+	public void searchPlanet(Crew crew, Planet planet) {
 		if(hasActions()) {
-			//to be done
+			String alertMessage = "Whilst Searching the planet" + this.memberName + " found: ";
+			int roll = RNG.nextInt(100);
+			if(roll <= 35) {//need check planet parts
+				crew.setPartsFound(crew.getPartsFound() + 1);
+				//Set transporter parts
+				alertMessage += "1 Transporter Part";
+			}else if(roll <= 75) {
+				alertMessage += foundItem(crew);
+			}else {
+				int moneyFound = RNG.nextInt(450) + 50;//50 added as the integer can be 450 is the biggest value as 50 will be added.
+				crew.setMoney(crew.getMoney() + moneyFound);
+				alertMessage += "$" + moneyFound;
+			}
+			sendAlert(alertMessage);
 		}else {
 			sendAlert("No actions left for this crew member!");
 		}
 	}
+
+/**
+ * Helper function for searchPlanet.<br>
+ * It decides what MedicalItem or FoodItem you have found<br>
+ * This function was created due to the size of the switch statement to keep the code readable.	
+ * @param crew The Crew so that the item can be added to Medical/Food items.
+ * @return The message string for the alert box.
+ */
+	public String foundItem(Crew crew) {
+		int itemFound = RNG.nextInt(8);
+		String message = "";
+		switch(itemFound) {
+		case 0:
+			crew.addToMedicalItems(new BasicMedicalKit());
+			message += "A Basic Medical Kit";
+			break;
+		case 1:
+			crew.addToMedicalItems(new AdvancedMedicalKit());
+			message += "An Advanced Medical Kit";
+			break;
+		case 2:
+			crew.addToMedicalItems(new PlagueCure());
+			message += "A Plague Cure";
+			break;
+		case 3:
+			crew.addToFoodItems(new Apple());
+			message += "An Apple";
+			break;
+		case 4:
+			crew.addToFoodItems(new Banana());
+			message += "A Banana";
+			break;
+			
+		case 5:
+			crew.addToFoodItems(new HighCalorieBar());
+			message += "A High Calorie Bar";
+			break;
+			
+		case 6:
+			crew.addToFoodItems(new SpaceSoup());
+			message += "Space Soup";
+			break;
+			
+		case 7:
+			crew.addToFoodItems(new BeefSteak());
+			message += "A Beef Steak";
+			break;
+			
+		case 8:
+			crew.addToFoodItems(new MRE());
+			message += "An MRE";
+			break;
+		}
+		return message;
+	}
+	
 	/**
 	 * 
 	 * @param secondPilot The second CrewMember Piloting the ship.

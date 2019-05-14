@@ -31,7 +31,10 @@ public class Crew {
 	 * The amount of money that the crew has for spending at the outpost.
 	 */
 	private int crewMoney = 1000;
-	
+	/**
+	 * The current number of parts found by the crew.
+	 */
+	private int partsFound = 0;
 	
 	/**
 	 * Initialises the crew.
@@ -122,5 +125,18 @@ public class Crew {
 	 */
 	public void setMoney(int money) {
 		crewMoney = money;
+	}
+	/**
+	 * The getter method for partsFound.
+	 * @return
+	 */
+	public int getPartsFound() {
+		return partsFound;
+	}
+	/**
+	 * The setter method for partsFound.
+	 */
+	public void setPartsFound(int parts) {
+		partsFound = parts;
 	}
 }

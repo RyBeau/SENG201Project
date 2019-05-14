@@ -82,7 +82,7 @@ public class GameEnvironment {
 	 * @param member The CrewMember that will be searching the planet.
 	 */
 	public void searchPlanet(CrewMember member) {
-		member.searchPlanet();
+		member.searchPlanet(gameCrew, gamePlanet);
 	}
 	/**
 	 * This method calls the pilotShip() method of the primaryPilot.<br>
