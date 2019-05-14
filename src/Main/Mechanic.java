@@ -16,7 +16,12 @@ public class Mechanic extends CrewMember{
 	}
 	
 	public void repairShip(Ship ship) {
-		//Wait for Daniel to implement ship.
+		if(hasActions()) {
+			ship.setShieldLevel((ship.getShieldLevel() + 60) % 100);
+			super.setActions(super.getActions() - 1);
+		}else {
+			sendAlert("No actions left for this crew member!");
+		}
 	}
 	/**
 	 * The toString method for CrewMember subclasses provides a short description of the crew member type.

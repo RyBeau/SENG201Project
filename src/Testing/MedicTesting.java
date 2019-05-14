@@ -5,14 +5,27 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import Main.*;
-
+/**
+ * JUnit testing for the Medic Class.
+ * @author Ryan Beaumont
+ *
+ */
 class MedicTesting {
 
 	private Medic testMedic;
+	private Crew testCrew;
+	
 	
 	@BeforeEach
 	void testSetup() {
 		testMedic = new Medic("Test Medic");
+		ArrayList<CrewMember> crewList = new ArrayList<CrewMember>();
+		crewList.add(testMedic);
+		testCrew = new Crew("Test Crew", crewList);
+		
+		testCrew.addToMedicalItems(new AdvancedMedicalKit());
+		testCrew.addToMedicalItems(new BasicMedicalKit());
+		testCrew.addToMedicalItems(new PlagueCure());
 	}
 	
 	/**
@@ -35,15 +48,11 @@ class MedicTesting {
 	@Test
 	void healTest(){
 		testMedic.setActions(3); //Increase total actions so that the test can run without error from not enough actions.
-		ArrayList<MedicalItem> testList = new ArrayList<MedicalItem>();
-		testList.add(new AdvancedMedicalKit());
-		testList.add(new BasicMedicalKit());
-		testList.add(new PlagueCure());
-		
-		for(MedicalItem item: testList) {
+		ArrayList<MedicalItem> itemList = new ArrayList<MedicalItem>(testCrew.getMedicalItems());//Creating a seperate instance of the list of medical items.
+		for(MedicalItem item: itemList) {
 			testMedic.setHealth(-150); //Setting health to -150
 			testMedic.setPlague(true);
-			testMedic.heal(item);
+			testMedic.heal(item, testCrew);
 			assertEquals(testMedic.getHealth(), (-150 + (item.getHealAmount()) * 2) % 100); //Testing that double the heal amount is added to the testMedics health.
 			if(item.getCure()) {
 				assertFalse(testMedic.checkPlague()); //Tests that items that cure the space plague set hasPlague to false.
@@ -61,7 +70,21 @@ class MedicTesting {
 		testMedic.setActions(0);//Setting memberActions to 0
 		MedicalItem testItem = new PlagueCure();
 		testMedic.setPlague(true);//Setting hasPlague to true.
-		testMedic.heal(testItem); //Attempting to heal using testItem.
+		testMedic.heal(testItem, testCrew); //Attempting to heal using testItem.
 		assertTrue(testMedic.checkPlague());//Checking that the medic still has the plague as they should not be able to heal.
 	}
+	/**
+	 * Testing that the MedicalItem passed to heal() is removed from the crewMedicalItems ArrayList.
+	 */
+	@Test
+	void removeTest() {
+		testMedic.setActions(3);
+		ArrayList<MedicalItem> itemList = new ArrayList<MedicalItem>(testCrew.getMedicalItems());
+		for(MedicalItem item: itemList) {
+			testMedic.heal(item, testCrew);
+			assertFalse(testCrew.getMedicalItems().contains(item));//Checking that the item has been removed from the crewMedicalItems ArrayList.
+		}
+	}
+	
+	
 }
