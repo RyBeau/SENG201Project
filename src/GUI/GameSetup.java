@@ -60,7 +60,7 @@ public class GameSetup {
 		
 		JPanel titleBorder = new JPanel();
 		titleBorder.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		titleBorder.setBounds(10, 11, 561, 55);
+		titleBorder.setBounds(18, 11, 561, 55);
 		setupScreen.getContentPane().add(titleBorder);
 		titleBorder.setLayout(null);
 		
@@ -72,7 +72,7 @@ public class GameSetup {
 		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		mainPanel.setBounds(10, 78, 561, 232);
+		mainPanel.setBounds(18, 78, 561, 232);
 		setupScreen.getContentPane().add(mainPanel);
 		mainPanel.setLayout(null);
 		
@@ -106,12 +106,12 @@ public class GameSetup {
 		crewName.setColumns(10);
 		
 		JLabel lblNumberOfDays = new JLabel("Number of Days");
-		lblNumberOfDays.setBounds(80, 11, 110, 50);
+		lblNumberOfDays.setBounds(80, 11, 125, 50);
 		mainPanel.add(lblNumberOfDays);
 		lblNumberOfDays.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		JLabel lblNumberOfCrew = new JLabel("Number of Crew");
-		lblNumberOfCrew.setBounds(80, 84, 110, 50);
+		lblNumberOfCrew.setBounds(80, 84, 125, 50);
 		mainPanel.add(lblNumberOfCrew);
 		lblNumberOfCrew.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
