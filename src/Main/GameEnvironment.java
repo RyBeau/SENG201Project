@@ -100,7 +100,7 @@ public class GameEnvironment {
 	public void nextDay() {
 		ArrayList<CrewMember> crewList = gameCrew.getCrewList();
 		for(CrewMember member: crewList) {
-			member.nextDay(this);
+			member.nextDay(gameCrew);
 		}
 	}
 	/**

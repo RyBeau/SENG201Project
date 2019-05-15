@@ -12,7 +12,7 @@ public class AdvancedMedicalKit extends MedicalItem{
 	 * The AdvancedMedicalKit does not cure the plague.
 	 */
 	public AdvancedMedicalKit() {
-		super(100, false, 500);
+		super(50, false, 500);
 	}
 	/**
 	 * @return A string detailing the item, its price, heal amount and its function.

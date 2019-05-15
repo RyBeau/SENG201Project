@@ -25,9 +25,11 @@ public class Medic extends CrewMember{
 	 */
 	public void heal(MedicalItem item, Crew crew) {
 		if (hasActions()) {
-			int healAmount = item.getHealAmount(); //Getting the healing amount.
-			healAmount += item.getHealAmount(); //Doubling the healAmount of the selected item.
-			super.setHealth((super.getHealth() + healAmount) % 100);
+			int health = 2 * (item.getHealAmount()) + super.getHealth();
+			if(health > 100) {
+				health = 100;
+			}
+			super.setHealth(health);
 			super.setActions(super.getActions() - 1);
 			crew.removeFromMedicalItems(item);
 			if(item.getCure()) {

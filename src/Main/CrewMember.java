@@ -126,6 +126,13 @@ public class CrewMember {
 		memberHunger = hunger;
 	}
 	/**
+	 * This is the getter for memberHunger.
+	 * @return The int memberHunger.
+	 */
+	public int getHunger() {
+		return memberHunger;
+	}
+	/**
 	 * Sets the memberEnergy variable to a given amount.
 	 * @param energy The value to set memberEnergy to.
 	 */
@@ -180,14 +187,23 @@ public class CrewMember {
 		return memberActions > 0;
 	}
 	/**
+	 * The getter for memberEnergy.
+	 * @return The int memberEnergy
+	 */
+	public int getEnergy() {
+		return memberEnergy;
+	}
+	/**
 	 * If the CrewMember has actions left, this method increases the players hunger level by consuming an item of food.<br>
 	 * This is an action so it decreases memberActions by one.
 	 * @param food The food item selected by the player for the crew member to consume.
 	 */
 	public void feed(FoodItem food, Crew crew) {
 		if(hasActions()) {
-			int hunger = memberHunger;
-			memberHunger = (hunger + food.getFillUpAmount()) % 100;
+			memberHunger -= food.getFillUpAmount();
+			if(memberHunger < 0) {
+				memberHunger = 0;
+			}
 			memberActions -= 1;
 			crew.removeFromFoodItems(food);
 		}else {
@@ -203,8 +219,10 @@ public class CrewMember {
 	 */
 	public void heal(MedicalItem item, Crew crew) {
 		if (hasActions()) {
-			int health = memberHealth;
-			memberHealth = (health + item.getHealAmount()) % memberMaxHealth;
+			memberHealth += item.getHealAmount();
+			if(memberHealth > memberMaxHealth) {
+				memberHealth = memberMaxHealth;
+			}
 			if(item.getCure()) {
 				hasPlague = false;
 			}
@@ -220,8 +238,10 @@ public class CrewMember {
 	 */
 	public void sleep() {
 		if(hasActions()) {
-			int energy = memberEnergy;
-			memberEnergy = (energy + 40) % 100;
+			memberEnergy += 40;
+			if(memberEnergy > 100) {
+				memberEnergy = 100;
+			}
 			memberActions -= 1;
 		}else {
 			sendAlert("No actions left for this crew member!");
@@ -233,7 +253,11 @@ public class CrewMember {
 	 */
 	public void repairShip(Ship ship) {
 		if(hasActions()) {
-			ship.setShieldLevel((ship.getShieldLevel() + 30) % 100);
+			int newShieldLevel = ship.getShieldLevel() + 30;
+			if(newShieldLevel > 100) {
+				newShieldLevel = 100;
+			}
+			ship.setShieldLevel(newShieldLevel);
 			memberActions -= 1;
 		}else {
 			sendAlert("No actions left for this crew member!");
@@ -333,7 +357,7 @@ public class CrewMember {
 			secondPilot.setActions(secondPilot.getActions() - 1);
 			sendAlert("You have travelled to a new planet. There is 1 transporter part to collect here.");
 		}else {
-			sendAlert("Not enough actoins!");
+			sendAlert("Not enough actions!");
 		}
 	}
 	/**
@@ -342,17 +366,19 @@ public class CrewMember {
 	 * If either memberHunger or memberEnergy are 0 then memberHealth will be decreased.<br>
 	 * It then checks if the crew members health is greater than 0, if it is not the crew member is removed from the crew as they have died.
 	 */
-	public void nextDay(GameEnvironment environment) {
-		memberHunger = (memberHunger + dailyHungerUse) % 100;//Decrease CrewMember Hunger Level
-		memberEnergy = (memberEnergy - dailyEnergyUse) % 100;//Decrease CrewMember Energy Level
-		if(memberHunger == 100) {
+	public void nextDay(Crew crew) {
+		memberHunger += dailyHungerUse;//Decrease CrewMember Hunger Level
+		memberEnergy += dailyEnergyUse;//Decrease CrewMember Energy Level
+		if(memberHunger >= 100) {
+			memberHunger = 100;
 			memberHealth -= 30; //Decrease CrewMember health
-		}else if(memberEnergy == 0) {
+		}else if(memberEnergy <= 0) {
+			memberEnergy = 0;
 			memberHealth -= 30; //Decrease CrewMember health
 		}
 		if(memberHealth <= 0) {//Checking if the player still has health
-			Crew crew = environment.getGameCrew(); //Getting crew
 			crew.removeCrewMember(this); //Removing the CrewMember from the crew.
+			sendAlert("Crew Member " + memberName + " has died!");
 		}
 	}
 	

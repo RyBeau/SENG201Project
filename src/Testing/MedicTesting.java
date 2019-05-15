@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import Main.*;
 /**
  * JUnit testing for the Medic Class.
+ * Tests the Constructor, and overridden methods.
  * @author Ryan Beaumont
  *
  */
@@ -50,15 +51,27 @@ class MedicTesting {
 		testMedic.setActions(3); //Increase total actions so that the test can run without error from not enough actions.
 		ArrayList<MedicalItem> itemList = new ArrayList<MedicalItem>(testCrew.getMedicalItems());//Creating a seperate instance of the list of medical items.
 		for(MedicalItem item: itemList) {
-			testMedic.setHealth(-150); //Setting health to -150
+			testMedic.setHealth(0); //Setting health to -150
 			testMedic.setPlague(true);
 			testMedic.heal(item, testCrew);
-			assertEquals(testMedic.getHealth(), (-150 + (item.getHealAmount()) * 2) % 100); //Testing that double the heal amount is added to the testMedics health.
+			assertEquals(testMedic.getHealth(), 0 + 2 * (item.getHealAmount())); //Testing that double the heal amount is added to the testMedics health.
 			if(item.getCure()) {
 				assertFalse(testMedic.checkPlague()); //Tests that items that cure the space plague set hasPlague to false.
 			}
 		}
 		
+	}
+	/**
+	 * Testing that the heal() method does not set memberHealth above the 100 maximum for the medic.<br>
+	 * testMedic's health is set to 50 and then heal(new AdvancedMedicalKit(), testCrew) is called.<br>
+	 * The AdvancedMedicalKit will heal 100 when used by the Medic. <br>
+	 * The testMedic's health should be 100, if it is 150 then the method doesn't limit the health to the maximum.
+	 */
+	@Test
+	void maxHealth() {
+		testMedic.setHealth(50);
+		testMedic.heal(new AdvancedMedicalKit(), testCrew);
+		assertEquals(testMedic.getHealth(), 100);
 	}
 
 	/**
@@ -73,6 +86,8 @@ class MedicTesting {
 		testMedic.heal(testItem, testCrew); //Attempting to heal using testItem.
 		assertTrue(testMedic.checkPlague());//Checking that the medic still has the plague as they should not be able to heal.
 	}
+	
+	//Potentially should be in CrewTesting.
 	/**
 	 * Testing that the MedicalItem passed to heal() is removed from the crewMedicalItems ArrayList.
 	 */
