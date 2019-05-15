@@ -23,18 +23,19 @@ public class Medic extends CrewMember{
 	 * This is an action so it decreases memberActions by one.
 	 * @param item The MedicalItem to be used.
 	 */
-	public void heal(MedicalItem item) {
+	public void heal(MedicalItem item, Crew crew) {
 		if (hasActions()) {
 			int healAmount = item.getHealAmount(); //Getting the healing amount.
 			healAmount += item.getHealAmount(); //Doubling the healAmount of the selected item.
 			super.setHealth((super.getHealth() + healAmount) % 100);
 			super.setActions(super.getActions() - 1);
-			//add remove from MedicalItems
+			crew.removeFromMedicalItems(item);
 			if(item.getCure()) {
 				super.setPlague(false);
 			}
+			
 		}else {
-			System.out.println("No actions left for this crew member!");
+			sendAlert("No actions left for this crew member!");
 		}
 	}
 	/**

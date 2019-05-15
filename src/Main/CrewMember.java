@@ -1,4 +1,6 @@
 package Main;
+import GUI.Alert;
+import java.util.Random;
 /**
  * This is the parent class for each of the different types of crew members within the game.<br>
  * Each of type of crew member extends this class.<br>
@@ -45,6 +47,10 @@ public class CrewMember {
 	 * This is the amount that a crew members hunger lowers each day.
 	 */
 	private int dailyHungerUse = 40;
+	/**
+	 * This is the random number generator used when searchPlanet() is called.
+	 */
+	private Random RNG = new Random();
 	
 	/**
 	 * The default builder for the class.
@@ -93,6 +99,13 @@ public class CrewMember {
 		dailyEnergyUse = energyUse;
 	}
 	/**
+	 * The getter for memberName.
+	 * @return The memberName String.
+	 */
+	public String getName() {
+		return memberName;
+	}
+	/**
 	 * @return The int variable memberHealth.
 	 */
 	public int getHealth() {
@@ -128,7 +141,7 @@ public class CrewMember {
 	}
 	/**
 	 * Sets the value of the boolean variable hasPlague.
-	 * @param plague Boolean value for settin hasPlague.
+	 * @param plague Boolean value for setting hasPlague.
 	 */
 	public void setPlague(boolean plague) {
 		hasPlague = plague;
@@ -171,14 +184,14 @@ public class CrewMember {
 	 * This is an action so it decreases memberActions by one.
 	 * @param food The food item selected by the player for the crew member to consume.
 	 */
-	public void feed(FoodItem food) {
+	public void feed(FoodItem food, Crew crew) {
 		if(hasActions()) {
 			int hunger = memberHunger;
 			memberHunger = (hunger + food.getFillUpAmount()) % 100;
 			memberActions -= 1;
-		//Add the remove from crew food items.
+			crew.removeFromFoodItems(food);
 		}else {
-			System.out.println("No actions left for this crew member!");
+			sendAlert("No actions left for this crew member!");
 		}
 	}
 	/**
@@ -188,7 +201,7 @@ public class CrewMember {
 	 * This is an action so it decreases memberActions by one.
 	 * @param item The MedicalItem to be used.
 	 */
-	public void heal(MedicalItem item) {
+	public void heal(MedicalItem item, Crew crew) {
 		if (hasActions()) {
 			int health = memberHealth;
 			memberHealth = (health + item.getHealAmount()) % memberMaxHealth;
@@ -196,9 +209,9 @@ public class CrewMember {
 				hasPlague = false;
 			}
 			memberActions -= 1;
-			//add remove from medicalitems
+			crew.removeFromMedicalItems(item);
 		}else {
-			System.out.println("No actions left for this crew member!");
+			sendAlert("No actions left for this crew member!");
 		}
 	}
 	/**
@@ -208,10 +221,10 @@ public class CrewMember {
 	public void sleep() {
 		if(hasActions()) {
 			int energy = memberEnergy;
-			memberEnergy = (energy + 25) % 100;
+			memberEnergy = (energy + 40) % 100;
 			memberActions -= 1;
 		}else {
-			System.out.println("No actions left for this crew member!");
+			sendAlert("No actions left for this crew member!");
 		}
 	}
 	/**
@@ -220,33 +233,107 @@ public class CrewMember {
 	 */
 	public void repairShip(Ship ship) {
 		if(hasActions()) {
-			//Daniel implement first.
+			ship.setShieldLevel((ship.getShieldLevel() + 30) % 100);
 			memberActions -= 1;
 		}else {
-			System.out.println("No actions left for this crew member!");
+			sendAlert("No actions left for this crew member!");
 		}
 	}
 	/**
-	 * 
+	 * This is the searchPlanet method for CrewMember.<br>
+	 * It uses Random to pick a random integer between 0-100<br>
+	 * 0-35: Transporter Part if there is one on the planet still.<br>
+	 * 36-75: A random MedicalItem or FoodItem. foundItem() called.<br>
+	 * 76-100: A random amount of money between 1-500 is found. 
 	 */
-	public void searchPlanet() {
+	public void searchPlanet(Crew crew, Planet planet) {
 		if(hasActions()) {
-			//to be done
+			String alertMessage = "Whilst Searching the planet" + this.memberName + " found: ";
+			int roll = RNG.nextInt(100);
+			if(roll <= 35) {//need check planet parts
+				crew.setPartsFound(crew.getPartsFound() + 1);
+				//Set transporter parts
+				alertMessage += "1 Transporter Part";
+			}else if(roll <= 75) {
+				alertMessage += foundItem(crew);
+			}else {
+				int moneyFound = RNG.nextInt(450) + 50;//50 added as the integer can be 450 is the biggest value as 50 will be added.
+				crew.setMoney(crew.getMoney() + moneyFound);
+				alertMessage += "$" + moneyFound;
+			}
+			sendAlert(alertMessage);
 		}else {
-			System.out.println("No actions left for this crew member!");
+			sendAlert("No actions left for this crew member!");
 		}
 	}
+
+/**
+ * Helper function for searchPlanet.<br>
+ * It decides what MedicalItem or FoodItem you have found<br>
+ * This function was created due to the size of the switch statement to keep the code readable.	
+ * @param crew The Crew so that the item can be added to Medical/Food items.
+ * @return The message string for the alert box.
+ */
+	public String foundItem(Crew crew) {
+		int itemFound = RNG.nextInt(8);
+		String message = "";
+		switch(itemFound) {
+		case 0:
+			crew.addToMedicalItems(new BasicMedicalKit());
+			message += "A Basic Medical Kit";
+			break;
+		case 1:
+			crew.addToMedicalItems(new AdvancedMedicalKit());
+			message += "An Advanced Medical Kit";
+			break;
+		case 2:
+			crew.addToMedicalItems(new PlagueCure());
+			message += "A Plague Cure";
+			break;
+		case 3:
+			crew.addToFoodItems(new Apple());
+			message += "An Apple";
+			break;
+		case 4:
+			crew.addToFoodItems(new Banana());
+			message += "A Banana";
+			break;
+			
+		case 5:
+			crew.addToFoodItems(new HighCalorieBar());
+			message += "A High Calorie Bar";
+			break;
+			
+		case 6:
+			crew.addToFoodItems(new SpaceSoup());
+			message += "Space Soup";
+			break;
+			
+		case 7:
+			crew.addToFoodItems(new BeefSteak());
+			message += "A Beef Steak";
+			break;
+			
+		case 8:
+			crew.addToFoodItems(new MRE());
+			message += "An MRE";
+			break;
+		}
+		return message;
+	}
+	
 	/**
 	 * 
 	 * @param secondPilot The second CrewMember Piloting the ship.
 	 */
-	public void pilotShip(CrewMember secondPilot) {
+	public void pilotShip(CrewMember secondPilot, Planet planet) {
 		if(hasActions() && secondPilot.hasActions()) {
-			//implement.
+			planet.NewPlanet();
 			memberActions -= 1;
 			secondPilot.setActions(secondPilot.getActions() - 1);
+			sendAlert("You have travelled to a new planet. There is 1 transporter part to collect here.");
 		}else {
-			System.out.println("Not enough actoins!");
+			sendAlert("Not enough actoins!");
 		}
 	}
 	/**
@@ -255,7 +342,7 @@ public class CrewMember {
 	 * If either memberHunger or memberEnergy are 0 then memberHealth will be decreased.<br>
 	 * It then checks if the crew members health is greater than 0, if it is not the crew member is removed from the crew as they have died.
 	 */
-	public void nextDay() {
+	public void nextDay(GameEnvironment environment) {
 		memberHunger = (memberHunger + dailyHungerUse) % 100;//Decrease CrewMember Hunger Level
 		memberEnergy = (memberEnergy - dailyEnergyUse) % 100;//Decrease CrewMember Energy Level
 		if(memberHunger == 100) {
@@ -264,9 +351,17 @@ public class CrewMember {
 			memberHealth -= 30; //Decrease CrewMember health
 		}
 		if(memberHealth <= 0) {//Checking if the player still has health
-			Crew crew = GameEnvironment.getGameCrew(); //Getting crew
+			Crew crew = environment.getGameCrew(); //Getting crew
 			crew.removeCrewMember(this); //Removing the CrewMember from the crew.
 		}
+	}
+	
+	/**
+	 * Sends an alert to the player with the give alert text.
+	 * @param text The alert text to be displayed.
+	 */
+	public void sendAlert(String text) {
+		Alert alert = new Alert(text);
 	}
 	
 }

@@ -1,5 +1,7 @@
 package Main;
 
+import GUI.Alert;
+
 /**
  * This is the parent class for all medical item types.<br>
  * A type of medical item in game extends this class.<br>
@@ -54,11 +56,12 @@ public class MedicalItem extends PurchasableAdaptor{
 	 *crew has enough money to buy the item.
 	 *@param item This is a new instance of the MedicalItem.
 	 */
-	public void purchase(MedicalItem item) {
-		Crew crew = GameEnvironment.getGameCrew();
+	public void purchase(MedicalItem item, Crew crew) {
 		if(crew.getMoney() > itemPrice) {
 			crew.addToMedicalItems(item);
 			crew.setMoney(crew.getMoney() - itemPrice);
+		}else {
+			new Alert("Not Enough Money!");
 		}
 	}
 

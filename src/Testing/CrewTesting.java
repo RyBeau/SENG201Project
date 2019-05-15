@@ -118,4 +118,18 @@ class CrewTesting {
 	void shipTest() {
 		assertTrue(crew.getCrewShip() instanceof Ship);
 	}
+	
+	/**
+	 * Testing partsFound getter and setter.
+	 */
+	@Test
+	void partsFoundTest() {
+		assertEquals(crew.getPartsFound(), 0);//Should be 0 to begin with
+		for(int i = 1; i < 7; i++) {
+			crew.setPartsFound(i);
+			assertEquals(crew.getPartsFound(), i);
+		}
+		
+	}
 }
+
