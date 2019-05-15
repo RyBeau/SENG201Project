@@ -84,7 +84,7 @@ public class GameSetup {
 		numCrew.setMinorTickSpacing(1);
 		numCrew.setMajorTickSpacing(1);
 		numCrew.setMinimum(2);
-		numCrew.setMaximum(6);
+		numCrew.setMaximum(4);
 		numCrew.setPaintTicks(true);
 		numCrew.setPaintLabels(true);
 		

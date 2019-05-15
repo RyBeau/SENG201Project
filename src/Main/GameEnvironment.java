@@ -19,6 +19,10 @@ public class GameEnvironment {
 	 */
 	private int gameDays;
 	/**
+	 * This is the current day of the game.
+	 */
+	private int currentDay;
+	/**
 	 * This is the planet the game is currently taking place on.
 	 */
 	private Planet gamePlanet = new Planet();
@@ -38,6 +42,20 @@ public class GameEnvironment {
 	 */
 	public Crew getGameCrew() {
 		return gameCrew;
+	}
+	/**
+	 * This is the getter for partsToCollect.
+	 * @return partsToCollect
+	 */
+	public int getPartsToCollect(){
+		return partsToCollect;
+	}
+	/**
+	 * This the the getter for currentDay;
+	 * @return currentDay
+	 */
+	public int getCurrentDay() {
+		return currentDay;
 	}
 	/**
 	 * Visits the outpost, and displays the items purchasable at the outpost.
@@ -209,17 +227,19 @@ public class GameEnvironment {
 	 */
 	public void setupGame() {
 		partsToCollect = (gameDays * 2) / 3;
-		System.out.println(partsToCollect);
+		currentDay = 1;
+		launchGame();
 	}
 	/**
 	 * The main loop for the game.
 	 */
-	public void gameLoop() {
-		
+	public void launchGame() {
+		GameWindow gameWindow = new GameWindow(this, gameCrew);
 	}
 	
 	public static void main(String[] args) {
 		GameEnvironment game = new GameEnvironment();
 		game.launchStartScreen();
 	}
+
 }

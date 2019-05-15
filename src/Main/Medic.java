@@ -40,11 +40,4 @@ public class Medic extends CrewMember{
 			sendAlert("No actions left for this crew member!");
 		}
 	}
-	/**
-	 * The toString method for CrewMember subclasses provides a short description of the crew member type.
-	 * @return A short description of the crew member type.
-	 */
-	public String toString() {
-		return "The Medic has increased medical skills. When healing themseleves Medical Items are more effective on this type.";
-	}
 }

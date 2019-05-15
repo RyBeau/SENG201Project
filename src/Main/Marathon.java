@@ -15,11 +15,4 @@ public class Marathon extends CrewMember {
 	public Marathon(String name) {
 		super(20, name, "Marathon");
 	}
-	/**
-	 * The toString method for CrewMember subclasses provides a short description of the crew member type.
-	 * @return A short description of the crew member type.
-	 */
-	public String toString() {
-		return "The Marathon type has increased endurance, their energy levels decrease less than other types.";
-	}
 }

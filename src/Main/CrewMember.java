@@ -390,4 +390,11 @@ public class CrewMember {
 		Alert alert = new Alert(text);
 	}
 	
+	/**
+	 * Used by in Jlist to display the memberName in the list.
+	 * @return memberName
+	 */
+	public String toString() {
+		return memberName;
+	}
 }

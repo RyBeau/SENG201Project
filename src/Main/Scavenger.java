@@ -47,11 +47,4 @@ public class Scavenger extends CrewMember{
 			}
 		}
 	}
-	/**
-	 * The toString method for CrewMember subclasses provides a short description of the crew member type.
-	 * @return A short description of the crew member type.
-	 */
-	public String toString() {
-		return "The Scavenger has increased luck. When searching the planet a Scavenger is more likely to find items.";
-	}
 }
