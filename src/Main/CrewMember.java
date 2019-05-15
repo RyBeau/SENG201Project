@@ -267,7 +267,8 @@ public class CrewMember {
 	 * This is the searchPlanet method for CrewMember.<br>
 	 * It uses Random to pick a random integer between 0-100<br>
 	 * 0-35: Transporter Part if there is one on the planet still.<br>
-	 * 36-75: A random MedicalItem or FoodItem. foundItem() called.<br>
+	 * 36-56 Nothing is found.<br>
+	 * 56-75: A random MedicalItem or FoodItem. foundItem() called.<br>
 	 * 76-100: A random amount of money between 1-500 is found. 
 	 */
 	public void searchPlanet(Crew crew, Planet planet) {
@@ -278,7 +279,9 @@ public class CrewMember {
 				crew.setPartsFound(crew.getPartsFound() + 1);
 				//Set transporter parts
 				alertMessage += "1 Transporter Part";
-			}else if(roll <= 75) {
+			}else if(roll <= 55){
+				alertMessage += "Nothing";
+			}else if(roll <= 75){
 				alertMessage += foundItem(crew);
 			}else {
 				int moneyFound = RNG.nextInt(450) + 50;//50 added as the integer can be 450 is the biggest value as 50 will be added.

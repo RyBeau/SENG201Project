@@ -32,13 +32,20 @@ public class GameWindow {
 	private Crew crew;
 	JList<CrewMember> listOfCrew;
 	private JPanel topInfoPanel;
-	private JPanel bottomNonActionPanel;
+	private JPanel bottomActivitiesPanel;
 	private JPanel actionsPanel;
 	private JButton btnVisitOutpost;
 	private JLabel lblDay;
 	private JLabel lblShipShieldLevel;
 	private JLabel lblTransporterParts;
 	private JLabel lblMoney;
+	private JButton btnSearchPlanet;
+	private JButton btnEatFood;
+	private JButton btnSleep;
+	private JButton btnRepairShip;
+	private JButton btnPilotShip;
+	private JButton btnHeal;
+	private JButton btnNewButton;
 	/**
 	 * Create the application.
 	 */
@@ -121,25 +128,53 @@ public class GameWindow {
 		lblMoney.setBounds(353, 12, 111, 16);
 		topInfoPanel.add(lblMoney);
 		
-		bottomNonActionPanel = new JPanel();
-		bottomNonActionPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		bottomNonActionPanel.setBounds(12, 315, 660, 34);
-		gameScreen.getContentPane().add(bottomNonActionPanel);
-		bottomNonActionPanel.setLayout(null);
+		bottomActivitiesPanel = new JPanel();
+		bottomActivitiesPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		bottomActivitiesPanel.setBounds(12, 315, 660, 34);
+		gameScreen.getContentPane().add(bottomActivitiesPanel);
+		bottomActivitiesPanel.setLayout(null);
 		
 		JButton btnNextDay = new JButton("Next Day");
-		btnNextDay.setBounds(550, 0, 98, 26);
-		bottomNonActionPanel.add(btnNextDay);
+		btnNextDay.setBounds(522, 3, 115, 26);
+		bottomActivitiesPanel.add(btnNextDay);
 		
 		btnVisitOutpost = new JButton("Visit Outpost");
-		btnVisitOutpost.setBounds(431, 0, 107, 26);
-		bottomNonActionPanel.add(btnVisitOutpost);
+		btnVisitOutpost.setBounds(395, 3, 115, 26);
+		bottomActivitiesPanel.add(btnVisitOutpost);
+		
+		btnNewButton = new JButton("New button");
+		btnNewButton.setBounds(285, 3, 98, 26);
+		bottomActivitiesPanel.add(btnNewButton);
 		
 		actionsPanel = new JPanel();
 		actionsPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		actionsPanel.setBounds(187, 50, 485, 258);
 		gameScreen.getContentPane().add(actionsPanel);
 		actionsPanel.setLayout(null);
+		
+		btnSearchPlanet = new JButton("Search Planet");
+		btnSearchPlanet.setBounds(347, 172, 115, 26);
+		actionsPanel.add(btnSearchPlanet);
+		
+		btnEatFood = new JButton("Eat Food");
+		btnEatFood.setBounds(347, 20, 115, 26);
+		actionsPanel.add(btnEatFood);
+		
+		btnSleep = new JButton("Sleep");
+		btnSleep.setBounds(347, 96, 115, 26);
+		actionsPanel.add(btnSleep);
+		
+		btnRepairShip = new JButton("Repair Ship");
+		btnRepairShip.setBounds(347, 134, 115, 26);
+		actionsPanel.add(btnRepairShip);
+		
+		btnPilotShip = new JButton("Pilot Ship");
+		btnPilotShip.setBounds(347, 209, 115, 26);
+		actionsPanel.add(btnPilotShip);
+		
+		btnHeal = new JButton("Heal");
+		btnHeal.setBounds(347, 58, 115, 26);
+		actionsPanel.add(btnHeal);
 	}
 	
 	private void updateCrewMember() {

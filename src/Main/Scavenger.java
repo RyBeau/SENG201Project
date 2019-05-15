@@ -20,7 +20,7 @@ public class Scavenger extends CrewMember{
 	}
 	/**
 	 * This method overrides CrewMember.searchPlanet().<br>
-	 * It increases the chances of finding transporter parts when searching the planet.<br>
+	 * It increases the chances of finding transporter parts when searching the planet and will always find something<br>
 	 * 0-55: Transporter Part if there is one on the planet still.<br>
 	 * 56-75: A random MedicalItem or FoodItem. foundItem() called.<br>
 	 * 76-100: A random amount of money between 1-500 is found.
