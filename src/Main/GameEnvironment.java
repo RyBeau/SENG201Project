@@ -277,7 +277,10 @@ public class GameEnvironment {
 	public void launchGame() {
 		GameWindow gameWindow = new GameWindow(this, gameCrew);
 	}
-	
+	/**
+	 * The main method that creates the controlling instance of GameEnvironment.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		GameEnvironment game = new GameEnvironment();
 	}
