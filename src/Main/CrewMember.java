@@ -177,7 +177,8 @@ public class CrewMember {
 	 * Includes memberName, memberType, memberHealth, memberHunger, memberEnergy variables.<br>
 	 */
 	public String viewStatus() {
-		return "Status of Crew Member " + memberName + ":\nType: " + memberType + "\nHealth Level: " + memberHealth + "\nHunger Level: " + memberHunger + "\nEnergy Level: " + memberEnergy;
+		return "Type: " + memberType + "\nHealth Level: " + memberHealth + "\nHunger Level: " +
+	memberHunger + "\nEnergy Level: " + memberEnergy + "\nActions: " + memberActions;
 	}
 	/**
 	 * This method is for checking that the CrewMember has actions left to use.
@@ -238,11 +239,15 @@ public class CrewMember {
 	 */
 	public void sleep() {
 		if(hasActions()) {
-			memberEnergy += 40;
-			if(memberEnergy > 100) {
-				memberEnergy = 100;
+			if(memberEnergy < 100) {
+				memberEnergy += 40;
+				if(memberEnergy > 100) {
+					memberEnergy = 100;
+				}
+				memberActions -= 1;
+			}else {
+				sendAlert(memberName + " has full energy already! They Cannot Sleep!");
 			}
-			memberActions -= 1;
 		}else {
 			sendAlert("No actions left for this crew member!");
 		}
@@ -253,12 +258,16 @@ public class CrewMember {
 	 */
 	public void repairShip(Ship ship) {
 		if(hasActions()) {
-			int newShieldLevel = ship.getShieldLevel() + 30;
-			if(newShieldLevel > 100) {
-				newShieldLevel = 100;
+			if(ship.getShieldLevel() < 100) {
+				int newShieldLevel = ship.getShieldLevel() + 30;
+				if(newShieldLevel > 100) {
+					newShieldLevel = 100;
+				}
+				ship.setShieldLevel(newShieldLevel);
+				memberActions -= 1;
+			}else {
+				sendAlert("Ship Shields already 100%");
 			}
-			ship.setShieldLevel(newShieldLevel);
-			memberActions -= 1;
 		}else {
 			sendAlert("No actions left for this crew member!");
 		}
@@ -273,7 +282,7 @@ public class CrewMember {
 	 */
 	public void searchPlanet(Crew crew, Planet planet) {
 		if(hasActions()) {
-			String alertMessage = "Whilst Searching the planet" + this.memberName + " found: ";
+			String alertMessage = "Whilst Searching the planet " + this.memberName + " found: ";
 			int roll = RNG.nextInt(100);
 			if(roll <= 35) {//need check planet parts
 				crew.setPartsFound(crew.getPartsFound() + 1);
@@ -288,6 +297,7 @@ public class CrewMember {
 				crew.setMoney(crew.getMoney() + moneyFound);
 				alertMessage += "$" + moneyFound;
 			}
+			memberActions -= 1;
 			sendAlert(alertMessage);
 		}else {
 			sendAlert("No actions left for this crew member!");
@@ -353,29 +363,36 @@ public class CrewMember {
 	 * 
 	 * @param secondPilot The second CrewMember Piloting the ship.
 	 */
-	public void pilotShip(CrewMember secondPilot, Planet planet) {
+	public void pilotShip(CrewMember secondPilot, Planet planet, Ship ship) {
 		if(hasActions() && secondPilot.hasActions()) {
-			planet.NewPlanet();
-			memberActions -= 1;
-			secondPilot.setActions(secondPilot.getActions() - 1);
-			sendAlert("You have travelled to a new planet. There is 1 transporter part to collect here.");
+			if(ship.getShieldLevel() == 0) {
+				planet.NewPlanet();
+				memberActions -= 1;
+				secondPilot.setActions(secondPilot.getActions() - 1);
+				sendAlert("You have travelled to a new planet. There is 1 transporter part to collect here.");
+			}else {
+				sendAlert("Ship needs repairing!");
+			}
 		}else {
 			sendAlert("Not enough actions!");
 		}
 	}
 	/**
 	 * This method is called at the start of each new day.<br>
-	 * It decreases the crew members energy and hunger level.<br>
+	 * It resets the memberActions to 2.<br>
+	 * It increases the memberHunger by dailyHungerUse.<br>
+	 * It decreases the memberEnergy by dailyEnergyUse.<br>
 	 * If either memberHunger or memberEnergy are 0 then memberHealth will be decreased.<br>
 	 * It then checks if the crew members health is greater than 0, if it is not the crew member is removed from the crew as they have died.
 	 */
 	public void nextDay(Crew crew) {
-		memberHunger += dailyHungerUse;//Decrease CrewMember Hunger Level
-		memberEnergy += dailyEnergyUse;//Decrease CrewMember Energy Level
+		memberActions = 2;
+		memberHunger += dailyHungerUse;
+		memberEnergy -= dailyEnergyUse;
 		if(memberHunger >= 100) {
 			memberHunger = 100;
 			memberHealth -= 30; //Decrease CrewMember health
-		}else if(memberEnergy <= 0) {
+		}if(memberEnergy <= 0) {
 			memberEnergy = 0;
 			memberHealth -= 30; //Decrease CrewMember health
 		}
@@ -383,6 +400,7 @@ public class CrewMember {
 			crew.removeCrewMember(this); //Removing the CrewMember from the crew.
 			sendAlert("Crew Member " + memberName + " has died!");
 		}
+		
 	}
 	
 	/**

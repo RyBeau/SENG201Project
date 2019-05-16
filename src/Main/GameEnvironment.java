@@ -25,7 +25,7 @@ public class GameEnvironment {
 	/**
 	 * This is the planet the game is currently taking place on.
 	 */
-	private Planet gamePlanet = new Planet();
+	private Planet gamePlanet;
 	/**
 	 * This the number of transporter parts that the player needs to collect.
 	 */
@@ -35,13 +35,21 @@ public class GameEnvironment {
 	 * Its sets the initial values of the variables for the class.
 	 */
 	public GameEnvironment() {
-		
+		gamePlanet = new Planet();
+		launchStartScreen();
 	}
 	/**
 	 * @return The games Crew. (Object)
 	 */
 	public Crew getGameCrew() {
 		return gameCrew;
+	}
+	/**
+	 * The getter for gamePlanet.
+	 * @return gamePlanet
+	 */
+	public Planet getGamePlanet() {
+		return gamePlanet;
 	}
 	/**
 	 * This is the getter for partsToCollect.
@@ -109,18 +117,51 @@ public class GameEnvironment {
 	 * @param secondaryPilot The second CrewMember selected to pilot the ship.
 	 */
 	public void pilotShip(CrewMember primaryPilot, CrewMember secondaryPilot) {
-		primaryPilot.pilotShip(secondaryPilot, gamePlanet);
+		primaryPilot.pilotShip(secondaryPilot, gamePlanet, gameCrew.getCrewShip());
 	}
 	/**
 	 * The nextDay method moves the game onto the next day.<br>
 	 * It calls all the required nextDay methods of the CrewMembers to decrease their energy and hungerLevel.
 	 */
-	public void nextDay() {
-		ArrayList<CrewMember> crewList = gameCrew.getCrewList();
+	public void nextDay(GameWindow gameScreen) {
+		ArrayList<CrewMember> crewList = new ArrayList<CrewMember>(gameCrew.getCrewList());
 		for(CrewMember member: crewList) {
 			member.nextDay(gameCrew);
 		}
+		currentDay += 1;
+		if(checkGameOver()) {
+			gameOver(gameScreen);
+		}else {
+			gameScreen.refresh();
+		}
 	}
+	/**
+	 * This method checks if any of the conditions for the game ending have been met.<br>
+	 * Conditions Checked:<br>
+	 * currentDay > gameDays -> All days have been completed.<br>
+	 * partsToCollect == partsFound -> All parts have been found.<br>
+	 * crewList.size() == 0 -> All CrewMembers are dead.<br>
+	 * @return
+	 */
+	public Boolean checkGameOver() {
+		Boolean isOver = false;
+		if(currentDay > gameDays) {
+			isOver = true;
+		}else if(partsToCollect == gameCrew.getPartsFound()) {
+			isOver = true;
+		}else if(gameCrew.getCrewList().size() == 0) {
+			isOver = true;
+		}
+		return isOver;
+	}
+	
+	/**
+	 * This method ends the game.
+	 */
+	public void gameOver(GameWindow gameScreen) {
+		gameScreen.closeWindow();
+	}
+	
 	/**
 	 * This method launches the Start Screen for the game. (StartWindow object)
 	 */
@@ -239,7 +280,6 @@ public class GameEnvironment {
 	
 	public static void main(String[] args) {
 		GameEnvironment game = new GameEnvironment();
-		game.launchStartScreen();
 	}
 
 }

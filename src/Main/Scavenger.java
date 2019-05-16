@@ -27,24 +27,23 @@ public class Scavenger extends CrewMember{
 	 */
 	public void searchPlanet(Crew crew, Planet planet) {
 		if(hasActions()) {
-			if(hasActions()) {
-				String alertMessage = "Whilst Searching the planet" + super.getName() + " found: ";
-				int roll = RNG.nextInt(100);
-				if(roll <= 55) {//need check planet parts
-					crew.setPartsFound(crew.getPartsFound() + 1);
-					//Set transporter parts
-					alertMessage += "1 Transporter Part";
-				}else if(roll <= 75) {
-					alertMessage += super.foundItem(crew);
-				}else {
-					int moneyFound = RNG.nextInt(450) + 50;//50 added as the integer can be 450 is the biggest value as 50 will be added.
-					crew.setMoney(crew.getMoney() + moneyFound);
-					alertMessage += "$" + moneyFound;
-				}
-				sendAlert(alertMessage);
+			String alertMessage = "Whilst Searching the planet " + super.getName() + " found: ";
+			int roll = RNG.nextInt(100);
+			if(roll <= 55) {//need check planet parts
+				crew.setPartsFound(crew.getPartsFound() + 1);
+				//Set transporter parts
+				alertMessage += "1 Transporter Part";
+			}else if(roll <= 75) {
+				alertMessage += super.foundItem(crew);
 			}else {
-				sendAlert("No actions left for this crew member!");
+				int moneyFound = RNG.nextInt(450) + 50;//50 added as the integer can be 450 is the biggest value as 50 will be added.
+				crew.setMoney(crew.getMoney() + moneyFound);
+				alertMessage += "$" + moneyFound;
 			}
+			super.setActions(super.getActions() - 1);
+			super.sendAlert(alertMessage);
+		}else {
+			super.sendAlert("No actions left for this crew member!");
 		}
 	}
 }
