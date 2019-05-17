@@ -280,7 +280,7 @@ public class CrewMember {
 	 * 56-75: A random MedicalItem or FoodItem. foundItem() called.<br>
 	 * 76-100: A random amount of money between 1-500 is found. 
 	 */
-	public void searchPlanet(Crew crew, Planet planet) {
+	public void searchPlanet(Crew crew, Planet planet, GameEnvironment environment) {
 		if(hasActions()) {
 			String alertMessage = "Whilst Searching the planet " + this.memberName + " found: ";
 			int roll = RNG.nextInt(100);
@@ -288,6 +288,9 @@ public class CrewMember {
 				crew.setPartsFound(crew.getPartsFound() + 1);
 				//Set transporter parts
 				alertMessage += "1 Transporter Part";
+				if(environment.checkGameOver()) {
+					environment.gameOver();
+				}
 			}else if(roll <= 55){
 				alertMessage += "Nothing";
 			}else if(roll <= 75){
