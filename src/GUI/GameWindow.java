@@ -108,16 +108,17 @@ public class GameWindow {
 				environment.nextDay();
 			}
 		});
-		btnNextDay.setBounds(330, 3, 130, 26);
+		btnNextDay.setBounds(260, 3, 130, 26);
 		bottomActivitiesPanel.add(btnNextDay);
 		
 		JButton btnVisitOutpost = new JButton("Visit Outpost");
-		btnVisitOutpost.setBounds(188, 3, 130, 26);
+		btnVisitOutpost.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Implement
+			}
+		});
+		btnVisitOutpost.setBounds(118, 3, 130, 26);
 		bottomActivitiesPanel.add(btnVisitOutpost);
-		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(46, 3, 130, 26);
-		bottomActivitiesPanel.add(btnNewButton);
 		
 		JPanel actionsPanel = new JPanel();
 		actionsPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -138,6 +139,11 @@ public class GameWindow {
 		actionsPanel.add(btnSearchPlanet);
 		
 		JButton btnEatFood = new JButton("Eat Food");
+		btnEatFood.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Implement
+			}
+		});
 		btnEatFood.setBounds(347, 20, 130, 26);
 		actionsPanel.add(btnEatFood);
 		
@@ -165,10 +171,20 @@ public class GameWindow {
 		actionsPanel.add(btnRepairShip);
 		
 		JButton btnPilotShip = new JButton("Pilot Ship");
+		btnPilotShip.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Implement
+			}
+		});
 		btnPilotShip.setBounds(347, 209, 130, 26);
 		actionsPanel.add(btnPilotShip);
 		
 		JButton btnHeal = new JButton("Heal");
+		btnHeal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Implement
+			}
+		});
 		btnHeal.setBounds(347, 58, 130, 26);
 		actionsPanel.add(btnHeal);
 	}

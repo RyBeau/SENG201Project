@@ -25,13 +25,13 @@ public class Scavenger extends CrewMember{
 	 * 56-75: A random MedicalItem or FoodItem. foundItem() called.<br>
 	 * 76-100: A random amount of money between 1-500 is found.
 	 */
-	public void searchPlanet(Crew crew, Planet planet) {
+	public void searchPlanet(Crew crew, Planet planet, GameEnvironment environment) {
 		if(hasActions()) {
 			String alertMessage = "Whilst Searching the planet " + super.getName() + " found: ";
 			int roll = RNG.nextInt(100);
-			if(roll <= 55) {//need check planet parts
+			if(roll <= 55 && planet.getTransporterPartsAmount() > 0) {
 				crew.setPartsFound(crew.getPartsFound() + 1);
-				//Set transporter parts
+				planet.setTransporterParts(0);
 				alertMessage += "1 Transporter Part";
 			}else if(roll <= 75) {
 				alertMessage += super.foundItem(crew);

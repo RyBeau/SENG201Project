@@ -36,8 +36,8 @@ class MedicTesting {
 	@Test
 	void creationTest() {
 		Medic testMedic = new Medic("Test Medic");
-		assertEquals("Status of Crew Member Test Medic:\nType: Medic\nHealth Level: 100\nHunger Level: 0\nEnergy Level: 100", testMedic.viewStatus());
-		assertEquals(testMedic.toString(), "The Medic has increased medical skills. When healing themseleves Medical Items are more effective on this type.");
+		assertEquals("Type: Medic\nHealth Level: 100\nHunger Level: 0\nEnergy Level: 100\nActions: 2", testMedic.viewStatus());
+		assertEquals(testMedic.toString(), "Test Medic");
 	}
 	
 	/**

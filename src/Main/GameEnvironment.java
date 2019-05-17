@@ -1,5 +1,6 @@
 package Main;
 import GUI.*;
+import java.util.Random;
 import java.util.ArrayList;
 /**
  * This is the main controlling class for the game.<br>
@@ -34,6 +35,10 @@ public class GameEnvironment {
 	 * This is the main screen that plays the game.
 	 */
 	private GameWindow gameWindow;
+	/**
+	 * This is the randomNumberGenerator used for the Random Event chances.
+	 */
+	private Random randomNumberGenerator = new Random();
 	/**
 	 * This is the constructor for this class.<br>
 	 * Its sets the initial values of the variables for the class.
@@ -123,11 +128,79 @@ public class GameEnvironment {
 	public void pilotShip(CrewMember primaryPilot, CrewMember secondaryPilot) {
 		primaryPilot.pilotShip(secondaryPilot, gamePlanet, gameCrew.getCrewShip());
 	}
+	
+	/**
+	 * This method is for the Random Event where the gameCrew Contracts the space plague.<br>
+	 * It is called by the nextDay() method when the random number generator gives a value from 0-25.<br>
+	 * It sets the hasPlague variable in each CrewMember to true as they have now contracted the space plague.<br>
+	 * It then sends an alert telling the player what has occurred.
+	 */
+	public void spacePlague() {
+		for(CrewMember member: gameCrew.getCrewList()) {
+			member.setPlague(true);
+		}
+		new Alert("The crew has contracted the space plague! They need the Plague Cure!");
+	}
+	
+	/**
+	 * This is the method for the Random Event where space pirates steal a random FoodItem from the gameCrew.<br>
+	 * This method is called by the nextDay() method when the random number generator gives a value from 26-38.<br>
+	 * Firstly it checks the case that there is only one item in the list, and if true that item is removed.<br>
+	 * Otherwise it uses randomNumberGenerator to select a random index in foodList.<br>
+	 * The item at that index is then removed.<br>
+	 * It then sends an alert telling the player what has occurred.
+	 */
+	public void spacePirates(ArrayList<FoodItem> foodList) {
+		String alertString = "The Space Pirates raided your ship! They stole: ";
+		FoodItem itemRemoved;
+		if(foodList.size() == 1) {
+			itemRemoved = foodList.get(0);
+		}else {
+			itemRemoved = foodList.get(randomNumberGenerator.nextInt(foodList.size() - 1));
+		}
+		gameCrew.removeFromFoodItems(itemRemoved);
+		new Alert(alertString + itemRemoved);
+	}
+	
+	/**
+	 * This is the method for the Random Event where space pirates steal a random MedicalItem from the gameCrew.<br>
+	 * This method is called by the nextDay() method when the random number generator gives a value from 38-50.<br>
+	 * Firstly it checks the case that there is only one item in the list, and if true that item is removed.<br>
+	 * Otherwise it uses randomNumberGenerator to select a random index in medicalList.<br>
+	 * The item at that index is then removed.<br>
+	 * It then sends an alert telling the player what has occurred.
+	 */
+	public void spacePirates(MedicalItem[] medicalList) {
+		String alertString = "The Space Pirates raided your ship! They stole: ";
+		MedicalItem itemRemoved;
+		if(medicalList.length == 1) {
+			itemRemoved = medicalList[0];
+		}else {
+			itemRemoved = medicalList[randomNumberGenerator.nextInt(medicalList.length - 1)];
+		}
+		gameCrew.removeFromMedicalItems(itemRemoved);
+		new Alert(alertString + itemRemoved);
+	}
+	
 	/**
 	 * The nextDay method moves the game onto the next day.<br>
-	 * It calls all the required nextDay methods of the CrewMembers to decrease their energy and hungerLevel.
+	 * It firsts sets roll to a random integer from 0-100 using randomNumberGenerator.<br>
+	 * If roll is 0-25 then spacePlague() is called.<br>
+	 * If roll is 26-38 and crewFoodItems has at least one FoodItem in it then spacePirates(ArrayList<FoodItem> foodList) is called.<br>
+	 * If roll is 38-50 and crewMedicalItems has at least one MedicalItem in it then spacePirates(MedicalItem[] medicalList) is called.<br>
+	 * The crewMedicalItems ArrayList is converted to an Array so that the spacePirate method can be overloaded.<br>
+	 * After that it calls all the required nextDay methods of the CrewMembers to decrease their energy and hungerLevel.<br>
+	 * Finally it iterates the currentDay variable and calls checkGameOver() to see if any end conditions have been met.
 	 */
 	public void nextDay() {
+		int roll = randomNumberGenerator.nextInt(100);
+		if(roll <= 25) {
+			spacePlague();
+		}else if(roll <= 38 && gameCrew.getFoodItems().size() > 0) {
+			spacePirates(gameCrew.getFoodItems());
+		}else if (roll <= 50 && gameCrew.getMedicalItems().size() > 0) {
+			spacePirates(gameCrew.getMedicalItems().toArray(new MedicalItem[gameCrew.getMedicalItems().size()]));
+		}
 		ArrayList<CrewMember> crewList = new ArrayList<CrewMember>(gameCrew.getCrewList());
 		for(CrewMember member: crewList) {
 			member.nextDay(gameCrew);

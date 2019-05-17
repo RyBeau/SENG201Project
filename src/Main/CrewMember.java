@@ -50,7 +50,7 @@ public class CrewMember {
 	/**
 	 * This is the random number generator used when searchPlanet() is called.
 	 */
-	private Random RNG = new Random();
+	private Random randomNumberGenerator = new Random();
 	
 	/**
 	 * The default builder for the class.
@@ -283,10 +283,10 @@ public class CrewMember {
 	public void searchPlanet(Crew crew, Planet planet, GameEnvironment environment) {
 		if(hasActions()) {
 			String alertMessage = "Whilst Searching the planet " + this.memberName + " found: ";
-			int roll = RNG.nextInt(100);
-			if(roll <= 35) {//need check planet parts
+			int roll = randomNumberGenerator.nextInt(100);
+			if(roll <= 35 && planet.getTransporterPartsAmount() > 0) {//need check planet parts
 				crew.setPartsFound(crew.getPartsFound() + 1);
-				//Set transporter parts
+				planet.setTransporterParts(0);
 				alertMessage += "1 Transporter Part";
 				if(environment.checkGameOver()) {
 					environment.gameOver();
@@ -296,7 +296,7 @@ public class CrewMember {
 			}else if(roll <= 75){
 				alertMessage += foundItem(crew);
 			}else {
-				int moneyFound = RNG.nextInt(450) + 50;//50 added as the integer can be 450 is the biggest value as 50 will be added.
+				int moneyFound = randomNumberGenerator.nextInt(450) + 50;//50 added as the integer can be 450 is the biggest value as 50 will be added.
 				crew.setMoney(crew.getMoney() + moneyFound);
 				alertMessage += "$" + moneyFound;
 			}
@@ -315,7 +315,7 @@ public class CrewMember {
  * @return The message string for the alert box.
  */
 	public String foundItem(Crew crew) {
-		int itemFound = RNG.nextInt(8);
+		int itemFound = randomNumberGenerator.nextInt(8);
 		String message = "";
 		switch(itemFound) {
 		case 0:
@@ -363,15 +363,29 @@ public class CrewMember {
 	}
 	
 	/**
+	 * The pilotShip method is used to go to a new planet.<br>
+	 * Firstly it checks that both the secondPilot and the CrewMember instance that the method is running both have at least 1 action.<br>
+	 * <h6>If (hasActions() && secondPilot.hasActions()) true</h6> 
+	 * Then if (ship.getShieldLevel() > 0):
+	 * -Then planet.NewPlanet() is called to reset the transporter parts of the planet.<br>
+	 * -Both CrewMembers memberActions are decreased by 1.<br>
+	 * -The random event "Asteroid Belt" is rolled. and an alert message is sent<br>
+	 * Else an alert is sent to the player to tell them to repair the ship.<br>
+	 * <h6>If (hasActions() && secondPilot.hasActions())is False:</h6> -Then an alert message is sent.
 	 * 
 	 * @param secondPilot The second CrewMember Piloting the ship.
+	 * @param planet The planet object for the current game.
+	 * @param ship The Crew's ship.
 	 */
 	public void pilotShip(CrewMember secondPilot, Planet planet, Ship ship) {
 		if(hasActions() && secondPilot.hasActions()) {
-			if(ship.getShieldLevel() == 0) {
+			if(ship.getShieldLevel() > 0) {
 				planet.NewPlanet();
 				memberActions -= 1;
 				secondPilot.setActions(secondPilot.getActions() - 1);
+				if(randomNumberGenerator.nextInt(100) <= 35) {
+					asteroidField(ship);
+				}
 				sendAlert("You have travelled to a new planet. There is 1 transporter part to collect here.");
 			}else {
 				sendAlert("Ship needs repairing!");
@@ -379,6 +393,12 @@ public class CrewMember {
 		}else {
 			sendAlert("Not enough actions!");
 		}
+	}
+	
+	public void asteroidField(Ship ship) {
+		int currentLevel = ship.getShieldLevel();
+		int damage = (currentLevel / 5) * 2;
+		ship.setShieldLevel(currentLevel - damage);
 	}
 	/**
 	 * This method is called at the start of each new day.<br>
@@ -398,6 +418,8 @@ public class CrewMember {
 		}if(memberEnergy <= 0) {
 			memberEnergy = 0;
 			memberHealth -= 30; //Decrease CrewMember health
+		}if(hasPlague) {
+			memberHealth -= 15;
 		}
 		if(memberHealth <= 0) {//Checking if the player still has health
 			crew.removeCrewMember(this); //Removing the CrewMember from the crew.
