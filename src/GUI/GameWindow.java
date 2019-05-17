@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 /**
  * This is the main GUI window for running the game itself.<br>
  * All aspects of the game are displayed here and player interaction happens with this GUI.
@@ -90,37 +91,37 @@ public class GameWindow {
 		
 		topInfoPanel = new JPanel();
 		topInfoPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		topInfoPanel.setBounds(12, 12, 660, 34);
+		topInfoPanel.setBounds(12, 12, 676, 34);
 		gameScreen.getContentPane().add(topInfoPanel);
 		topInfoPanel.setLayout(null);
 		buildTopInfoPanel();
 		
 		JPanel bottomActivitiesPanel = new JPanel();
 		bottomActivitiesPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		bottomActivitiesPanel.setBounds(187, 315, 485, 34);
+		bottomActivitiesPanel.setBounds(187, 315, 501, 34);
 		gameScreen.getContentPane().add(bottomActivitiesPanel);
 		bottomActivitiesPanel.setLayout(null);
 		
 		JButton btnNextDay = new JButton("Next Day");
 		btnNextDay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				nextDay();
+				environment.nextDay();
 			}
 		});
-		btnNextDay.setBounds(304, 3, 115, 26);
+		btnNextDay.setBounds(330, 3, 130, 26);
 		bottomActivitiesPanel.add(btnNextDay);
 		
 		JButton btnVisitOutpost = new JButton("Visit Outpost");
-		btnVisitOutpost.setBounds(177, 3, 115, 26);
+		btnVisitOutpost.setBounds(188, 3, 130, 26);
 		bottomActivitiesPanel.add(btnVisitOutpost);
 		
 		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(50, 3, 115, 26);
+		btnNewButton.setBounds(46, 3, 130, 26);
 		bottomActivitiesPanel.add(btnNewButton);
 		
 		JPanel actionsPanel = new JPanel();
 		actionsPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		actionsPanel.setBounds(187, 50, 485, 258);
+		actionsPanel.setBounds(187, 50, 501, 258);
 		gameScreen.getContentPane().add(actionsPanel);
 		actionsPanel.setLayout(null);
 		
@@ -133,11 +134,11 @@ public class GameWindow {
 				updateCrewMember();
 			}
 		});
-		btnSearchPlanet.setBounds(347, 172, 115, 26);
+		btnSearchPlanet.setBounds(347, 172, 130, 26);
 		actionsPanel.add(btnSearchPlanet);
 		
 		JButton btnEatFood = new JButton("Eat Food");
-		btnEatFood.setBounds(347, 20, 115, 26);
+		btnEatFood.setBounds(347, 20, 130, 26);
 		actionsPanel.add(btnEatFood);
 		
 		JButton btnSleep = new JButton("Sleep");
@@ -148,7 +149,7 @@ public class GameWindow {
 				updateCrewMember();
 			}
 		});
-		btnSleep.setBounds(347, 96, 115, 26);
+		btnSleep.setBounds(347, 96, 130, 26);
 		actionsPanel.add(btnSleep);
 		
 		JButton btnRepairShip = new JButton("Repair Ship");
@@ -160,15 +161,15 @@ public class GameWindow {
 				updateCrewMember();
 			}
 		});
-		btnRepairShip.setBounds(347, 134, 115, 26);
+		btnRepairShip.setBounds(347, 134, 130, 26);
 		actionsPanel.add(btnRepairShip);
 		
 		JButton btnPilotShip = new JButton("Pilot Ship");
-		btnPilotShip.setBounds(347, 209, 115, 26);
+		btnPilotShip.setBounds(347, 209, 130, 26);
 		actionsPanel.add(btnPilotShip);
 		
 		JButton btnHeal = new JButton("Heal");
-		btnHeal.setBounds(347, 58, 115, 26);
+		btnHeal.setBounds(347, 58, 130, 26);
 		actionsPanel.add(btnHeal);
 	}
 	/**
@@ -210,7 +211,7 @@ public class GameWindow {
 		
 		JLabel lblStatus = new JLabel("Status:");
 		lblStatus.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblStatus.setBounds(12, 167, 55, 16);
+		lblStatus.setBounds(12, 167, 139, 16);
 		crewPanel.add(lblStatus);
 	}
 	/**
@@ -219,23 +220,27 @@ public class GameWindow {
 	 */
 	private void buildTopInfoPanel() {
 		JLabel lblDay = new JLabel("Day: " + environment.getCurrentDay());
+		lblDay.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblDay.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblDay.setBounds(12, 12, 78, 16);
+		lblDay.setBounds(12, 0, 83, 28);
 		topInfoPanel.add(lblDay);
 		
 		JLabel lblShipShieldLevel = new JLabel("Ship Shield Level: " + crew.getCrewShip().getShieldLevel() + "%");
+		lblShipShieldLevel.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblShipShieldLevel.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblShipShieldLevel.setBounds(122, 12, 176, 16);
+		lblShipShieldLevel.setBounds(107, 0, 219, 28);
 		topInfoPanel.add(lblShipShieldLevel);
 		
 		JLabel lblTransporterParts = new JLabel("Transporter Parts: " + crew.getPartsFound() + "/" + environment.getPartsToCollect());
+		lblTransporterParts.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblTransporterParts.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblTransporterParts.setBounds(495, 12, 153, 16);
+		lblTransporterParts.setBounds(471, 0, 193, 28);
 		topInfoPanel.add(lblTransporterParts);
 		
 		JLabel lblMoney = new JLabel("Money: $" + crew.getMoney());
+		lblMoney.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblMoney.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblMoney.setBounds(353, 12, 111, 16);
+		lblMoney.setBounds(327, 0, 146, 28);
 		topInfoPanel.add(lblMoney);
 	}
 	
@@ -275,12 +280,6 @@ public class GameWindow {
 		buildTopInfoPanel();
 		topInfoPanel.revalidate();
 		topInfoPanel.repaint();
-	}
-	/**
-	 * This method is used to call the nextDay method within GameEnvironment passing the GameWindow instance to the method.
-	 */
-	private void nextDay() {
-		environment.nextDay(this);
 	}
 	/**
 	 * This method refreshes the statusPane JTextPane text to display the status of the currently selected CrewMember in the 
