@@ -28,5 +28,15 @@ public class Planet {
 	public void NewPlanet() {
 		planetTransporterParts = 1;
 	}
+	/**
+	 * @return
+	 * the amount of transporter parts on the planet.
+	 */
+	public int getTransporterPartsAmount() {
+		return planetTransporterParts;
+	}
+	public void setTransporterParts(int newAmount) {
+		planetTransporterParts = newAmount;
+	}
 
 }
