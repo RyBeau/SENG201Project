@@ -30,6 +30,10 @@ public class GameEnvironment {
 	 * This the number of transporter parts that the player needs to collect.
 	 */
 	private int partsToCollect;
+	/*
+	 * This is the main screen that plays the game.
+	 */
+	private GameWindow gameWindow;
 	/**
 	 * This is the constructor for this class.<br>
 	 * Its sets the initial values of the variables for the class.
@@ -108,7 +112,7 @@ public class GameEnvironment {
 	 * @param member The CrewMember that will be searching the planet.
 	 */
 	public void searchPlanet(CrewMember member) {
-		member.searchPlanet(gameCrew, gamePlanet);
+		member.searchPlanet(gameCrew, gamePlanet, this);
 	}
 	/**
 	 * This method calls the pilotShip() method of the primaryPilot.<br>
@@ -123,16 +127,16 @@ public class GameEnvironment {
 	 * The nextDay method moves the game onto the next day.<br>
 	 * It calls all the required nextDay methods of the CrewMembers to decrease their energy and hungerLevel.
 	 */
-	public void nextDay(GameWindow gameScreen) {
+	public void nextDay() {
 		ArrayList<CrewMember> crewList = new ArrayList<CrewMember>(gameCrew.getCrewList());
 		for(CrewMember member: crewList) {
 			member.nextDay(gameCrew);
 		}
 		currentDay += 1;
 		if(checkGameOver()) {
-			gameOver(gameScreen);
+			gameOver();
 		}else {
-			gameScreen.refresh();
+			gameWindow.refresh();
 		}
 	}
 	/**
@@ -158,8 +162,8 @@ public class GameEnvironment {
 	/**
 	 * This method ends the game.
 	 */
-	public void gameOver(GameWindow gameScreen) {
-		gameScreen.closeWindow();
+	public void gameOver() {
+		gameWindow.closeWindow();
 	}
 	
 	/**
@@ -275,7 +279,7 @@ public class GameEnvironment {
 	 * The main loop for the game.
 	 */
 	public void launchGame() {
-		GameWindow gameWindow = new GameWindow(this, gameCrew);
+		gameWindow = new GameWindow(this, gameCrew);
 	}
 	/**
 	 * The main method that creates the controlling instance of GameEnvironment.
