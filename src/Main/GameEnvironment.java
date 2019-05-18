@@ -196,6 +196,7 @@ public class GameEnvironment {
 	public void nextDay() {
 		currentDay += 1;
 		if(checkGameOver()) {//First check to see if days are over.
+			currentDay -=1; //Since day is 1 greater than the number survived.
 			gameOver();
 		}else {
 			rollRandomEvents();
@@ -260,7 +261,7 @@ public class GameEnvironment {
 		gameWindow.closeWindow();
 		int finalScore = calculateScore();
 		String gameOverMessage = "Game Over"
-				+ "\nYour Crew " + gameCrew.getCrewName() + " survived "+ (currentDay - 1) + "/" + gameDays + " days." +
+				+ "\nYour Crew " + gameCrew.getCrewName() + " survived "+ (currentDay) + "/" + gameDays + " days." +
 				"\nThey found " + gameCrew.getPartsFound() + "/" + partsToCollect + " Transporter Parts." + 
 				"\nYour final score is: " + finalScore;
 		new Alert(gameOverMessage);
@@ -270,6 +271,7 @@ public class GameEnvironment {
 	/**
 	 * This method calculates the score for the game.<br>
 	 * The score is equal to the sum of:
+	 * - 1000 * the number of transporter parts found<br>
 	 * - 250 * the days survived by the Crew.<br>
 	 * - 300 * the surviving number of CrewMembers.<br>
 	 * - 100 * the number of FoodItems and MedicalItems the Crew has.<br>
@@ -279,7 +281,7 @@ public class GameEnvironment {
 	 */
 	public int calculateScore() {
 		int score = 1000 * gameCrew.getPartsFound();
-		score += 250 * currentDay - 1;
+		score += 250 * currentDay;
 		score += 300 * gameCrew.getCrewList().size();
 		score += 100 * (gameCrew.getFoodItems().size() + gameCrew.getMedicalItems().size());
 		score += gameCrew.getMoney();
