@@ -19,4 +19,8 @@ public class PurchasableAdaptor implements Purchasable{
 	public void purchase(FoodItem item) {
 		
 	}
+	
+	public String itemDescription() {
+		return null;
+	}
 }

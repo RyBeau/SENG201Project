@@ -22,15 +22,20 @@ public class MedicalItem extends PurchasableAdaptor{
 	 */
 	private boolean curesPlague = false;
 	/**
+	 * The name of the item.
+	 */
+	private String itemName;
+	/**
 	 * Constructor for the MedicalItem class.<br>
 	 * @param heal The amount the item heals a crew member.
 	 * @param cure If the item cures the plague.
 	 * @param price Price of the item a the outpost.
 	 */
-	public MedicalItem(int heal, boolean cure, int price) {
+	public MedicalItem(int heal, boolean cure, int price, String name) {
 		itemPrice = price;
 		healAmount = heal;
 		curesPlague = cure;
+		itemName = name;
 	}
 	/**
 	 * @return The int variable healAmount.
@@ -63,6 +68,12 @@ public class MedicalItem extends PurchasableAdaptor{
 		}else {
 			new Alert("Not Enough Money!");
 		}
+	}
+	/**
+	 * @return The item name.
+	 */
+	public String toString() {
+		return itemName;
 	}
 
 }

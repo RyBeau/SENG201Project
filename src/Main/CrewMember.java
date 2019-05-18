@@ -287,21 +287,20 @@ public class CrewMember {
 			if(roll <= 35 && planet.getTransporterPartsAmount() > 0) {//need check planet parts
 				crew.setPartsFound(crew.getPartsFound() + 1);
 				planet.setTransporterParts(0);
-				alertMessage += "1 Transporter Part";
+				sendAlert(alertMessage + "1 Transporter Part");
 				if(environment.checkGameOver()) {
 					environment.gameOver();
 				}
 			}else if(roll <= 55){
-				alertMessage += "Nothing";
+				sendAlert(alertMessage + "Nothing");
 			}else if(roll <= 75){
-				alertMessage += foundItem(crew);
+				sendAlert(alertMessage + foundItem(crew));
 			}else {
 				int moneyFound = randomNumberGenerator.nextInt(450) + 50;//50 added as the integer can be 450 is the biggest value as 50 will be added.
 				crew.setMoney(crew.getMoney() + moneyFound);
-				alertMessage += "$" + moneyFound;
+				sendAlert(alertMessage + "$" + moneyFound);
 			}
 			memberActions -= 1;
-			sendAlert(alertMessage);
 		}else {
 			sendAlert("No actions left for this crew member!");
 		}
@@ -395,10 +394,25 @@ public class CrewMember {
 		}
 	}
 	
+	/**
+	 * This method is for the random event "Asteroid field"<br>
+	 * It is called if the randomNumberGenerator pick 0-35 in the pilotShip() method.<br>
+	 * The damage taken is a random integer from randomNumberGenerator between 0-90 + 10, the + 10 is needed so that the minimum damage is 10
+	 * and the maximum damage is 100.<br>
+	 * Damage scales depending upon currentLevel. The larger currentLevel the effect the damage has on the crew.<br>
+	 * If damage is greater than currentLevel then the shield level is set to 0.
+	 * @param ship The Crew's ship.
+	 */
 	public void asteroidField(Ship ship) {
 		int currentLevel = ship.getShieldLevel();
-		int damage = (currentLevel / 5) * 2;
-		ship.setShieldLevel(currentLevel - damage);
+		int damage = randomNumberGenerator.nextInt(90) + 10;
+		if(damage > currentLevel) {
+			ship.setShieldLevel(0);
+		}else {
+			ship.setShieldLevel(currentLevel - damage);
+		}
+		//Check with Tutors.
+		sendAlert("Whilst travelling to the new planet the ship went through and asteroid field. The Shields took " + damage + " damage.");
 	}
 	/**
 	 * This method is called at the start of each new day.<br>

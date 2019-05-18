@@ -20,6 +20,7 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
 /**
  * This is the main GUI window for running the game itself.<br>
  * All aspects of the game are displayed here and player interaction happens with this GUI.
@@ -56,6 +57,8 @@ public class GameWindow {
 	 * and transporter parts to find.
 	 */
 	private JPanel topInfoPanel;
+	
+	private JLabel lblPlanetParts;
 	/**
  	* This is the constructor for GameWindow
  	* It assigns the variables environment and crew with incomingEnvironment and incomingCrew.
@@ -141,7 +144,11 @@ public class GameWindow {
 		JButton btnEatFood = new JButton("Eat Food");
 		btnEatFood.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Implement
+				if(crew.getFoodItems().size() > 0) {
+					openFoodWindow();
+				}else {
+					new Alert("You have no food items to eat!");
+				}
 			}
 		});
 		btnEatFood.setBounds(347, 20, 130, 26);
@@ -173,7 +180,7 @@ public class GameWindow {
 		JButton btnPilotShip = new JButton("Pilot Ship");
 		btnPilotShip.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Implement
+				pilotShip();
 			}
 		});
 		btnPilotShip.setBounds(347, 209, 130, 26);
@@ -182,11 +189,21 @@ public class GameWindow {
 		JButton btnHeal = new JButton("Heal");
 		btnHeal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Implement
-			}
+				openMedicalWindow();
+		}
 		});
 		btnHeal.setBounds(347, 58, 130, 26);
 		actionsPanel.add(btnHeal);
+		
+		lblPlanetParts = new JLabel("Transporter Parts on Current Planet: " + environment.getGamePlanet().getTransporterPartsAmount());
+		lblPlanetParts.setBounds(12, 0, 239, 34);
+		actionsPanel.add(lblPlanetParts);
+		
+		JLabel lblplanetImage = new JLabel("");
+		lblplanetImage.setHorizontalAlignment(SwingConstants.CENTER);
+		lblplanetImage.setIcon(new ImageIcon(GameWindow.class.getResource("/Images/PlanetImage.png")));
+		lblplanetImage.setBounds(22, 46, 211, 189);
+		actionsPanel.add(lblplanetImage);
 	}
 	/**
 	 * This method creates the GUI elements with the crewPane JPanel.<br>
@@ -296,13 +313,41 @@ public class GameWindow {
 		buildTopInfoPanel();
 		topInfoPanel.revalidate();
 		topInfoPanel.repaint();
+		lblPlanetParts.setText("Transporter Parts on Current Planet: " + environment.getGamePlanet().getTransporterPartsAmount());
 	}
 	/**
 	 * This method refreshes the statusPane JTextPane text to display the status of the currently selected CrewMember in the 
 	 * listOfCrew JList.
 	 */
-	private void updateCrewMember() {
+	public void updateCrewMember() {
 		CrewMember member = listOfCrew.getSelectedValue();
 		statusPane.setText(member.viewStatus());
+	}
+	/**
+	 * This method opens the FoodItem version of the UseItemWindow.<br>
+	 * It checks that the crew actually has a FoodItem to use before opening the UseItemWindow.<br>
+	 * If they do not then it sends and alert to the player.
+	 */
+	private void openFoodWindow() {
+		if(crew.getFoodItems().size() > 0) {
+			new UseItemWindow(environment, this, crew, listOfCrew.getSelectedValue(), "FoodItem");
+		}else {
+			new Alert("You have no food items to eat!");
+		}
+	}
+	/**
+	 * This method opens the MedicalItem version of the UseItemWindow.<br>
+	 * It checks that the crew actually has a MedicalItem to use before opening the UseItemWindow.<br>
+	 * If they do not then it sends and alert to the player.
+	 */
+	private void openMedicalWindow() {
+		if(crew.getMedicalItems().size() > 0) {
+			new UseItemWindow(environment, this, crew, listOfCrew.getSelectedValue(), "MedicalItem");
+		}else {
+			new Alert("You have no Medical Items to Use!");
+	}
+	}
+	private void pilotShip() {
+		environment.pilotShip(listOfCrew.getSelectedValue(), this);
 	}
 }

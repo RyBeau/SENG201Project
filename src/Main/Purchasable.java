@@ -13,8 +13,9 @@ public interface Purchasable {
 	 */
 	void purchase(MedicalItem item);
 	void purchase(FoodItem item);
+
 	/**
 	 * @return General Information about the item, price, healAmount etc.
 	 */
-	String toString();
+	String itemDescription();
 }

@@ -120,13 +120,17 @@ public class GameEnvironment {
 		member.searchPlanet(gameCrew, gamePlanet, this);
 	}
 	/**
-	 * This method calls the pilotShip() method of the primaryPilot.<br>
-	 * Both primaryPilot and secondaryPilot will have their actions decreased by this method.
+	 * This method creates a new instance of PilotSelectionScreen<br>
+	 * This initially checks that the primaryPilot has enough actions. Otherwise an alert is sent to the player.
 	 * @param primaryPilot The first CrewMember selected to pilot the ship. Their pilotShip() method is the one that is called.
-	 * @param secondaryPilot The second CrewMember selected to pilot the ship.
+	 * @param gameScreen This is the GameWindow that the player has been interacting with.
 	 */
-	public void pilotShip(CrewMember primaryPilot, CrewMember secondaryPilot) {
-		primaryPilot.pilotShip(secondaryPilot, gamePlanet, gameCrew.getCrewShip());
+	public void pilotShip(CrewMember primaryPilot, GameWindow gameScreen) {
+		if(primaryPilot.hasActions()) {
+			new PilotSelectWindow(primaryPilot, gameScreen, gameCrew, gamePlanet);
+		}else {
+			new Alert("Not Enough Actions!");
+		}
 	}
 	
 	/**
@@ -184,15 +188,38 @@ public class GameEnvironment {
 	
 	/**
 	 * The nextDay method moves the game onto the next day.<br>
+	 * currentDay is iterated.<br>
+	 * Then checkGameOver() is called to test if all days have been completed.<br>
+	 * If False then it calls all the required nextDay methods of the CrewMembers to decrease their energy and hungerLevel.<br>
+	 * Then it calls checkGameOver() again incase all CrewMembers have died.
+	 */
+	public void nextDay() {
+		currentDay += 1;
+		if(checkGameOver()) {//First check to see if days are over.
+			gameOver();
+		}else {
+			rollRandomEvents();
+			ArrayList<CrewMember> crewList = new ArrayList<CrewMember>(gameCrew.getCrewList());
+			for(CrewMember member: crewList) {
+				member.nextDay(gameCrew);
+			}
+			if(checkGameOver()) { //Second check to make sure there are still CrewMembers.
+				gameOver();
+			}else {
+				gameWindow.refresh();
+			}
+		}
+	}
+	
+	/**
+	 * This method decides if a random event occurs.<br>
 	 * It firsts sets roll to a random integer from 0-100 using randomNumberGenerator.<br>
 	 * If roll is 0-25 then spacePlague() is called.<br>
 	 * If roll is 26-38 and crewFoodItems has at least one FoodItem in it then spacePirates(ArrayList<FoodItem> foodList) is called.<br>
 	 * If roll is 38-50 and crewMedicalItems has at least one MedicalItem in it then spacePirates(MedicalItem[] medicalList) is called.<br>
 	 * The crewMedicalItems ArrayList is converted to an Array so that the spacePirate method can be overloaded.<br>
-	 * After that it calls all the required nextDay methods of the CrewMembers to decrease their energy and hungerLevel.<br>
-	 * Finally it iterates the currentDay variable and calls checkGameOver() to see if any end conditions have been met.
 	 */
-	public void nextDay() {
+	public void rollRandomEvents() {
 		int roll = randomNumberGenerator.nextInt(100);
 		if(roll <= 25) {
 			spacePlague();
@@ -200,16 +227,6 @@ public class GameEnvironment {
 			spacePirates(gameCrew.getFoodItems());
 		}else if (roll <= 50 && gameCrew.getMedicalItems().size() > 0) {
 			spacePirates(gameCrew.getMedicalItems().toArray(new MedicalItem[gameCrew.getMedicalItems().size()]));
-		}
-		ArrayList<CrewMember> crewList = new ArrayList<CrewMember>(gameCrew.getCrewList());
-		for(CrewMember member: crewList) {
-			member.nextDay(gameCrew);
-		}
-		currentDay += 1;
-		if(checkGameOver()) {
-			gameOver();
-		}else {
-			gameWindow.refresh();
 		}
 	}
 	/**
@@ -233,10 +250,41 @@ public class GameEnvironment {
 	}
 	
 	/**
-	 * This method ends the game.
+	 * This method ends the game.<br>
+	 * It closes the GameWindow<br>
+	 * It calls calculateScore() to get a final score for the player.<br>
+	 * It then makes the game over message and then sends it as an Alert to the player.<br>
+	 * When the Alert is closed it calls main() to restart the game.
 	 */
 	public void gameOver() {
 		gameWindow.closeWindow();
+		int finalScore = calculateScore();
+		String gameOverMessage = "Game Over"
+				+ "\nYour Crew " + gameCrew.getCrewName() + " survived "+ (currentDay - 1) + "/" + gameDays + " days." +
+				"\nThey found " + gameCrew.getPartsFound() + "/" + partsToCollect + " Transporter Parts." + 
+				"\nYour final score is: " + finalScore;
+		new Alert(gameOverMessage);
+		main(null);
+	}
+	
+	/**
+	 * This method calculates the score for the game.<br>
+	 * The score is equal to the sum of:
+	 * - 250 * the days survived by the Crew.<br>
+	 * - 300 * the surviving number of CrewMembers.<br>
+	 * - 100 * the number of FoodItems and MedicalItems the Crew has.<br>
+	 * - The amount of money the Crew has.<br>
+	 * - The Shield Level of the Crew Ship
+	 * @return The total score for the game.
+	 */
+	public int calculateScore() {
+		int score = 1000 * gameCrew.getPartsFound();
+		score += 250 * currentDay - 1;
+		score += 300 * gameCrew.getCrewList().size();
+		score += 100 * (gameCrew.getFoodItems().size() + gameCrew.getMedicalItems().size());
+		score += gameCrew.getMoney();
+		score += gameCrew.getCrewShip().getShieldLevel();
+		return score;
 	}
 	
 	/**

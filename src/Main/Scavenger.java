@@ -32,16 +32,18 @@ public class Scavenger extends CrewMember{
 			if(roll <= 55 && planet.getTransporterPartsAmount() > 0) {
 				crew.setPartsFound(crew.getPartsFound() + 1);
 				planet.setTransporterParts(0);
-				alertMessage += "1 Transporter Part";
+				super.sendAlert(alertMessage + "1 Transporter Part");
+				if(environment.checkGameOver()) {
+					environment.gameOver();
+				}
 			}else if(roll <= 75) {
-				alertMessage += super.foundItem(crew);
+				super.sendAlert(alertMessage + super.foundItem(crew));
 			}else {
 				int moneyFound = RNG.nextInt(450) + 50;//50 added as the integer can be 450 is the biggest value as 50 will be added.
 				crew.setMoney(crew.getMoney() + moneyFound);
-				alertMessage += "$" + moneyFound;
+				super.sendAlert(alertMessage + "$" + moneyFound);
 			}
 			super.setActions(super.getActions() - 1);
-			super.sendAlert(alertMessage);
 		}else {
 			super.sendAlert("No actions left for this crew member!");
 		}

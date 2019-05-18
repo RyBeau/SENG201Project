@@ -12,13 +12,13 @@ public class PlagueCure extends MedicalItem{
 	 * The plague cure only cures the plague and does not heal the crew member by any amount.
 	 */
 	public PlagueCure() {
-		super(0, true, 250);
+		super(0, true, 250, "Plague Cure");
 	}
 	/**
 	 * @return A string detailing the item, its price, heal amount and its function.
 	 */
-	public String toString() {
-		return "The Plague Cure cures the crew member of the plague." + super.getPrice() + " from the outpost.";
+	public String itemDescription() {
+		return "The " + super.toString() + " cures the crew member of the plague. It costs $" + super.getPrice() + " from the outpost.";
 	}
 	
 	public void purchase() {
