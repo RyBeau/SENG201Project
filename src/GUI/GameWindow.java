@@ -18,6 +18,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
@@ -221,12 +222,12 @@ public class GameWindow {
 		listOfCrew.setBounds(12, 40, 139, 110);
 		crewPanel.add(listOfCrew);
 		listOfCrew.setModel(new AbstractListModel<CrewMember>() {
-			CrewMember[] values = crew.getCrewList().toArray(new CrewMember[crew.getCrewList().size()]);
+			ArrayList<CrewMember> values = crew.getCrewList();
 			public int getSize() {
-				return values.length;
+				return values.size();
 			}
 			public CrewMember getElementAt(int index) {
-				return values[index];
+				return values.get(index);
 			}
 		});
 		JLabel lblCrewName = new JLabel(crew.getCrewName());
