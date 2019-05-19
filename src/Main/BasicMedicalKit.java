@@ -21,8 +21,8 @@ public class BasicMedicalKit extends MedicalItem{
 		return "The " + super.toString() + " restores " + super.getHealAmount() + " health. It costs $" + super.getPrice() + " from the outpost.";
 		}
 
-	public void purchase() {
-		super.purchase(new BasicMedicalKit());
+	public void purchase(Crew crew) {
+		super.purchase(new BasicMedicalKit(), crew);
 	}
 
 }

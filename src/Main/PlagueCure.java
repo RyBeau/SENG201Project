@@ -21,7 +21,7 @@ public class PlagueCure extends MedicalItem{
 		return "The " + super.toString() + " cures the crew member of the plague. It costs $" + super.getPrice() + " from the outpost.";
 	}
 	
-	public void purchase() {
-		super.purchase(new PlagueCure());
+	public void purchase(Crew crew) {
+		super.purchase(new PlagueCure(), crew);
 	}
 }

@@ -196,7 +196,7 @@ public class GameWindow {
 		actionsPanel.add(btnHeal);
 		
 		lblPlanetParts = new JLabel("Transporter Parts on Current Planet: " + environment.getGamePlanet().getTransporterPartsAmount());
-		lblPlanetParts.setBounds(12, 0, 239, 34);
+		lblPlanetParts.setBounds(12, 0, 287, 34);
 		actionsPanel.add(lblPlanetParts);
 		
 		JLabel lblplanetImage = new JLabel("");
