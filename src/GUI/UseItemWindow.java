@@ -21,7 +21,9 @@ import javax.swing.AbstractListModel;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 /**
  * This is the GUI window for selecting which FoodItem or MedicalItem the player would like to use.<br>
  * It then calls either the heal or feed method in environment with member and the FoodItem or MedicalItem<br>
@@ -61,7 +63,8 @@ public class UseItemWindow {
 	 * The JDialog holding all of the GUI elements.
 	 */
 	private JDialog useItemScreen;
-
+	
+	private JScrollPane scrollPane;
 
 	/**
 	 * This method initialises each of the variables within the class with the given parameters.<br>
@@ -101,6 +104,11 @@ public class UseItemWindow {
 		useItemScreen.setModalityType(ModalityType.APPLICATION_MODAL);
 		useItemScreen.getContentPane().setLayout(null);
 		
+		scrollPane = new JScrollPane();
+		scrollPane.setBorder(new LineBorder(new Color(0, 0, 0)));
+		scrollPane.setBounds(10, 35, 160, 120);
+		useItemScreen.getContentPane().add(scrollPane);
+		
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -112,7 +120,7 @@ public class UseItemWindow {
 		
 		JLabel lblSelectItemTo = new JLabel("Select Item to use:");
 		lblSelectItemTo.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblSelectItemTo.setBounds(10, 0, 143, 34);
+		lblSelectItemTo.setBounds(10, 0, 189, 34);
 		useItemScreen.getContentPane().add(lblSelectItemTo);
 		
 		itemList = new JList<PurchasableAdaptor>();
@@ -127,12 +135,12 @@ public class UseItemWindow {
 		}else {
 			makeMedicalList();
 		}
-		
+
 		infoPane = new JTextPane();
 		infoPane.setBackground(UIManager.getColor("Button.background"));
 		infoPane.setBorder(new LineBorder(new Color(0, 0, 0)));
 		infoPane.setEditable(false);
-		infoPane.setBounds(206, 35, 163, 122);
+		infoPane.setBounds(206, 35, 160, 120);
 		useItemScreen.getContentPane().add(infoPane);
 		
 		JButton btnUse = new JButton("Use");
@@ -148,6 +156,8 @@ public class UseItemWindow {
 		});
 		btnUse.setBounds(10, 168, 163, 23);
 		useItemScreen.getContentPane().add(btnUse);
+		
+		itemList.setSelectedIndex(0);
 	}
 	
 	/**
@@ -156,18 +166,18 @@ public class UseItemWindow {
 	 */
 	private void makeFoodList() {
 		itemList.setModel(new AbstractListModel() {
-			FoodItem[] values = crew.getFoodItems().toArray(new FoodItem[crew.getFoodItems().size()]);
+			ArrayList<FoodItem> values = crew.getFoodItems();
 			public int getSize() {
-				return values.length;
+				return values.size();
 			}
 			public Object getElementAt(int index) {
-				return values[index];
+				return values.get(index);
 			}
 		});
 		itemList.setBackground(UIManager.getColor("Button.background"));
 		itemList.setBorder(new LineBorder(new Color(0, 0, 0)));
 		itemList.setBounds(10, 35, 163, 122);
-		useItemScreen.getContentPane().add(itemList);
+		scrollPane.getViewport().add(itemList);
 	}
 	
 	/**
@@ -176,18 +186,18 @@ public class UseItemWindow {
 	 */
 	private void makeMedicalList() {
 		itemList.setModel(new AbstractListModel() {
-			MedicalItem[] values = crew.getMedicalItems().toArray(new MedicalItem[crew.getMedicalItems().size()]);
+			ArrayList<MedicalItem> values = crew.getMedicalItems();
 			public int getSize() {
-				return values.length;
+				return values.size();
 			}
 			public Object getElementAt(int index) {
-				return values[index];
+				return values.get(index);
 			}
 		});
 		itemList.setBackground(UIManager.getColor("Button.background"));
 		itemList.setBorder(new LineBorder(new Color(0, 0, 0)));
 		itemList.setBounds(10, 35, 163, 122);
-		useItemScreen.getContentPane().add(itemList);
+		scrollPane.getViewport().add(itemList);
 	}
 	
 	
