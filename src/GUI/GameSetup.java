@@ -34,6 +34,9 @@ public class GameSetup {
 	 * The JTextField for entering name of the crew.
 	 */
 	private JTextField crewName;
+	/**
+	 * This is the GameEnvironment class that is controlling the game.
+	 */
 	private GameEnvironment environment;
 
 	/**
@@ -84,7 +87,7 @@ public class GameSetup {
 		numCrew.setMinorTickSpacing(1);
 		numCrew.setMajorTickSpacing(1);
 		numCrew.setMinimum(2);
-		numCrew.setMaximum(6);
+		numCrew.setMaximum(4);
 		numCrew.setPaintTicks(true);
 		numCrew.setPaintLabels(true);
 		

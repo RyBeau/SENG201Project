@@ -15,11 +15,4 @@ public class Tank extends CrewMember {
 	public Tank(String name) {
 		super(name, "Tank", 175);
 	}
-	/**
-	 * The toString method for CrewMember subclasses provides a short description of the crew member type.
-	 * @return A short description of the crew member type.
-	 */
-	public String toString() {
-		return "The Tank type has an increased maximum health level over other types.";
-	}
 }

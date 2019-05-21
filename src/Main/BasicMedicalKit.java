@@ -12,17 +12,17 @@ public class BasicMedicalKit extends MedicalItem{
 	 * The BasicMedicalKit does not cure the plague.
 	 */
 	public BasicMedicalKit(){
-		super(35, false, 100);
+		super(35, false, 100, "Basic Medical Kit");
 	}
 	/**
 	 * @return A string detailing the item, its price, heal amount and its function.
 	 */
-	public String toString() {
-		return "The Basic Medical Kit restores" + super.getHealAmount() + " health. It costs $" + super.getPrice() + " from the outpost.";
+	public String itemDescription() {
+		return "The " + super.toString() + " restores " + super.getHealAmount() + " health. It costs $" + super.getPrice() + " from the outpost.";
 		}
 
-	public void purchase() {
-		super.purchase(new BasicMedicalKit());
+	public void purchase(Crew crew) {
+		super.purchase(new BasicMedicalKit(), crew);
 	}
 
 }

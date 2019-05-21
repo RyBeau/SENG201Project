@@ -2,11 +2,21 @@ package GUI;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.SwingConstants;
 import Main.GameEnvironment;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.awt.event.ActionEvent;
+
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 /**
  * This is the initial start screen. The player sees this to begin and is returned to it at the end of their game.
@@ -64,11 +74,11 @@ public class StartWindow {
 		startScreen.getContentPane().add(btnExit);
 		
 		//Causing NullPointerException
-		//JLabel image= new JLabel("");
-		//image.setHorizontalAlignment(SwingConstants.CENTER);
-		//image.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/images/RocketShip.png")).getImage().getScaledInstance(150, 150, 150)));
-		//image.setBounds(114, 0, 220, 220);
-		//startScreen.getContentPane().add(image);
+		JLabel lblImage= new JLabel("");
+		lblImage.setHorizontalAlignment(SwingConstants.CENTER);
+		lblImage.setIcon(new ImageIcon(StartWindow.class.getResource("/Images/RocketShip.png")));
+		lblImage.setBounds(114, 0, 220, 220);
+		startScreen.getContentPane().add(lblImage);
 	}
 	/**
 	 * Closes startScreen.

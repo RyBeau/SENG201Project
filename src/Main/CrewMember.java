@@ -50,7 +50,7 @@ public class CrewMember {
 	/**
 	 * This is the random number generator used when searchPlanet() is called.
 	 */
-	private Random RNG = new Random();
+	private Random randomNumberGenerator = new Random();
 	
 	/**
 	 * The default builder for the class.
@@ -126,6 +126,13 @@ public class CrewMember {
 		memberHunger = hunger;
 	}
 	/**
+	 * This is the getter for memberHunger.
+	 * @return The int memberHunger.
+	 */
+	public int getHunger() {
+		return memberHunger;
+	}
+	/**
 	 * Sets the memberEnergy variable to a given amount.
 	 * @param energy The value to set memberEnergy to.
 	 */
@@ -170,7 +177,8 @@ public class CrewMember {
 	 * Includes memberName, memberType, memberHealth, memberHunger, memberEnergy variables.<br>
 	 */
 	public String viewStatus() {
-		return "Status of Crew Member " + memberName + ":\nType: " + memberType + "\nHealth Level: " + memberHealth + "\nHunger Level: " + memberHunger + "\nEnergy Level: " + memberEnergy;
+		return "Type: " + memberType + "\nHealth Level: " + memberHealth + "\nHunger Level: " +
+	memberHunger + "\nEnergy Level: " + memberEnergy + "\nActions: " + memberActions;
 	}
 	/**
 	 * This method is for checking that the CrewMember has actions left to use.
@@ -180,14 +188,23 @@ public class CrewMember {
 		return memberActions > 0;
 	}
 	/**
+	 * The getter for memberEnergy.
+	 * @return The int memberEnergy
+	 */
+	public int getEnergy() {
+		return memberEnergy;
+	}
+	/**
 	 * If the CrewMember has actions left, this method increases the players hunger level by consuming an item of food.<br>
 	 * This is an action so it decreases memberActions by one.
 	 * @param food The food item selected by the player for the crew member to consume.
 	 */
 	public void feed(FoodItem food, Crew crew) {
 		if(hasActions()) {
-			int hunger = memberHunger;
-			memberHunger = (hunger + food.getFillUpAmount()) % 100;
+			memberHunger -= food.getFillUpAmount();
+			if(memberHunger < 0) {
+				memberHunger = 0;
+			}
 			memberActions -= 1;
 			crew.removeFromFoodItems(food);
 		}else {
@@ -203,8 +220,10 @@ public class CrewMember {
 	 */
 	public void heal(MedicalItem item, Crew crew) {
 		if (hasActions()) {
-			int health = memberHealth;
-			memberHealth = (health + item.getHealAmount()) % memberMaxHealth;
+			memberHealth += item.getHealAmount();
+			if(memberHealth > memberMaxHealth) {
+				memberHealth = memberMaxHealth;
+			}
 			if(item.getCure()) {
 				hasPlague = false;
 			}
@@ -220,9 +239,15 @@ public class CrewMember {
 	 */
 	public void sleep() {
 		if(hasActions()) {
-			int energy = memberEnergy;
-			memberEnergy = (energy + 40) % 100;
-			memberActions -= 1;
+			if(memberEnergy < 100) {
+				memberEnergy += 40;
+				if(memberEnergy > 100) {
+					memberEnergy = 100;
+				}
+				memberActions -= 1;
+			}else {
+				sendAlert(memberName + " has full energy already! They Cannot Sleep!");
+			}
 		}else {
 			sendAlert("No actions left for this crew member!");
 		}
@@ -233,8 +258,16 @@ public class CrewMember {
 	 */
 	public void repairShip(Ship ship) {
 		if(hasActions()) {
-			ship.setShieldLevel((ship.getShieldLevel() + 30) % 100);
-			memberActions -= 1;
+			if(ship.getShieldLevel() < 100) {
+				int newShieldLevel = ship.getShieldLevel() + 30;
+				if(newShieldLevel > 100) {
+					newShieldLevel = 100;
+				}
+				ship.setShieldLevel(newShieldLevel);
+				memberActions -= 1;
+			}else {
+				sendAlert("Ship Shields already 100%");
+			}
 		}else {
 			sendAlert("No actions left for this crew member!");
 		}
@@ -243,25 +276,31 @@ public class CrewMember {
 	 * This is the searchPlanet method for CrewMember.<br>
 	 * It uses Random to pick a random integer between 0-100<br>
 	 * 0-35: Transporter Part if there is one on the planet still.<br>
-	 * 36-75: A random MedicalItem or FoodItem. foundItem() called.<br>
+	 * 36-56 Nothing is found.<br>
+	 * 56-75: A random MedicalItem or FoodItem. foundItem() called.<br>
 	 * 76-100: A random amount of money between 1-500 is found. 
 	 */
-	public void searchPlanet(Crew crew, Planet planet) {
+	public void searchPlanet(Crew crew, Planet planet, GameEnvironment environment) {
 		if(hasActions()) {
-			String alertMessage = "Whilst Searching the planet" + this.memberName + " found: ";
-			int roll = RNG.nextInt(100);
-			if(roll <= 35) {//need check planet parts
+			String alertMessage = "Whilst Searching the planet " + this.memberName + " found: ";
+			int roll = randomNumberGenerator.nextInt(100);
+			if(roll <= 35 && planet.getTransporterPartsAmount() > 0) {//need check planet parts
 				crew.setPartsFound(crew.getPartsFound() + 1);
-				//Set transporter parts
-				alertMessage += "1 Transporter Part";
-			}else if(roll <= 75) {
-				alertMessage += foundItem(crew);
+				planet.setTransporterParts(0);
+				sendAlert(alertMessage + "1 Transporter Part");
+				if(environment.checkGameOver()) {
+					environment.gameOver();
+				}
+			}else if(roll <= 55){
+				sendAlert(alertMessage + "Nothing");
+			}else if(roll <= 75){
+				sendAlert(alertMessage + foundItem(crew));
 			}else {
-				int moneyFound = RNG.nextInt(450) + 50;//50 added as the integer can be 450 is the biggest value as 50 will be added.
+				int moneyFound = randomNumberGenerator.nextInt(450) + 50;//50 added as the integer can be 450 is the biggest value as 50 will be added.
 				crew.setMoney(crew.getMoney() + moneyFound);
-				alertMessage += "$" + moneyFound;
+				sendAlert(alertMessage + "$" + moneyFound);
 			}
-			sendAlert(alertMessage);
+			memberActions -= 1;
 		}else {
 			sendAlert("No actions left for this crew member!");
 		}
@@ -275,7 +314,7 @@ public class CrewMember {
  * @return The message string for the alert box.
  */
 	public String foundItem(Crew crew) {
-		int itemFound = RNG.nextInt(8);
+		int itemFound = randomNumberGenerator.nextInt(8);
 		String message = "";
 		switch(itemFound) {
 		case 0:
@@ -323,37 +362,84 @@ public class CrewMember {
 	}
 	
 	/**
+	 * The pilotShip method is used to go to a new planet.<br>
+	 * Firstly it checks that both the secondPilot and the CrewMember instance that the method is running both have at least 1 action.<br>
+	 * <h6>If (hasActions() && secondPilot.hasActions()) true</h6> 
+	 * Then if (ship.getShieldLevel() > 0):
+	 * -Then planet.NewPlanet() is called to reset the transporter parts of the planet.<br>
+	 * -Both CrewMembers memberActions are decreased by 1.<br>
+	 * -The random event "Asteroid Belt" is rolled. and an alert message is sent<br>
+	 * Else an alert is sent to the player to tell them to repair the ship.<br>
+	 * <h6>If (hasActions() && secondPilot.hasActions())is False:</h6> -Then an alert message is sent.
 	 * 
 	 * @param secondPilot The second CrewMember Piloting the ship.
+	 * @param planet The planet object for the current game.
+	 * @param ship The Crew's ship.
 	 */
-	public void pilotShip(CrewMember secondPilot, Planet planet) {
+	public void pilotShip(CrewMember secondPilot, Planet planet, Ship ship) {
 		if(hasActions() && secondPilot.hasActions()) {
-			planet.NewPlanet();
-			memberActions -= 1;
-			secondPilot.setActions(secondPilot.getActions() - 1);
-			sendAlert("You have travelled to a new planet. There is 1 transporter part to collect here.");
+			if(ship.getShieldLevel() > 0) {
+				planet.NewPlanet();
+				memberActions -= 1;
+				secondPilot.setActions(secondPilot.getActions() - 1);
+				if(randomNumberGenerator.nextInt(100) <= 35) {
+					asteroidField(ship);
+				}
+				sendAlert("You have travelled to a new planet. There is 1 transporter part to collect here.");
+			}else {
+				sendAlert("Ship needs repairing!");
+			}
 		}else {
-			sendAlert("Not enough actoins!");
+			sendAlert("Not enough actions!");
 		}
+	}
+	
+	/**
+	 * This method is for the random event "Asteroid field"<br>
+	 * It is called if the randomNumberGenerator pick 0-35 in the pilotShip() method.<br>
+	 * The damage taken is a random integer from randomNumberGenerator between 0-90 + 10, the + 10 is needed so that the minimum damage is 10
+	 * and the maximum damage is 100.<br>
+	 * Damage scales depending upon currentLevel. The larger currentLevel the effect the damage has on the crew.<br>
+	 * If damage is greater than currentLevel then the shield level is set to 0.
+	 * @param ship The Crew's ship.
+	 */
+	public void asteroidField(Ship ship) {
+		int currentLevel = ship.getShieldLevel();
+		int damage = randomNumberGenerator.nextInt(90) + 10;
+		if(damage > currentLevel) {
+			ship.setShieldLevel(0);
+		}else {
+			ship.setShieldLevel(currentLevel - damage);
+		}
+		//Check with Tutors.
+		sendAlert("Whilst travelling to the new planet the ship went through and asteroid field. The Shields took " + damage + " damage.");
 	}
 	/**
 	 * This method is called at the start of each new day.<br>
-	 * It decreases the crew members energy and hunger level.<br>
+	 * It resets the memberActions to 2.<br>
+	 * It increases the memberHunger by dailyHungerUse.<br>
+	 * It decreases the memberEnergy by dailyEnergyUse.<br>
 	 * If either memberHunger or memberEnergy are 0 then memberHealth will be decreased.<br>
 	 * It then checks if the crew members health is greater than 0, if it is not the crew member is removed from the crew as they have died.
 	 */
-	public void nextDay(GameEnvironment environment) {
-		memberHunger = (memberHunger + dailyHungerUse) % 100;//Decrease CrewMember Hunger Level
-		memberEnergy = (memberEnergy - dailyEnergyUse) % 100;//Decrease CrewMember Energy Level
-		if(memberHunger == 100) {
+	public void nextDay(Crew crew) {
+		memberActions = 2;
+		memberHunger += dailyHungerUse;
+		memberEnergy -= dailyEnergyUse;
+		if(memberHunger >= 100) {
+			memberHunger = 100;
 			memberHealth -= 30; //Decrease CrewMember health
-		}else if(memberEnergy == 0) {
+		}if(memberEnergy <= 0) {
+			memberEnergy = 0;
 			memberHealth -= 30; //Decrease CrewMember health
+		}if(hasPlague) {
+			memberHealth -= 15;
 		}
 		if(memberHealth <= 0) {//Checking if the player still has health
-			Crew crew = environment.getGameCrew(); //Getting crew
 			crew.removeCrewMember(this); //Removing the CrewMember from the crew.
+			sendAlert("Crew Member " + memberName + " has died!");
 		}
+		
 	}
 	
 	/**
@@ -364,4 +450,11 @@ public class CrewMember {
 		Alert alert = new Alert(text);
 	}
 	
+	/**
+	 * Used by in Jlist to display the memberName in the list.
+	 * @return memberName
+	 */
+	public String toString() {
+		return memberName;
+	}
 }

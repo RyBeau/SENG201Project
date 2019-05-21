@@ -20,38 +20,32 @@ public class Scavenger extends CrewMember{
 	}
 	/**
 	 * This method overrides CrewMember.searchPlanet().<br>
-	 * It increases the chances of finding transporter parts when searching the planet.<br>
+	 * It increases the chances of finding transporter parts when searching the planet and will always find something<br>
 	 * 0-55: Transporter Part if there is one on the planet still.<br>
 	 * 56-75: A random MedicalItem or FoodItem. foundItem() called.<br>
 	 * 76-100: A random amount of money between 1-500 is found.
 	 */
-	public void searchPlanet(Crew crew, Planet planet) {
+	public void searchPlanet(Crew crew, Planet planet, GameEnvironment environment) {
 		if(hasActions()) {
-			if(hasActions()) {
-				String alertMessage = "Whilst Searching the planet" + super.getName() + " found: ";
-				int roll = RNG.nextInt(100);
-				if(roll <= 55) {//need check planet parts
-					crew.setPartsFound(crew.getPartsFound() + 1);
-					//Set transporter parts
-					alertMessage += "1 Transporter Part";
-				}else if(roll <= 75) {
-					alertMessage += super.foundItem(crew);
-				}else {
-					int moneyFound = RNG.nextInt(450) + 50;//50 added as the integer can be 450 is the biggest value as 50 will be added.
-					crew.setMoney(crew.getMoney() + moneyFound);
-					alertMessage += "$" + moneyFound;
+			String alertMessage = "Whilst Searching the planet " + super.getName() + " found: ";
+			int roll = RNG.nextInt(100);
+			if(roll <= 55 && planet.getTransporterPartsAmount() > 0) {
+				crew.setPartsFound(crew.getPartsFound() + 1);
+				planet.setTransporterParts(0);
+				super.sendAlert(alertMessage + "1 Transporter Part");
+				if(environment.checkGameOver()) {
+					environment.gameOver();
 				}
-				sendAlert(alertMessage);
+			}else if(roll <= 75) {
+				super.sendAlert(alertMessage + super.foundItem(crew));
 			}else {
-				sendAlert("No actions left for this crew member!");
+				int moneyFound = RNG.nextInt(450) + 50;//50 added as the integer can be 450 is the biggest value as 50 will be added.
+				crew.setMoney(crew.getMoney() + moneyFound);
+				super.sendAlert(alertMessage + "$" + moneyFound);
 			}
+			super.setActions(super.getActions() - 1);
+		}else {
+			super.sendAlert("No actions left for this crew member!");
 		}
-	}
-	/**
-	 * The toString method for CrewMember subclasses provides a short description of the crew member type.
-	 * @return A short description of the crew member type.
-	 */
-	public String toString() {
-		return "The Scavenger has increased luck. When searching the planet a Scavenger is more likely to find items.";
 	}
 }

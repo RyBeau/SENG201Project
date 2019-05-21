@@ -1,5 +1,6 @@
 package Main;
 import GUI.*;
+import java.util.Random;
 import java.util.ArrayList;
 /**
  * This is the main controlling class for the game.<br>
@@ -19,25 +20,59 @@ public class GameEnvironment {
 	 */
 	private int gameDays;
 	/**
+	 * This is the current day of the game.
+	 */
+	private int currentDay;
+	/**
 	 * This is the planet the game is currently taking place on.
 	 */
-	private Planet gamePlanet = new Planet();
+	private Planet gamePlanet;
 	/**
 	 * This the number of transporter parts that the player needs to collect.
 	 */
 	private int partsToCollect;
+	/*
+	 * This is the main screen that plays the game.
+	 */
+	private GameWindow gameWindow;
+	/**
+	 * This is the randomNumberGenerator used for the Random Event chances.
+	 */
+	private Random randomNumberGenerator = new Random();
 	/**
 	 * This is the constructor for this class.<br>
 	 * Its sets the initial values of the variables for the class.
 	 */
 	public GameEnvironment() {
-		
+		gamePlanet = new Planet();
+		launchStartScreen();
 	}
 	/**
 	 * @return The games Crew. (Object)
 	 */
 	public Crew getGameCrew() {
 		return gameCrew;
+	}
+	/**
+	 * The getter for gamePlanet.
+	 * @return gamePlanet
+	 */
+	public Planet getGamePlanet() {
+		return gamePlanet;
+	}
+	/**
+	 * This is the getter for partsToCollect.
+	 * @return partsToCollect
+	 */
+	public int getPartsToCollect(){
+		return partsToCollect;
+	}
+	/**
+	 * This the the getter for currentDay;
+	 * @return currentDay
+	 */
+	public int getCurrentDay() {
+		return currentDay;
 	}
 	/**
 	 * Visits the outpost, and displays the items purchasable at the outpost.
@@ -82,27 +117,178 @@ public class GameEnvironment {
 	 * @param member The CrewMember that will be searching the planet.
 	 */
 	public void searchPlanet(CrewMember member) {
-		member.searchPlanet(gameCrew, gamePlanet);
+		member.searchPlanet(gameCrew, gamePlanet, this);
 	}
 	/**
-	 * This method calls the pilotShip() method of the primaryPilot.<br>
-	 * Both primaryPilot and secondaryPilot will have their actions decreased by this method.
+	 * This method creates a new instance of PilotSelectionScreen<br>
+	 * This initially checks that the primaryPilot has enough actions. Otherwise an alert is sent to the player.
 	 * @param primaryPilot The first CrewMember selected to pilot the ship. Their pilotShip() method is the one that is called.
-	 * @param secondaryPilot The second CrewMember selected to pilot the ship.
+	 * @param gameScreen This is the GameWindow that the player has been interacting with.
 	 */
-	public void pilotShip(CrewMember primaryPilot, CrewMember secondaryPilot) {
-		primaryPilot.pilotShip(secondaryPilot, gamePlanet);
-	}
-	/**
-	 * The nextDay method moves the game onto the next day.<br>
-	 * It calls all the required nextDay methods of the CrewMembers to decrease their energy and hungerLevel.
-	 */
-	public void nextDay() {
-		ArrayList<CrewMember> crewList = gameCrew.getCrewList();
-		for(CrewMember member: crewList) {
-			member.nextDay(this);
+	public void pilotShip(CrewMember primaryPilot, GameWindow gameScreen) {
+		if(primaryPilot.hasActions()) {
+			new PilotSelectWindow(primaryPilot, gameScreen, gameCrew, gamePlanet);
+		}else {
+			new Alert("Not Enough Actions!");
 		}
 	}
+	
+	/**
+	 * This method is for the Random Event where the gameCrew Contracts the space plague.<br>
+	 * It is called by the nextDay() method when the random number generator gives a value from 0-25.<br>
+	 * It sets the hasPlague variable in each CrewMember to true as they have now contracted the space plague.<br>
+	 * It then sends an alert telling the player what has occurred.
+	 */
+	public void spacePlague() {
+		for(CrewMember member: gameCrew.getCrewList()) {
+			member.setPlague(true);
+		}
+		new Alert("The crew has contracted the space plague! They need the Plague Cure!");
+	}
+	
+	/**
+	 * This is the method for the Random Event where space pirates steal a random FoodItem from the gameCrew.<br>
+	 * This method is called by the nextDay() method when the random number generator gives a value from 26-38.<br>
+	 * Firstly it checks the case that there is only one item in the list, and if true that item is removed.<br>
+	 * Otherwise it uses randomNumberGenerator to select a random index in foodList.<br>
+	 * The item at that index is then removed.<br>
+	 * It then sends an alert telling the player what has occurred.
+	 */
+	public void spacePirates(ArrayList<FoodItem> foodList) {
+		String alertString = "The Space Pirates raided your ship! They stole: ";
+		FoodItem itemRemoved;
+		if(foodList.size() == 1) {
+			itemRemoved = foodList.get(0);
+		}else {
+			itemRemoved = foodList.get(randomNumberGenerator.nextInt(foodList.size() - 1));
+		}
+		gameCrew.removeFromFoodItems(itemRemoved);
+		new Alert(alertString + itemRemoved);
+	}
+	
+	/**
+	 * This is the method for the Random Event where space pirates steal a random MedicalItem from the gameCrew.<br>
+	 * This method is called by the nextDay() method when the random number generator gives a value from 38-50.<br>
+	 * Firstly it checks the case that there is only one item in the list, and if true that item is removed.<br>
+	 * Otherwise it uses randomNumberGenerator to select a random index in medicalList.<br>
+	 * The item at that index is then removed.<br>
+	 * It then sends an alert telling the player what has occurred.
+	 */
+	public void spacePirates(MedicalItem[] medicalList) {
+		String alertString = "The Space Pirates raided your ship! They stole: ";
+		MedicalItem itemRemoved;
+		if(medicalList.length == 1) {
+			itemRemoved = medicalList[0];
+		}else {
+			itemRemoved = medicalList[randomNumberGenerator.nextInt(medicalList.length - 1)];
+		}
+		gameCrew.removeFromMedicalItems(itemRemoved);
+		new Alert(alertString + itemRemoved);
+	}
+	
+	/**
+	 * The nextDay method moves the game onto the next day.<br>
+	 * currentDay is iterated.<br>
+	 * Then checkGameOver() is called to test if all days have been completed.<br>
+	 * If False then it calls all the required nextDay methods of the CrewMembers to decrease their energy and hungerLevel.<br>
+	 * Then it calls checkGameOver() again incase all CrewMembers have died.
+	 */
+	public void nextDay() {
+		currentDay += 1;
+		if(checkGameOver()) {//First check to see if days are over.
+			currentDay -=1; //Since day is 1 greater than the number survived.
+			gameOver();
+		}else {
+			rollRandomEvents();
+			ArrayList<CrewMember> crewList = new ArrayList<CrewMember>(gameCrew.getCrewList());
+			for(CrewMember member: crewList) {
+				member.nextDay(gameCrew);
+			}
+			if(checkGameOver()) { //Second check to make sure there are still CrewMembers.
+				gameOver();
+			}else {
+				gameWindow.refresh();
+			}
+		}
+	}
+	
+	/**
+	 * This method decides if a random event occurs.<br>
+	 * It firsts sets roll to a random integer from 0-100 using randomNumberGenerator.<br>
+	 * If roll is 0-25 then spacePlague() is called.<br>
+	 * If roll is 26-38 and crewFoodItems has at least one FoodItem in it then spacePirates(ArrayList<FoodItem> foodList) is called.<br>
+	 * If roll is 38-50 and crewMedicalItems has at least one MedicalItem in it then spacePirates(MedicalItem[] medicalList) is called.<br>
+	 * The crewMedicalItems ArrayList is converted to an Array so that the spacePirate method can be overloaded.<br>
+	 */
+	public void rollRandomEvents() {
+		int roll = randomNumberGenerator.nextInt(100);
+		if(roll <= 25) {
+			spacePlague();
+		}else if(roll <= 38 && gameCrew.getFoodItems().size() > 0) {
+			spacePirates(gameCrew.getFoodItems());
+		}else if (roll <= 50 && gameCrew.getMedicalItems().size() > 0) {
+			spacePirates(gameCrew.getMedicalItems().toArray(new MedicalItem[gameCrew.getMedicalItems().size()]));
+		}
+	}
+	/**
+	 * This method checks if any of the conditions for the game ending have been met.<br>
+	 * Conditions Checked:<br>
+	 * currentDay > gameDays -> All days have been completed.<br>
+	 * partsToCollect == partsFound -> All parts have been found.<br>
+	 * crewList.size() == 0 -> All CrewMembers are dead.<br>
+	 * @return
+	 */
+	public Boolean checkGameOver() {
+		Boolean isOver = false;
+		if(currentDay > gameDays) {
+			isOver = true;
+		}else if(partsToCollect == gameCrew.getPartsFound()) {
+			isOver = true;
+		}else if(gameCrew.getCrewList().size() == 0) {
+			isOver = true;
+		}
+		return isOver;
+	}
+	
+	/**
+	 * This method ends the game.<br>
+	 * It closes the GameWindow<br>
+	 * It calls calculateScore() to get a final score for the player.<br>
+	 * It then makes the game over message and then sends it as an Alert to the player.<br>
+	 * When the Alert is closed it calls main() to restart the game.
+	 */
+	public void gameOver() {
+		gameWindow.closeWindow();
+		int finalScore = calculateScore();
+		String gameOverMessage = "Game Over"
+				+ "\nYour Crew " + gameCrew.getCrewName() + " survived "+ (currentDay) + "/" + gameDays + " days." +
+				"\nThey found " + gameCrew.getPartsFound() + "/" + partsToCollect + " Transporter Parts." + 
+				"\nYour final score is: " + finalScore;
+		new Alert(gameOverMessage);
+		main(null);
+	}
+	
+	/**
+	 * This method calculates the score for the game.<br>
+	 * The score is equal to the sum of:
+	 * - 1000 * the number of transporter parts found<br>
+	 * - 250 * the days survived by the Crew.<br>
+	 * - 300 * the surviving number of CrewMembers.<br>
+	 * - 100 * the number of FoodItems and MedicalItems the Crew has.<br>
+	 * - The amount of money the Crew has.<br>
+	 * - The Shield Level of the Crew Ship
+	 * @return The total score for the game.
+	 */
+	public int calculateScore() {
+		int score = 1000 * gameCrew.getPartsFound();
+		score += 250 * currentDay;
+		score += 300 * gameCrew.getCrewList().size();
+		score += 100 * (gameCrew.getFoodItems().size() + gameCrew.getMedicalItems().size());
+		score += gameCrew.getMoney();
+		score += gameCrew.getCrewShip().getShieldLevel();
+		return score;
+	}
+	
 	/**
 	 * This method launches the Start Screen for the game. (StartWindow object)
 	 */
@@ -209,17 +395,21 @@ public class GameEnvironment {
 	 */
 	public void setupGame() {
 		partsToCollect = (gameDays * 2) / 3;
-		System.out.println(partsToCollect);
+		currentDay = 1;
+		launchGame();
 	}
 	/**
 	 * The main loop for the game.
 	 */
-	public void gameLoop() {
-		
+	public void launchGame() {
+		gameWindow = new GameWindow(this, gameCrew);
 	}
-	
+	/**
+	 * The main method that creates the controlling instance of GameEnvironment.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		GameEnvironment game = new GameEnvironment();
-		game.launchStartScreen();
 	}
+
 }

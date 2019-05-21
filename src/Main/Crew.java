@@ -49,7 +49,6 @@ public class Crew {
 	/**
 	 * @return The crew's name.
 	 */
-	
 	public String getCrewName() {
 		return crewName;
 	}

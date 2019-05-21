@@ -23,11 +23,4 @@ public class Mechanic extends CrewMember{
 			sendAlert("No actions left for this crew member!");
 		}
 	}
-	/**
-	 * The toString method for CrewMember subclasses provides a short description of the crew member type.
-	 * @return A short description of the crew member type.
-	 */
-	public String toString() {
-		return "The Mechanic has an increased ability to repair the ship.";
-	}
 }
