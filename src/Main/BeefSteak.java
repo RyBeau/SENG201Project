@@ -11,18 +11,21 @@ public class BeefSteak extends FoodItem{
 	 * It passes the amount of hunger that gets decreased and the cost of the item respectively.
 	 */
 	public BeefSteak() {
-		super(100, 200);
+		super(100, 200, "Beef Steak");
 	}
 	/**
 	 * @return A string detailing the items hunger depletion amount and cost.
 	 */
-	public String toString() {
+	public String itemDescription() {
 		return "Beef Steak lowers hunger by "+super.getFillUpAmount()
 		+". It costs $"+super.getItemPrice()+" from the outpost.";
 	}
-	
-	public void purchase() {
-		super.purchase(new Banana());
+	/**
+	 * sends crew to parent class
+	 * @param crew
+	 */
+	public void purchase(Crew crew) {
+		super.purchase(new BeefSteak(), crew);
 	}
 
 }
