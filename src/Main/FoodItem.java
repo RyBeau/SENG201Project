@@ -18,13 +18,19 @@ public class FoodItem extends PurchasableAdaptor{
 	 */
 	private int itemPrice;
 	/**
+	 * The name of the item.
+	 */
+	private String itemName;
+	
+	/**
 	 * Constructor for the FoodItem class.<br>
 	 * @param fillUp The amount of hunger decreased to a crew member.
 	 * @param price Price of the item at the outpost.
 	 */
-	public FoodItem(int fillUp, int price) {
+	public FoodItem(int fillUp, int price, String name) {
 		fillUpAmount = fillUp;
 		itemPrice = price;
+		itemName = name;
 	}
 	/**
 	 * @return fillUpAmount The int variable fillUpAmount.
@@ -51,5 +57,11 @@ public class FoodItem extends PurchasableAdaptor{
 		}else {
 			new Alert("Not Enough Money!");
 		}
+	}
+	/**
+	 * @return the itemName
+	 */
+	public String toString() {
+		return itemName;
 	}
 }

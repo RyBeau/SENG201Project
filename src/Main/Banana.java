@@ -11,17 +11,21 @@ public class Banana extends FoodItem{
 	 * It passes the amount of hunger that gets decreased and the cost of the item respectively.
 	 */
 	public Banana() {
-		super(25, 50);
+		super(25, 50, "Banana");
 	}
 	/**
 	 * @return A string detailing the items hunger depletion amount and cost.
 	 */
-	public String toString() {
+	public String itemDescription() {
 		return "A Banana lowers hunger by "+super.getFillUpAmount()
 		+". It costs $"+super.getItemPrice()+" from the outpost.";
 	}
-	public void purchase() {
-		super.purchase(new Banana());
+	/**
+	 * sends crew to parent class
+	 * @param crew
+	 */
+	public void purchase(Crew crew) {
+		super.purchase(new Banana(), crew);
 	}
 
 }
