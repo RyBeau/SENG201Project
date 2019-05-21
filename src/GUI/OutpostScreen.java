@@ -15,9 +15,6 @@ import javax.swing.JTextPane;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import Main.Crew;
-import Main.CrewMember;
-import Main.FoodItem;
-import Main.Medic;
 import Main.Outpost;
 import Main.PurchasableAdaptor;
 
@@ -53,8 +50,9 @@ public class OutpostScreen {
 	 */
 	private void initialize() {
 		frmOutpost = new JDialog();
+		frmOutpost.setResizable(false);
 		frmOutpost.setTitle("Outpost");
-		frmOutpost.setBounds(100, 100, 509, 361);
+		frmOutpost.setBounds(100, 100, 402, 321);
 		frmOutpost.setLocationRelativeTo(null);
 		frmOutpost.setModalityType(ModalityType.APPLICATION_MODAL);
 		frmOutpost.getContentPane().setLayout(null);
@@ -69,7 +67,7 @@ public class OutpostScreen {
 				frmOutpost.dispose();
 			}
 		});
-		btnCancel.setBounds(230, 234, 141, 35);
+		btnCancel.setBounds(215, 234, 141, 35);
 		frmOutpost.getContentPane().add(btnCancel);
 		
 		JButton btnBuy = new JButton("Buy");
@@ -79,7 +77,7 @@ public class OutpostScreen {
 				lblMoney.setText("$" + String.valueOf(crew.getMoney()));
 			}
 		});
-		btnBuy.setBounds(68, 234, 141, 35);
+		btnBuy.setBounds(40, 234, 141, 35);
 		frmOutpost.getContentPane().add(btnBuy);
 		
 
@@ -97,17 +95,16 @@ public class OutpostScreen {
 		textPane.setEditable(false);
 		textPane.setBorder(new LineBorder(new Color(0, 0, 0)));
 		textPane.setBackground(UIManager.getColor("Button.background"));
-		textPane.setBounds(280, 62, 166, 151);
+		textPane.setBounds(215, 62, 160, 150);
 		frmOutpost.getContentPane().add(textPane);
 		
 		JScrollPane itemsScrollPane = new JScrollPane();
-		itemsScrollPane.setBounds(21, 62, 220, 148);
+		itemsScrollPane.setBounds(21, 62, 160, 150);
 		frmOutpost.getContentPane().add(itemsScrollPane);
 		listOfItems = new JList();
 		listOfItems.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
-				//textPane.setText(list.getSelectedValue().itemDescription());
-				textPane.setText(listOfItems.getSelectedValue().toString());
+				textPane.setText(listOfItems.getSelectedValue().itemDescription());
 			}
 		});
 		itemsScrollPane.setViewportView(listOfItems);

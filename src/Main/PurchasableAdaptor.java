@@ -8,15 +8,9 @@ package Main;
  */
 public class PurchasableAdaptor implements Purchasable{
 	/**
-	 * Blank MedicalItem purchase method. This is overwritten by the purchase method in MedicalItem.
+	 * Blank Purchase method. This is overwritten by the purchase method in FoodItem.
 	 */
-	public void purchase(MedicalItem item, Crew crew) {
-		
-	}
-	/**
-	 * Blank FoodItem purchase method. This is overwritten by the purchase method in FoodItem.
-	 */
-	public void purchase(FoodItem item, Crew crew) {
+	public void purchase(Crew crew) {
 		
 	}
 	

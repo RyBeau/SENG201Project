@@ -118,7 +118,7 @@ public class GameWindow {
 		JButton btnVisitOutpost = new JButton("Visit Outpost");
 		btnVisitOutpost.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Implement
+				new OutpostScreen(crew, environment.getGamePlanet().getOutpost());
 			}
 		});
 		btnVisitOutpost.setBounds(118, 3, 130, 26);
