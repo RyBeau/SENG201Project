@@ -13,7 +13,7 @@ public class Outpost {
 	private ArrayList<MedicalItem> medicalItemList;
 	
 	public Outpost() {
-		//Initialising foodItemList with one of each MedicalItem.
+		//Initialising foodItemList with one of each FoodItem.
 		foodItemList = new ArrayList<FoodItem>();
 		foodItemList.add(new Apple());
 		foodItemList.add(new Banana());
@@ -28,4 +28,17 @@ public class Outpost {
 		medicalItemList.add(new AdvancedMedicalKit());
 		medicalItemList.add(new PlagueCure());
 	}
+	/**
+	 * @return foodItemList
+	 */
+	public ArrayList<FoodItem> viewFoodItems() {
+		return foodItemList;
+	}
+	/**
+	 * @return medicalItemList
+	 */
+	public ArrayList<MedicalItem> viewMedicalItems() {
+		return medicalItemList;
+	}
+	
 }
