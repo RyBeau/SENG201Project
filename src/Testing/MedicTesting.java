@@ -36,7 +36,7 @@ class MedicTesting {
 	@Test
 	void creationTest() {
 		Medic testMedic = new Medic("Test Medic");
-		assertEquals("Type: Medic\nHealth Level: 100\nHunger Level: 0\nEnergy Level: 100\nActions: 2", testMedic.viewStatus());
+		assertEquals("Type: Medic\nHealth Level: 100\nPlague Status: false\nHunger Level: 0\nEnergy Level: 100\nActions: 2", testMedic.viewStatus());
 		assertEquals(testMedic.toString(), "Test Medic");
 	}
 	
@@ -72,19 +72,6 @@ class MedicTesting {
 		testMedic.setHealth(50);
 		testMedic.heal(new AdvancedMedicalKit(), testCrew);
 		assertEquals(testMedic.getHealth(), 100);
-	}
-
-	/**
-	 * Testing that you cannot heal more than the number of actions that the testMedic has.<br>
-	 * This test shouldn't allow the testMedic to heal.
-	 */
-	@Test
-	void actionsTest() {
-		testMedic.setActions(0);//Setting memberActions to 0
-		MedicalItem testItem = new PlagueCure();
-		testMedic.setPlague(true);//Setting hasPlague to true.
-		testMedic.heal(testItem, testCrew); //Attempting to heal using testItem.
-		assertTrue(testMedic.checkPlague());//Checking that the medic still has the plague as they should not be able to heal.
 	}
 	
 	//Potentially should be in CrewTesting.

@@ -14,13 +14,19 @@ public class Mechanic extends CrewMember{
 	public Mechanic(String name) {
 		super(name, "Mechanic");
 	}
-	
+	/**
+	 * This method overrides the CrewMember.repairShip() method.<br>
+	 * It doubles the repair amount.<br>
+	 * It checks that the amount after repair is not greater than the maximum 100.<br>
+	 * If it is it sets it to the maximum 100.
+	 * 
+	 * @param ship This is the Ship for the current Crew.
+	 */
 	public void repairShip(Ship ship) {
-		if(hasActions()) {
-			ship.setShieldLevel((ship.getShieldLevel() + 60) % 100);
-			super.setActions(super.getActions() - 1);
-		}else {
-			sendAlert("No actions left for this crew member!");
+		int newShieldLevel = ship.getShieldLevel() + 60;
+		if(newShieldLevel > 100) {
+			newShieldLevel = 100;
 		}
+		super.setActions(super.getActions() - 1);
 	}
 }

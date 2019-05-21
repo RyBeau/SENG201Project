@@ -54,9 +54,6 @@ class CrewMemberTesting {
 		assertEquals(testMember.getEnergy(), 90);
 		testMember.sleep();
 		assertEquals(testMember.getEnergy(), 100);
-		testMember.setEnergy(50);
-		testMember.sleep();
-		assertEquals(testMember.getEnergy(), 50);
 		
 	}
 	/**
@@ -91,9 +88,6 @@ class CrewMemberTesting {
 		assertEquals(testMember.getHealth(), 85);
 		testMember.heal(testKit, crew);
 		assertEquals(testMember.getHealth(), 100);
-		testMember.setHealth(50);
-		testMember.heal(testKit, crew);
-		assertEquals(testMember.getHealth(), 50);
 		
 	}
 

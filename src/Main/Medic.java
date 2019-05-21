@@ -17,27 +17,23 @@ public class Medic extends CrewMember{
 	/**
 	 * This overrides the CrewMember.heal() method.<br>
 	 * The override doubles the healingAmount of the MedicalItem being used.<br>
-	 * If the CrewMember has actions left, this method heals the crew member using a MedicalItem.<br>
+	 * This method heals the crew member using a MedicalItem.<br>
 	 * If this MedicalItem heals by some amount then the crew member is healed by this amount.<br>
 	 * If this MedicalItem cures the plague then the crew member is cured of the plague.<br>
 	 * This is an action so it decreases memberActions by one.
 	 * @param item The MedicalItem to be used.
 	 */
 	public void heal(MedicalItem item, Crew crew) {
-		if (hasActions()) {
-			int health = 2 * (item.getHealAmount()) + super.getHealth();
-			if(health > 100) {
-				health = 100;
-			}
-			super.setHealth(health);
-			super.setActions(super.getActions() - 1);
-			crew.removeFromMedicalItems(item);
-			if(item.getCure()) {
-				super.setPlague(false);
-			}
-			
-		}else {
-			sendAlert("No actions left for this crew member!");
+		int health = 2 * (item.getHealAmount()) + super.getHealth();
+		if(health > 100) {
+			health = 100;
 		}
+		super.setHealth(health);
+		super.setActions(super.getActions() - 1);
+		crew.removeFromMedicalItems(item);
+		if(item.getCure()) {
+			super.setPlague(false);
+		}
+			
 	}
 }

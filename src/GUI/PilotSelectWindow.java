@@ -95,7 +95,8 @@ public class PilotSelectWindow {
 		btnSelect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(secondPilot != null) {
-					primaryPilot.pilotShip(secondPilot, planet, crew.getCrewShip());
+					String alertMessage = primaryPilot.pilotShip(secondPilot, planet, crew.getCrewShip());
+					new Alert(alertMessage);
 					closeWindow();
 				}else {
 					new Alert("No Second Pilot Selected!");

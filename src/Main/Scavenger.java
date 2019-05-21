@@ -25,27 +25,24 @@ public class Scavenger extends CrewMember{
 	 * 56-75: A random MedicalItem or FoodItem. foundItem() called.<br>
 	 * 76-100: A random amount of money between 1-500 is found.
 	 */
-	public void searchPlanet(Crew crew, Planet planet, GameEnvironment environment) {
-		if(hasActions()) {
-			String alertMessage = "Whilst Searching the planet " + super.getName() + " found: ";
-			int roll = RNG.nextInt(100);
-			if(roll <= 55 && planet.getTransporterPartsAmount() > 0) {
-				crew.setPartsFound(crew.getPartsFound() + 1);
-				planet.setTransporterParts(0);
-				super.sendAlert(alertMessage + "1 Transporter Part");
-				if(environment.checkGameOver()) {
-					environment.gameOver();
-				}
-			}else if(roll <= 75) {
-				super.sendAlert(alertMessage + super.foundItem(crew));
-			}else {
-				int moneyFound = RNG.nextInt(450) + 50;//50 added as the integer can be 450 is the biggest value as 50 will be added.
-				crew.setMoney(crew.getMoney() + moneyFound);
-				super.sendAlert(alertMessage + "$" + moneyFound);
+	public String searchPlanet(Crew crew, Planet planet, GameEnvironment environment) {
+		String alertMessage = "Whilst Searching the planet " + super.toString() + " found: ";
+		int roll = RNG.nextInt(100);
+		if(roll <= 55 && planet.getTransporterPartsAmount() > 0) {
+			crew.setPartsFound(crew.getPartsFound() + 1);
+			planet.setTransporterParts(0);
+			alertMessage += "1 Transporter Part";
+			if(environment.checkGameOver()) {
+				environment.gameOver();
 			}
-			super.setActions(super.getActions() - 1);
+		}else if(roll <= 75) {
+			alertMessage += super.foundItem(crew);
 		}else {
-			super.sendAlert("No actions left for this crew member!");
+			int moneyFound = RNG.nextInt(450) + 50;//50 added as the integer can be 450 is the biggest value as 50 will be added.
+			crew.setMoney(crew.getMoney() + moneyFound);
+			alertMessage += "$" + moneyFound;
 		}
+		super.setActions(super.getActions() - 1);
+		return alertMessage;
 	}
 }

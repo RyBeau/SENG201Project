@@ -86,7 +86,12 @@ public class GameEnvironment {
 	 * @param food The FoodItem to be consumed.
 	 */
 	public void feed(CrewMember member, FoodItem food) {
-		member.feed(food, gameCrew);
+		if(member.hasActions()) {
+			member.feed(food, gameCrew);
+		}else {
+			sendAlert("No actions left for this crew member!");
+		}
+		
 	}
 	/**
 	 * This method calls the heal() method of the given CrewMember with the given MedicalItem.
@@ -94,7 +99,11 @@ public class GameEnvironment {
 	 * @param item The MedicalItem that will be consumed.
 	 */
 	public void heal(CrewMember member, MedicalItem item) {
-		member.heal(item, gameCrew);
+		if(member.hasActions()) {
+			member.heal(item, gameCrew);
+		}else {
+			sendAlert("No actions left for this crew member!");
+		}
 	}
 	/**
 	 * This method calls the sleep() method of the given CrewMember.<br>
@@ -102,7 +111,11 @@ public class GameEnvironment {
 	 * @param member The CrewMember that will be sleeping.
 	 */
 	public void sleep(CrewMember member) {
-		member.sleep();
+		if(member.hasActions()) {
+			member.sleep();
+		}else {
+			sendAlert("No actions left for this crew member!");
+		}
 	}
 	/**
 	 * This method call the repairShip() method of the given CrewMember.<br>
@@ -110,14 +123,27 @@ public class GameEnvironment {
 	 * @param member The CrewMember that will be repairing the ship.
 	 */
 	public void repairShip(CrewMember member) {
-		member.repairShip(gameCrew.getCrewShip());
+		if(member.hasActions()) {
+			if(gameCrew.getCrewShip().getShieldLevel() < 100) {
+				member.repairShip(gameCrew.getCrewShip());
+			}else {
+				sendAlert("Ship Shields already 100%");
+			}
+		}else {
+			sendAlert("No actions left for this crew member!");
+		}
+		
 	}
 	/**
 	 * This method calls the searchPlanet() method of the given CrewMember.
 	 * @param member The CrewMember that will be searching the planet.
 	 */
 	public void searchPlanet(CrewMember member) {
-		member.searchPlanet(gameCrew, gamePlanet, this);
+		if(member.hasActions()) {
+			sendAlert(member.searchPlanet(gameCrew, gamePlanet, this));
+		}else {
+			sendAlert("No actions left for this crew member!");
+		}
 	}
 	/**
 	 * This method creates a new instance of PilotSelectionScreen<br>
@@ -127,7 +153,11 @@ public class GameEnvironment {
 	 */
 	public void pilotShip(CrewMember primaryPilot, GameWindow gameScreen) {
 		if(primaryPilot.hasActions()) {
-			new PilotSelectWindow(primaryPilot, gameScreen, gameCrew, gamePlanet);
+			if(gameCrew.getCrewShip().getShieldLevel() > 0) {
+				new PilotSelectWindow(primaryPilot, gameScreen, gameCrew, gamePlanet);
+			}else {
+				sendAlert("The ship needs repairing!");
+			}
 		}else {
 			new Alert("Not Enough Actions!");
 		}
@@ -397,6 +427,13 @@ public class GameEnvironment {
 		partsToCollect = (gameDays * 2) / 3;
 		currentDay = 1;
 		launchGame();
+	}
+	/**
+	 * Sends an alert to the player with the give alert text.
+	 * @param text The alert text to be displayed.
+	 */
+	public void sendAlert(String text) {
+		Alert alert = new Alert(text);
 	}
 	/**
 	 * The main loop for the game.
