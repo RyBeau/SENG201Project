@@ -1,7 +1,5 @@
 package GUI;
 
-import java.awt.EventQueue;
-
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
@@ -24,29 +22,52 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 /**
  * This is the outpost (or shop) window.<br>
- * This screen is used to purchase food and medical items<br>
+ * This screen is used to purchase FoodItem and MedicalItem objects<br>
  * @author Daniel Porter
  */
 public class OutpostScreen {
-
+	
+	/**
+	 * This is the JDialog that contains all the GUI elements.
+	 */
 	private JDialog frmOutpost;
+	/**
+	 * This is the Crew for the current game.
+	 */
 	private Crew crew;
+	/**
+	 * The Outpost for the game.
+	 */
 	private Outpost outpost;
+	/**
+	 * The JList of items that can be purchased from the store.
+	 */
 	private JList<PurchasableAdaptor> listOfItems;
+	/**
+	 * This is the GameWindow for the current game.
+	 */
+	private GameWindow gameScreen;
 	
 	
 	/**
-	 * Create the application.
+	 * The constructor for the OutpostScreen GUI.<br>
+	 * This is called by the GameWindow when the player presses "Visit Outpost"
+	 * @param incomingCrew The Crew of the current game.
+	 * @param incomingOutpost The Outpost of the current planet.
+	 * @param incomingGameScreen The GameWindow for the current game session.
 	 */
-	public OutpostScreen(Crew incomingCrew, Outpost incomingOutpost) {
+	public OutpostScreen(Crew incomingCrew, Outpost incomingOutpost, GameWindow incomingGameScreen) {
 		outpost = incomingOutpost;
 		crew = incomingCrew;
+		gameScreen = incomingGameScreen;
 		initialize();
 		frmOutpost.setVisible(true);
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialize the contents of the frame.<br>
+	 * Builds the GUI elements within the JDialog.<br>
+	 * Called when an instance of OutpostScreen is created.
 	 */
 	private void initialize() {
 		frmOutpost = new JDialog();
@@ -57,7 +78,7 @@ public class OutpostScreen {
 		frmOutpost.setModalityType(ModalityType.APPLICATION_MODAL);
 		frmOutpost.getContentPane().setLayout(null);
 
-		JLabel lblMoney = new JLabel("$" + String.valueOf(crew.getMoney())); //Crew.getMoney() ask Ryan
+		JLabel lblMoney = new JLabel("$" + String.valueOf(crew.getMoney())); 
 		lblMoney.setBounds(305, 15, 92, 26);
 		frmOutpost.getContentPane().add(lblMoney);
 		
@@ -75,6 +96,7 @@ public class OutpostScreen {
 			public void actionPerformed(ActionEvent arg0) {
 				listOfItems.getSelectedValue().purchase(crew);
 				lblMoney.setText("$" + String.valueOf(crew.getMoney()));
+				gameScreen.refresh();
 			}
 		});
 		btnBuy.setBounds(40, 234, 141, 35);
@@ -110,12 +132,12 @@ public class OutpostScreen {
 		itemsScrollPane.setViewportView(listOfItems);
 		listOfItems.setBorder(new LineBorder(new Color(0, 0, 0)));
 		listOfItems.setBackground(UIManager.getColor("Button.background"));
-		listOfItems.setModel(new AbstractListModel() {
+		listOfItems.setModel(new AbstractListModel<PurchasableAdaptor>() {
 			ArrayList<PurchasableAdaptor> values = itemList;
 			public int getSize() {
 				return values.size();
 			}
-			public Object getElementAt(int index) {
+			public PurchasableAdaptor getElementAt(int index) {
 				return values.get(index);
 			}
 		});

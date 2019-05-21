@@ -14,6 +14,7 @@ public interface Purchasable {
 	void purchase(Crew crew);
 
 	/**
+	 * This method should return a description of the purchasable item.
 	 * @return General Information about the item, price, healAmount etc.
 	 */
 	String itemDescription();

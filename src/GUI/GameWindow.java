@@ -58,7 +58,9 @@ public class GameWindow {
 	 * and transporter parts to find.
 	 */
 	private JPanel topInfoPanel;
-	
+	/**
+	 * This label displays the current number of transporter parts on the planet.
+	 */
 	private JLabel lblPlanetParts;
 	/**
  	* This is the constructor for GameWindow
@@ -118,7 +120,7 @@ public class GameWindow {
 		JButton btnVisitOutpost = new JButton("Visit Outpost");
 		btnVisitOutpost.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new OutpostScreen(crew, environment.getGamePlanet().getOutpost());
+				openOutpost();
 			}
 		});
 		btnVisitOutpost.setBounds(118, 3, 130, 26);
@@ -239,13 +241,13 @@ public class GameWindow {
 		statusPane.setEditable(false);
 		statusPane.setBorder(new LineBorder(new Color(0, 0, 0)));
 		statusPane.setBackground(UIManager.getColor("Button.background"));
-		statusPane.setBounds(12, 195, 139, 92);
+		statusPane.setBounds(12, 182, 139, 105);
 		crewPanel.add(statusPane);
 		listOfCrew.setSelectedIndex(0);
 		
 		JLabel lblStatus = new JLabel("Status:");
 		lblStatus.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblStatus.setBounds(12, 167, 139, 16);
+		lblStatus.setBounds(12, 162, 139, 16);
 		crewPanel.add(lblStatus);
 	}
 	/**
@@ -348,7 +350,18 @@ public class GameWindow {
 			new Alert("You have no Medical Items to Use!");
 	}
 	}
+	/**
+	 * This method calls the pilotShip method within GameEnvironment.<br>
+	 * It passes the currently selected CrewMember and the GameWindow instance to the method.
+	 */
 	private void pilotShip() {
 		environment.pilotShip(listOfCrew.getSelectedValue(), this);
+	}
+	/**
+	 * This method creates a new instance of OutpostScreen.<br>
+	 * This passes the Crew, Outpost and instance of GameWindow to the constructor in OutpostScreen.
+	 */
+	private void openOutpost() {
+		new OutpostScreen(crew, environment.getGamePlanet().getOutpost(), this);
 	}
 }

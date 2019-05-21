@@ -1,40 +1,35 @@
 package Main;
 /**
- * This class defines a Ship.
+ * This class defines a Ship. It is used by the Crew to travel between Planets in the game.
  * @author Daniel Porter
  *
  */
 public class Ship {
 	/**
-	 * Ship has a shield level that decreases when
-	 * the ship has taken damage.<br>
-	 * Shield increases (cap of 100) upon repair.
-	 * 
+	 * This is the shield level for the ship.<br>
+	 * It changes when the ship takes damage or is repaired.
 	 */
 	private int shieldLevel;
 	/**
-	 * The ship starts with the max shieldLevel, 100.
+	 * This is the constructor for Ship.<br>
+	 * It initialises the shieldLevel to the starting amount 100.
 	 */
 	public Ship() {
 		shieldLevel = 100;
 	}
 	/**
+	 * This method is the getter for shield level.
 	 * @return shieldLevel
 	 */
 	public int getShieldLevel() {
 		return shieldLevel;
 	}
 	/**
-	 * sets int shieldLevel to int newLevel
+	 * Sets int shieldLevel to int newLevel
 	 * @param newLevel
 	 */
 	public void setShieldLevel(int newLevel) {
 		shieldLevel = newLevel;
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

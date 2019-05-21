@@ -20,8 +20,9 @@ public class Apple extends FoodItem{
 		+". It costs $"+super.getItemPrice()+" from the outpost.";
 	}
 	/**
-	 * sends crew to parent class
-	 * @param crew
+	 * This method receives the Crew for the game, then creates a new instance of Apple
+	 * and then sends the new instance and the Crew the the parent constructor in FoodItem.
+	 * @param crew The Crew for the game.
 	 */
 	public void purchase(Crew crew) {
 		super.purchase(new Apple(), crew);

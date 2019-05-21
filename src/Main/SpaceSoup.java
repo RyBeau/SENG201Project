@@ -8,7 +8,8 @@ package Main;
 public class SpaceSoup extends FoodItem{
 	/**
 	 * This is a constructor for SpaceSoup item.<br>
-	 * It passes the amount of hunger that gets decreased and the cost of the item respectively.
+	 * It passes the amount of hunger that gets decreased, the cost of the item, and 
+	 * the name of the item to the FoodItem constructor.
 	 */
 	public SpaceSoup() {
 		super(50, 100, "Space Soup");
@@ -21,8 +22,9 @@ public class SpaceSoup extends FoodItem{
 		+". It costs $"+super.getItemPrice()+" from the outpost.";
 	}
 	/**
-	 * sends crew to parent class
-	 * @param crew
+	 * This method receives the Crew for the game, then creates a new instance of SpaceSoup
+	 * and then sends the new instance and the Crew the the parent constructor in FoodItem.
+	 * @param crew The Crew for the game.
 	 */
 	public void purchase(Crew crew) {
 		super.purchase(new SpaceSoup(), crew);
