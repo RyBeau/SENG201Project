@@ -47,7 +47,5 @@ public class Planet {
 	public Outpost getOutpost() {
 		return planetOutpost;
 	}
-	
->>>>>>> master
 
 }
