@@ -79,7 +79,7 @@ public class MedicalItem extends PurchasableAdaptor{
 	 * @return A string detailing the item, its price, heal amount and its function.
 	 */
 	public String itemDescription() {
-		return "The " + itemName + " restores " + healAmount + " health. It costs $" + itemPrice + " from the outpost.";
+		return "The " + itemName + " restores " + healAmount + " health.\nCures Plague: " + curesPlague +"\nOutpost Cost: $" + itemPrice;
 	}
 
 }

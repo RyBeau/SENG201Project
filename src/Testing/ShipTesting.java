@@ -34,4 +34,14 @@ class ShipTesting {
 		testShip.setShieldLevel(80);
 		assertEquals(80, testShip.getShieldLevel());
 	}
+	
+	/**
+	 * Testing that in the event of an asteroidField being entered the ships health decreases.
+	 */
+	@Test
+	void testAsteroidField() {
+		int currentLevel = testShip.getShieldLevel();
+		testShip.asteroidField();
+		assertTrue(currentLevel > testShip.getShieldLevel());
+	}
 }

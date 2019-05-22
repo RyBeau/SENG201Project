@@ -27,6 +27,7 @@ public class Mechanic extends CrewMember{
 		if(newShieldLevel > 100) {
 			newShieldLevel = 100;
 		}
+		ship.setShieldLevel(newShieldLevel);
 		super.setActions(super.getActions() - 1);
 	}
 }

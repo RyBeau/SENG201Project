@@ -75,12 +75,6 @@ public class GameEnvironment {
 		return currentDay;
 	}
 	/**
-	 * Visits the outpost, and displays the items purchasable at the outpost.
-	 */
-	public void visitOutpost() {
-		
-	}
-	/**
 	 * This method calls the feed() method of the given CrewMember with the given FoodItem.
 	 * @param member The CrewMember that will be consuming the food.
 	 * @param food The FoodItem to be consumed.
