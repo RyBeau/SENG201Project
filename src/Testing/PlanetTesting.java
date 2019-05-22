@@ -14,7 +14,7 @@ class PlanetTesting {
 	private Planet testPlanet;
 	
 	@BeforeEach
-	public void testSetup() {
+	void testSetup() {
 		testPlanet = new Planet();
 	}
     /**
@@ -23,7 +23,7 @@ class PlanetTesting {
      * A Planet must have an Outpost instance.
      */
 	@Test
-	public void creationTest() {
+	void creationTest() {
 		assertEquals(1, testPlanet.getTransporterPartsAmount());//planet has 1 transporter part
 		assertTrue(testPlanet.getOutpost() instanceof Outpost);//planet has an outpost
 	}
@@ -31,11 +31,21 @@ class PlanetTesting {
 	 * Testing that the newPlanet method resets the amount of transporter parts to 1.
 	 */
 	@Test
-	public void testNewPlanet() {
+	void testNewPlanet() {
 		testPlanet.NewPlanet();
 		assertEquals(1, testPlanet.getTransporterPartsAmount());
 	}
-	
+	/**
+	 * Testing that the setTransporterParts method sets the amount of
+	 * transporter parts on the planet to a desired int
+	 */
+	@Test
+	void testSetTransporterParts() {
+		testPlanet.setTransporterParts(0);
+		assertEquals(0, testPlanet.getTransporterPartsAmount());
+		testPlanet.setTransporterParts(1);
+		assertEquals(1, testPlanet.getTransporterPartsAmount());
+	}
 	
 	
 
