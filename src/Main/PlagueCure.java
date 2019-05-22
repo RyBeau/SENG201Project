@@ -16,12 +16,6 @@ public class PlagueCure extends MedicalItem{
 		super(0, true, 250, "Plague Cure");
 	}
 	/**
-	 * @return A string detailing the item, its price, heal amount and its function.
-	 */
-	public String itemDescription() {
-		return "The " + super.toString() + " cures the crew member of the plague. It costs $" + super.getPrice() + " from the outpost.";
-	}
-	/**
 	 * This method receives the Crew for the game, then creates a new instance of PlagueCure
 	 * and then sends the new instance and the Crew the the parent constructor in MedicalItem.
 	 * @param crew The Crew for the game.

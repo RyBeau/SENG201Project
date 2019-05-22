@@ -14,13 +14,6 @@ public class HighCalorieBar extends FoodItem{
 		super(50, 100, "High Calorie Bar");
 	}
 	/**
-	 * @return A string detailing the items hunger depletion amount and cost.
-	 */
-	public String itemDescription() {
-		return "A High Calorie Bar lowers hunger by "+super.getFillUpAmount()
-		+". It costs $"+super.getItemPrice()+" from the outpost.";
-	}
-	/**
 	 * This method receives the Crew for the game, then creates a new instance of HighCalorieBar
 	 * and then sends the new instance and the Crew the the parent constructor in FoodItem.
 	 * @param crew The Crew for the game.

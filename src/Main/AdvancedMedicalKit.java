@@ -16,12 +16,6 @@ public class AdvancedMedicalKit extends MedicalItem{
 		super(50, false, 500, "Advanced Medical Kit");
 	}
 	/**
-	 * @return A string detailing the item, its price, heal amount and its function.
-	 */
-	public String itemDescription() {
-		return "The " + super.toString() + " restores " + super.getHealAmount() + " health. It costs $" + super.getPrice() + " from the outpost.";
-	}
-	/**
 	 * This method receives the Crew for the game, then creates a new instance of AdvancedMedicalKit
 	 * and then sends the new instance and the Crew the the parent constructor in MedicalItem.
 	 * @param crew The Crew for the game.

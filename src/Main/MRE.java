@@ -14,13 +14,6 @@ public class MRE extends FoodItem{
 		super(100, 200, "MRE");
 	}
 	/**
-	 * @return A string detailing the items hunger depletion amount and cost.
-	 */
-	public String itemDescription() {
-		return "An MRE lowers hunger by "+super.getFillUpAmount()
-		+". It costs $"+super.getItemPrice()+" from the outpost.";
-	}
-	/**
 	 * This method receives the Crew for the game, then creates a new instance of MRE
 	 * and then sends the new instance and the Crew the the parent constructor in FoodItem.
 	 * @param crew The Crew for the game.

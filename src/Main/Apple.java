@@ -13,13 +13,6 @@ public class Apple extends FoodItem{
 		super(25, 50, "Apple");
 	}
 	/**
-	 * @return A string detailing the items hunger depletion amount and cost.
-	 */
-	public String itemDescription() {
-		return "An Apple lowers hunger by "+super.getFillUpAmount()
-		+". It costs $"+super.getItemPrice()+" from the outpost.";
-	}
-	/**
 	 * This method receives the Crew for the game, then creates a new instance of Apple
 	 * and then sends the new instance and the Crew the the parent constructor in FoodItem.
 	 * @param crew The Crew for the game.
