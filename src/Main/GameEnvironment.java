@@ -106,7 +106,11 @@ public class GameEnvironment {
 	 */
 	public void sleep(CrewMember member) {
 		if(member.hasActions()) {
+			if(member.getEnergy() < 100) {
 			member.sleep();
+			}else {
+				sendAlert("Energy full, cannot sleep right now!");
+			}
 		}else {
 			sendAlert("No actions left for this crew member!");
 		}
