@@ -10,7 +10,7 @@ public class Apple extends FoodItem{
 	 * It passes the amount of hunger that gets decreased and the cost of the item respectively.
 	 */
 	public Apple() {
-		super(25, 50, "Apple");
+		super(25, 60, "Apple");
 	}
 	/**
 	 * This method receives the Crew for the game, then creates a new instance of Apple

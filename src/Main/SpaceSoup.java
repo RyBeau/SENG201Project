@@ -12,7 +12,7 @@ public class SpaceSoup extends FoodItem{
 	 * the name of the item to the FoodItem constructor.
 	 */
 	public SpaceSoup() {
-		super(50, 100, "Space Soup");
+		super(70, 100, "Space Soup");
 	}
 	/**
 	 * This method receives the Crew for the game, then creates a new instance of SpaceSoup

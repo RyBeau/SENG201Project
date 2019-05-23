@@ -44,7 +44,7 @@ class FoodTesting {
 	@Test
 	void testGetItemPrice() {
 		Apple testApple = new Apple();
-		assertEquals(testApple.getItemPrice(), 50);
+		assertEquals(testApple.getItemPrice(), 60);
 	}
 	/**
 	 * testing the itemDescription method with an Apple<br>
@@ -52,9 +52,17 @@ class FoodTesting {
 	 */
 	@Test
 	void testItemDescription() {
-		Apple testApple = new Apple();
-		assertEquals("An Apple lowers hunger by 25. It costs $50 from the outpost.", testApple.itemDescription());
-	}
+		ArrayList<FoodItem> foodItemList = new ArrayList<FoodItem>();
+		foodItemList.add(new Apple());
+		foodItemList.add(new Banana());
+		foodItemList.add(new SpaceSoup());
+		foodItemList.add(new HighCalorieBar());
+		foodItemList.add(new BeefSteak());
+		foodItemList.add(new MRE());
+		for(FoodItem item: foodItemList) {
+			assertEquals("Name: " + item.toString() +  "\nLowers hunger by: " + item.getFillUpAmount() +"\nOutpost Cost: $" + item.getItemPrice(), item.itemDescription());
+		}
+		}
 	/**
 	 * testing the toString method with an Apple<br>
 	 * should display "Apple"

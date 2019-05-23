@@ -68,7 +68,7 @@ public class FoodItem extends PurchasableAdaptor{
 	 * @return A string detailing the items hunger depletion amount and cost.
 	 */
 	public String itemDescription() {
-		return "An "+ itemName+" lowers hunger by "+fillUpAmount
-		+". It costs $"+itemPrice+" from the outpost.";
+		return "Name: "+ itemName+"\nLowers hunger by: "+fillUpAmount
+		+"\nOutpost Cost: $"+itemPrice;
 	}
 }

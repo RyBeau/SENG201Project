@@ -11,7 +11,7 @@ public class Banana extends FoodItem{
 	 * It passes the amount of hunger that gets decreased and the cost of the item respectively.
 	 */
 	public Banana() {
-		super(25, 50, "Banana");
+		super(35, 70, "Banana");
 	}
 	/**
 	 * This method receives the Crew for the game, then creates a new instance of Banana

@@ -65,8 +65,8 @@ class MedicalItemTesting {
 	@Test
 	void descriptionTest() {
 		for(MedicalItem item: itemList) {
-			String expected = "The " + item.toString() + " restores " + item.getHealAmount() +
-					" health.\nCures Plague: " + item.getCure() +"\nOutpost Cost: $" + item.getPrice();
+			String expected = "Name: " + item.toString() + "\nHeal Amount: " + item.getHealAmount() +
+					"\nCures Plague: " + item.getCure() +"\nOutpost Cost: $" + item.getPrice();
 			assertEquals(item.itemDescription(), expected);
 		}
 	}

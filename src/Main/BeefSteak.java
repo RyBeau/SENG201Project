@@ -11,7 +11,7 @@ public class BeefSteak extends FoodItem{
 	 * It passes the amount of hunger that gets decreased and the cost of the item respectively.
 	 */
 	public BeefSteak() {
-		super(100, 200, "Beef Steak");
+		super(90, 150, "Beef Steak");
 	}
 	/**
 	 * This method receives the Crew for the game, then creates a new instance of BeefSteak
