@@ -27,7 +27,7 @@ class ShipTesting {
 	}
 	/**
 	 * testing that the setShieldLevel method sets the shield level to
-	 *  the desired int
+	 * the desired int
 	 */
 	@Test
 	void testSetShieldLevel() {

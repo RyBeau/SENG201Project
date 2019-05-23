@@ -30,28 +30,45 @@ class FoodTesting {
 		crewList.add(testMember);
 		testCrew = new Crew("Test Crew", crewList);
 	}
-	
+	/**
+	 * testing the getFillUpAmount method with an Apple
+	 */
 	@Test
 	void testGetFillUpAmount() {
 		Apple testApple = new Apple();
 		assertEquals(testApple.getFillUpAmount(), 25);
 		}
+	/**
+	 * testing the getItemPrice method with an Apple
+	 */
 	@Test
 	void testGetItemPrice() {
 		Apple testApple = new Apple();
 		assertEquals(testApple.getItemPrice(), 50);
 	}
+	/**
+	 * testing the itemDescription method with an Apple<br>
+	 * should display a string detailing the Apple's attributes.
+	 */
 	@Test
 	void testItemDescription() {
 		Apple testApple = new Apple();
 		assertEquals("An Apple lowers hunger by 25. It costs $50 from the outpost.", testApple.itemDescription());
 	}
+	/**
+	 * testing the toString method with an Apple<br>
+	 * should display "Apple"
+	 */
 	@Test
 	void testToString() {
 		Apple testApple = new Apple();
 		assertEquals("Apple", testApple.toString());
 	}
-	
+	/**
+	 * testing the purchase method for each food item.<br>
+	 * purchase method should decrease the items price from the crewMembers current money<br>
+	 * purchase method should add the item to the crewMembers food items
+	 */
 	@Test
 	void purchaseTest() {
 		ArrayList<FoodItem> foodItemList = new ArrayList<FoodItem>();
@@ -70,6 +87,13 @@ class FoodTesting {
 			testCrew.removeFromFoodItems(testCrew.getFoodItems().get(0));
 		}
 	}
+	/**
+	 * further testing of the purchase method with an Apple.<br>
+	 * a crewMember may only purchase an item if they have enough money<br>
+	 * if crewMember does not have enough money:<br>
+	 *     - item will not be added to crewMembers foodItemList<br>
+	 *     - money will not be deducted
+	 */
 	@Test
 	void cantPurchaseTest() {
 		testCrew.setMoney(0);
