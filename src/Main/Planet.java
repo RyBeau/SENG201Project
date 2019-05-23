@@ -29,7 +29,7 @@ public class Planet {
 	 * Sets planetTransporterParts to 1. <br>
 	 * (There will always be 1 transporter part on a new planet.)
 	 */
-	public void NewPlanet() {
+	public void newPlanet() {
 		planetTransporterParts = 1;
 	}
 	/**

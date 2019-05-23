@@ -32,7 +32,7 @@ class PlanetTesting {
 	 */
 	@Test
 	void testNewPlanet() {
-		testPlanet.NewPlanet();
+		testPlanet.newPlanet();
 		assertEquals(1, testPlanet.getTransporterPartsAmount());
 	}
 	/**

@@ -349,7 +349,7 @@ public class CrewMember {
 	 */
 	public String pilotShip(CrewMember secondPilot, Planet planet, Ship ship) {
 		String alertMessage = "You have travelled to a new planet. There is 1 transporter part to collect here.";
-		planet.NewPlanet();
+		planet.newPlanet();
 		memberActions -= 1;
 		secondPilot.setActions(secondPilot.getActions() - 1);
 		if(randomNumberGenerator.nextInt(100) <= 35) {
