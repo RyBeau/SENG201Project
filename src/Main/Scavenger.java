@@ -13,8 +13,6 @@ public class Scavenger extends CrewMember{
 	 * This passes the name selected by the player and the String "Scavenger" which is the type to the parent class CrewMember.
 	 * @param name Name inputed by the player.
 	 */
-	private Random RNG = new Random();
-	
 	public Scavenger(String name) {
 		super(name,"Scavenger");
 	}
@@ -26,8 +24,9 @@ public class Scavenger extends CrewMember{
 	 * 76-100: A random amount of money between 1-500 is found.
 	 */
 	public String searchPlanet(Crew crew, Planet planet, GameEnvironment environment) {
+		Random randomNumberGenerator = new Random();
 		String alertMessage = "Whilst Searching the planet " + super.toString() + " found: ";
-		int roll = RNG.nextInt(100);
+		int roll = randomNumberGenerator.nextInt(100);
 		if(roll <= 55 && planet.getTransporterPartsAmount() > 0) {
 			crew.setPartsFound(crew.getPartsFound() + 1);
 			planet.setTransporterParts(0);
@@ -38,7 +37,7 @@ public class Scavenger extends CrewMember{
 		}else if(roll <= 75) {
 			alertMessage += super.foundItem(crew);
 		}else {
-			int moneyFound = RNG.nextInt(450) + 50;//50 added as the integer can be 450 is the biggest value as 50 will be added.
+			int moneyFound = randomNumberGenerator.nextInt(450) + 50;//50 added as the integer can be 450 is the biggest value as 50 will be added.
 			crew.setMoney(crew.getMoney() + moneyFound);
 			alertMessage += "$" + moneyFound;
 		}

@@ -45,7 +45,7 @@ public class GameEnvironment {
 	 */
 	public GameEnvironment() {
 		gamePlanet = new Planet();
-		launchStartScreen();
+		
 	}
 	/**
 	 * @return The games Crew. (Object)
@@ -73,12 +73,6 @@ public class GameEnvironment {
 	 */
 	public int getCurrentDay() {
 		return currentDay;
-	}
-	/**
-	 * Visits the outpost, and displays the items purchasable at the outpost.
-	 */
-	public void visitOutpost() {
-		
 	}
 	/**
 	 * This method calls the feed() method of the given CrewMember with the given FoodItem.
@@ -112,7 +106,11 @@ public class GameEnvironment {
 	 */
 	public void sleep(CrewMember member) {
 		if(member.hasActions()) {
+			if(member.getEnergy() < 100) {
 			member.sleep();
+			}else {
+				sendAlert("Energy full, cannot sleep right now!");
+			}
 		}else {
 			sendAlert("No actions left for this crew member!");
 		}
@@ -167,13 +165,14 @@ public class GameEnvironment {
 	 * This method is for the Random Event where the gameCrew Contracts the space plague.<br>
 	 * It is called by the nextDay() method when the random number generator gives a value from 0-25.<br>
 	 * It sets the hasPlague variable in each CrewMember to true as they have now contracted the space plague.<br>
-	 * It then sends an alert telling the player what has occurred.
+	 * It then returns an string telling the player what has occurred.
+	 * @return A String telling the player what has happened.
 	 */
-	public void spacePlague() {
+	public String spacePlague() {
 		for(CrewMember member: gameCrew.getCrewList()) {
 			member.setPlague(true);
 		}
-		new Alert("The crew has contracted the space plague! They need the Plague Cure!");
+		return "The crew has contracted the space plague! They need the Plague Cure!";
 	}
 	
 	/**
@@ -182,9 +181,11 @@ public class GameEnvironment {
 	 * Firstly it checks the case that there is only one item in the list, and if true that item is removed.<br>
 	 * Otherwise it uses randomNumberGenerator to select a random index in foodList.<br>
 	 * The item at that index is then removed.<br>
-	 * It then sends an alert telling the player what has occurred.
+	 * It then returns an alert telling the player what has occurred.
+	 * 
+	 * @return A String telling the player what has happened.
 	 */
-	public void spacePirates(ArrayList<FoodItem> foodList) {
+	public String spacePirates(ArrayList<FoodItem> foodList) {
 		String alertString = "The Space Pirates raided your ship! They stole: ";
 		FoodItem itemRemoved;
 		if(foodList.size() == 1) {
@@ -193,7 +194,7 @@ public class GameEnvironment {
 			itemRemoved = foodList.get(randomNumberGenerator.nextInt(foodList.size() - 1));
 		}
 		gameCrew.removeFromFoodItems(itemRemoved);
-		new Alert(alertString + itemRemoved);
+		return alertString + itemRemoved;
 	}
 	
 	/**
@@ -202,9 +203,11 @@ public class GameEnvironment {
 	 * Firstly it checks the case that there is only one item in the list, and if true that item is removed.<br>
 	 * Otherwise it uses randomNumberGenerator to select a random index in medicalList.<br>
 	 * The item at that index is then removed.<br>
-	 * It then sends an alert telling the player what has occurred.
+	 * It then returns an alert telling the player what has occurred.
+	 * 
+	 * @return A String telling the player what has happened.
 	 */
-	public void spacePirates(MedicalItem[] medicalList) {
+	public String spacePirates(MedicalItem[] medicalList) {
 		String alertString = "The Space Pirates raided your ship! They stole: ";
 		MedicalItem itemRemoved;
 		if(medicalList.length == 1) {
@@ -213,7 +216,7 @@ public class GameEnvironment {
 			itemRemoved = medicalList[randomNumberGenerator.nextInt(medicalList.length - 1)];
 		}
 		gameCrew.removeFromMedicalItems(itemRemoved);
-		new Alert(alertString + itemRemoved);
+		return alertString + itemRemoved;
 	}
 	
 	/**
@@ -253,11 +256,11 @@ public class GameEnvironment {
 	public void rollRandomEvents() {
 		int roll = randomNumberGenerator.nextInt(100);
 		if(roll <= 25) {
-			spacePlague();
+			new Alert(spacePlague());
 		}else if(roll <= 38 && gameCrew.getFoodItems().size() > 0) {
-			spacePirates(gameCrew.getFoodItems());
+			new Alert(spacePirates(gameCrew.getFoodItems()));
 		}else if (roll <= 50 && gameCrew.getMedicalItems().size() > 0) {
-			spacePirates(gameCrew.getMedicalItems().toArray(new MedicalItem[gameCrew.getMedicalItems().size()]));
+			new Alert(spacePirates(gameCrew.getMedicalItems().toArray(new MedicalItem[gameCrew.getMedicalItems().size()])));
 		}
 	}
 	/**
@@ -447,6 +450,7 @@ public class GameEnvironment {
 	 */
 	public static void main(String[] args) {
 		GameEnvironment game = new GameEnvironment();
+		game.launchStartScreen();
 	}
 
 }

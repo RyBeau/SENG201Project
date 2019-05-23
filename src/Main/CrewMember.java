@@ -345,7 +345,7 @@ public class CrewMember {
 	 * @param ship The Crew's ship.
 	 * 
 	 * @return An alertMessage String indicating the Crew is traveled to a new planet. If asteroidField was called
-	 * it will indicate that this occured and the damage that it cause to the ship.
+	 * it will indicate that this occurred and the damage that it cause to the ship.
 	 */
 	public String pilotShip(CrewMember secondPilot, Planet planet, Ship ship) {
 		String alertMessage = "You have travelled to a new planet. There is 1 transporter part to collect here.";
@@ -353,31 +353,12 @@ public class CrewMember {
 		memberActions -= 1;
 		secondPilot.setActions(secondPilot.getActions() - 1);
 		if(randomNumberGenerator.nextInt(100) <= 35) {
-			alertMessage += asteroidField(ship);
+			alertMessage += ship.asteroidField();
 		}
 		return alertMessage;
 	}
 	
-	/**
-	 * This method is for the random event "Asteroid field"<br>
-	 * It is called if the randomNumberGenerator pick 0-35 in the pilotShip() method.<br>
-	 * The damage taken is a random integer from randomNumberGenerator between 0-90 + 10, the + 10 is needed so that the minimum damage is 10
-	 * and the maximum damage is 100.<br>
-	 * If damage is greater than currentLevel then the shield level is set to 0 and the Ship cannot be used again until it is repaired.
-	 * @param ship The Crew's ship.
-	 * 
-	 * @return A String saying the event has occurred and the damage it caused.
-	 */
-	public String asteroidField(Ship ship) {
-		int currentLevel = ship.getShieldLevel();
-		int damage = randomNumberGenerator.nextInt(90) + 10;
-		if(damage > currentLevel) {
-			ship.setShieldLevel(0);
-		}else {
-			ship.setShieldLevel(currentLevel - damage);
-		}
-		return "\nWhilst travelling to the new planet the ship went through and asteroid field. The Shields took " + damage + " damage.";
-	}
+
 	/**
 	 * This method is called at the start of each new day.<br>
 	 * It resets the memberActions to 2.<br>

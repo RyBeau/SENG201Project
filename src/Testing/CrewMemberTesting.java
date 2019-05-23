@@ -12,6 +12,9 @@ import Main.BasicMedicalKit;
 import Main.Crew;
 import Main.CrewMember;
 import Main.Marathon;
+import Main.PlagueCure;
+import Main.Planet;
+import Main.Ship;
 
 /**
  * This JUnit test is for testing the CrewMember class.<br>
@@ -82,13 +85,70 @@ class CrewMemberTesting {
 	 */
 	@Test
 	void healTest() {
+		testMember.setActions(3);
+		testMember.setPlague(true);
 		BasicMedicalKit testKit = new BasicMedicalKit();
 		testMember.setHealth(50);
 		testMember.heal(testKit, crew);
 		assertEquals(testMember.getHealth(), 85);
 		testMember.heal(testKit, crew);
 		assertEquals(testMember.getHealth(), 100);
+		assertTrue(testMember.checkPlague());
+		testMember.heal(new PlagueCure(), crew);
+		assertFalse(testMember.checkPlague());
 		
 	}
-
+	
+	/**
+	 * Testing that the repair ship method repairs by the correct amount 
+	 * and does not exceed 100.
+	 */
+	@Test
+	void repairTest() {
+		Ship ship = crew.getCrewShip();
+		ship.setShieldLevel(60);
+		testMember.repairShip(ship);
+		assertEquals(ship.getShieldLevel(), 90);
+		testMember.repairShip(ship);
+		assertEquals(ship.getShieldLevel(), 100);
+	}
+	
+	/**
+	 * Testing the nextDay method. Testing if hunger increases, energy decreases each day and actions are reset.<br>
+	 * Also testing that having the plague decreases the health and that have full hunger or no energy decreases health.
+	 */
+	@Test
+	void nextDayTest() {
+		testMember.setActions(0);
+		testMember.nextDay(crew);
+		assertEquals(testMember.getActions(), 2);
+		assertEquals(testMember.getHunger(), 40);
+		assertEquals(testMember.getEnergy(), 80);
+		testMember.setEnergy(0);
+		testMember.nextDay(crew);
+		assertEquals(testMember.getHealth(), 70);
+		testMember.setEnergy(100);
+		testMember.setHunger(100);
+		testMember.nextDay(crew);
+		assertEquals(testMember.getHealth(), 40);
+		testMember.setPlague(true);
+		testMember.setHunger(0);
+		testMember.nextDay(crew);
+		assertEquals(testMember.getHealth(), 25);
+	}
+	
+	/**
+	 * Testing that the pilot ship method resets the number of transporter parts in the Planet.<br>
+	 * Also testing that the actions for both the primary and secondary pilots action decrease.
+	 */
+	@Test
+	void testPilotShip() {
+		Planet testPlanet = new Planet();
+		CrewMember secondPilot = new Marathon("Test");
+		testPlanet.setTransporterParts(0);
+		testMember.pilotShip(secondPilot, testPlanet, crew.getCrewShip());
+		assertEquals(testMember.getActions(), 1);
+		assertEquals(secondPilot.getActions(), 1);
+		assertEquals(testPlanet.getTransporterPartsAmount(), 1);
+	}
 }
