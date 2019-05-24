@@ -76,7 +76,7 @@ public class PilotSelectWindow {
 	 */
 	private void initialize() {
 		pilotSelectScreen = new JDialog();
-		pilotSelectScreen.setBounds(100, 100, 239, 297);
+		pilotSelectScreen.setBounds(100, 100, 228, 297);
 		pilotSelectScreen.setLocationRelativeTo(null);
 		pilotSelectScreen.setAlwaysOnTop(true);
 		pilotSelectScreen.setModalityType(ModalityType.APPLICATION_MODAL);
